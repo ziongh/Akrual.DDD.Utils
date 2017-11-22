@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils", "Akrual.DDD.Utils\Akrual.DDD.Utils.csproj", "{1E999216-1E30-4407-BC94-4F9A6D19F4E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Domain", "Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj", "{1E999216-1E30-4407-BC94-4F9A6D19F4E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Data", "Akrual.DDD.Utils.Data\Akrual.DDD.Utils.Data.csproj", "{1A784921-79BF-4BCD-B3B4-6DBC69A581DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1E999216-1E30-4407-BC94-4F9A6D19F4E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E999216-1E30-4407-BC94-4F9A6D19F4E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E999216-1E30-4407-BC94-4F9A6D19F4E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A784921-79BF-4BCD-B3B4-6DBC69A581DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A784921-79BF-4BCD-B3B4-6DBC69A581DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A784921-79BF-4BCD-B3B4-6DBC69A581DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A784921-79BF-4BCD-B3B4-6DBC69A581DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Akrual.DDD.Utils.Data</name>
+    </assembly>
+    <members>
+        <member name="T:Akrual.DDD.Utils.Data.Repositories.AsyncDomainRepositoryBase`2">
+            <summary>
+            Base class for implementing asynchronous domain repositories for aggregate root types.
+            </summary>
+            <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
+            <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Data.Repositories.AsyncDomainRepositoryBase`2.#ctor(Akrual.DDD.Utils.Data.Repositories.DbContexts.DBContextOfAggregate)">
+            <summary>
+            Initializes a new instance of the <see cref="!:DomainRepositoryBase&lt;TAggregate&gt;"/> class.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Data.Repositories.AsyncDomainRepositoryBase`2.FindByIdAsync(System.Guid)">
+            <summary>
+            Asynchronously finds an aggregate root instance from the repository using its id.
+            </summary>
+            <param name="id">Aggregate root instance id.</param>
+            <returns>Aggregate root instance.</returns>
+        </member>
+    </members>
+</doc>

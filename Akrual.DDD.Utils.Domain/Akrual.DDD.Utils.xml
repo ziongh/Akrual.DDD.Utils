@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Akrual.DDD.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:Akrual.DDD.Utils.Aggregates.AggregateRoot`1">
+            <summary>
+            Base class for implementing aggregate root domain objects.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
+            </summary>
+            <param name="id">Aggregate root instance id.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Aggregates.AggregateRoot`1.GetAppliedEvents">
+            <summary>
+            Gets all domain events that have been applied to the aggregate root instance.
+            </summary>
+            <returns>A collection of domain events.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Aggregates.AggregateRoot`1.ApplyEvent(Akrual.DDD.Utils.DomainEvents.DomainEvent)">
+            <summary>
+            Applies a new domain event to the aggregate root instance.
+            </summary>
+            <param name="domainEvent">The new domain event to apply.</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.DomainEvents.DomainEvent">
+            <summary>
+            Base class for implementing domain events that represent changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.DomainEvents.DomainEvent.EntityId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.DomainEvents.DomainEvent.#ctor(System.Guid,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="entityId">Entity instance id.</param>
+            <param name="entityVersion">Entity instance version.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.DomainEvents.DomainEvent.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="entityId">Entity instance id.</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.DomainEvents.IDomainEvent">
+            <summary>
+            Domain event that represents changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.DomainEvents.IDomainEvent.EntityId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Entities.Entity`1">
+            <summary>
+                Base class for any Entity Type (i.e. the 'Entity Object' oxymoron of DDD).
+                All you have to do is to implement the abstract methods: <see cref="M:Akrual.DDD.Utils.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality"/>
+            </summary>
+            <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Repositories.AsyncDomainRepositoryBase`2">
+            <summary>
+            Base class for implementing asynchronous domain repositories for aggregate root types.
+            </summary>
+            <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
+            <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Repositories.AsyncDomainRepositoryBase`2.#ctor(Akrual.DDD.Utils.Repositories.DbContexts.DBContextOfAggregate)">
+            <summary>
+            Initializes a new instance of the <see cref="!:DomainRepositoryBase&lt;TAggregate&gt;"/> class.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Repositories.AsyncDomainRepositoryBase`2.FindByIdAsync(System.Guid)">
+            <summary>
+            Asynchronously finds an aggregate root instance from the repository using its id.
+            </summary>
+            <param name="id">Aggregate root instance id.</param>
+            <returns>Aggregate root instance.</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Repositories.IAsyncDomainRepository`2">
+            <summary>
+            Asynchronous domain repository for a given aggregate root type.
+            </summary>
+            <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
+            <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Repositories.IAsyncDomainRepository`2.FindByIdAsync(System.Guid)">
+            <summary>
+            Asynchronously finds an aggregate root instance from the repository using its id.
+            </summary>
+            <param name="id">Aggregate root instance id.</param>
+            <returns>Aggregate root instance.</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.Collections.DictionaryByValue`2">
+            <summary>
+                A dictionary with equality based on its content and not on the dictionary's reference 
+                (i.e.: 2 different instances containing the same entries will be equals).
+            </summary>
+            <remarks>This type is not thread-safe (for hashcode updates).</remarks>
+            <typeparam name="K">The type of keys in the dictionary.</typeparam>
+            <typeparam name="V">The type of values in the dictionary.</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.Collections.EquallityComparer.EquatableByValue`1">
+            <summary>
+            Support a by-Value Equality and Unicity.
+            </summary>
+            <remarks>This latest implementation has been inspired from Scott Millett's book (Patterns, Principles, and Practices of Domain-Driven Design).</remarks>
+            <typeparam name="T">Type of the elements.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality">
+            <summary>
+            Use Yield to define every property used to diferentiate
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.Collections.EquallityComparer.EquatableByValueWithoutOrder`1">
+            <summary>
+            Support a by-Value Equality and Unicity where order of the elements that belongs 
+            to the Unicity/Equality doesn't matter.
+            </summary>
+            <typeparam name="T">Type of the elements.</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.Collections.ListByValue`1">
+            <summary>
+                A list with equality based on its content and not on the list's reference 
+                (i.e.: 2 different instances containing the same items in the same order will be equals).
+            </summary>
+            <remarks>This type is not thread-safe (for hashcode updates).</remarks>
+            <typeparam name="T">Type of the listed items.</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.Collections.SetByValue`1">
+            <summary>
+                A Set with equality based on its content and not on the Set's reference 
+                (i.e.: 2 different instances containing the same items will be equals whatever their storage order).
+            </summary>
+            <remarks>This type is not thread-safe (for hashcode updates).</remarks>
+            <typeparam name="T">Type of the listed items.</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Utils.UUID.GuidGenerator">
+            <summary>
+            Used for generating UUID based on RFC 4122.
+            </summary>
+            <seealso href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace</seealso>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateNodeBytes">
+            <summary>
+            Generates a random value for the node.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateNodeBytes(System.Net.IPAddress)">
+            <summary>
+            Generates a node based on the first 6 bytes of an IP address.
+            </summary>
+            <param name="ip"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateNodeBytes(System.Net.NetworkInformation.PhysicalAddress)">
+            <summary>
+            Generates a node based on the bytes of the MAC address.
+            </summary>
+            <param name="mac"></param>
+            <remarks>The machines MAC address can be retrieved from <see cref="M:System.Net.NetworkInformation.NetworkInterface.GetPhysicalAddress"/>.</remarks>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateClockSequenceBytes">
+            <summary>
+            Generates a random clock sequence.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateClockSequenceBytes(System.DateTime)">
+            <summary>
+            In order to maintain a constant value we need to get a two byte hash from the DateTime.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Utils.UUID.GuidGenerator.GenerateClockSequenceBytes(System.DateTimeOffset)">
+            <summary>
+            In order to maintain a constant value we need to get a two byte hash from the DateTime.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.ValueObjects.ValueObject`1">
+            <summary>
+                Base class for any Value Type (i.e. the 'Value Object' oxymoron of DDD).
+                All you have to do is to implement the abstract methods: <see cref="M:Akrual.DDD.Utils.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality"/>
+            </summary>
+            <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+        </member>
+    </members>
+</doc>
