@@ -6,7 +6,9 @@
     <members>
         <member name="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1">
             <summary>
-            Base class for implementing aggregate root domain objects.
+                Base class for implementing aggregate root domain objects.
+                <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
+                <remarks><c>So add properties as internal only!</c></remarks>
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
@@ -126,6 +128,36 @@
             <remarks>This type is not thread-safe (for hashcode updates).</remarks>
             <typeparam name="T">Type of the listed items.</typeparam>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1">
+            <summary>
+            A collection of weak references to objects.
+            </summary>
+            <typeparam name="T">The type of object to hold weak references to.</typeparam>
+        </member>
+        <member name="F:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1._list">
+            <summary>
+            The actual collection of strongly-typed weak references.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.GetLiveItems">
+            <summary>
+            Gets a list of live objects from this collection, causing a purge.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.Add(`0)">
+            <summary>
+            Adds a weak reference to an object to the collection. Does not cause a purge.
+            </summary>
+            <param name="item">The object to add a weak reference to.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.Remove(`0)">
+            <summary>
+            Removes a weak reference to an object from the collection. Does not cause a purge.
+            </summary>
+            <param name="item">The object to remove a weak reference to.</param>
+            <returns>True if the object was found and removed; false if the object was not found.</returns>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Utils.UUID.GuidGenerator">
             <summary>
             Used for generating UUID based on RFC 4122.
@@ -170,8 +202,15 @@
             <summary>
                 Base class for any Value Type (i.e. the 'Value Object' oxymoron of DDD).
                 All you have to do is to implement the abstract methods: <see cref="M:Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality"/>
+                <remarks><c>All of the object properties must have the setter as Private!</c></remarks>
+                <remarks><c>There should be no empty constructor!</c></remarks>
             </summary>
             <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.ValueObjects.ValueObject`1.#ctor">
+            <summary>
+            The Entity Framework needs an empty constructor. But no Value object should have one.
+            </summary>
         </member>
     </members>
 </doc>

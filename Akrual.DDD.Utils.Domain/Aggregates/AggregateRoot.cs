@@ -6,7 +6,9 @@ using Akrual.DDD.Utils.Domain.Entities;
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
     /// <summary>
-    /// Base class for implementing aggregate root domain objects.
+    ///     Base class for implementing aggregate root domain objects.
+    ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
+    ///     <remarks><c>So add properties as internal only!</c></remarks>
     /// </summary>
     public abstract class AggregateRoot<T> : Entity<T>
     {
