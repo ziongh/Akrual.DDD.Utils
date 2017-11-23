@@ -9,7 +9,7 @@ namespace Akrual.DDD.Utils.Domain.Tests
     public class FactoryTests
     {
         [Fact]
-        public void test()
+        public void Create_Test_return_ok()
         {
             var factory = new MyFactory();
             var final = factory.Create();
