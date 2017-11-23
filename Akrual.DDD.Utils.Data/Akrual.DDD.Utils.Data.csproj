@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />
+    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
   </ItemGroup>
 
 </Project>

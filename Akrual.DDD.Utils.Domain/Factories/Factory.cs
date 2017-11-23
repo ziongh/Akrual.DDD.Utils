@@ -12,7 +12,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
         private readonly WeakCollection<EventHandler<FactoryCreationExecutingContext<TAggregate, T>>> _aggregateCreation =
             new WeakCollection<EventHandler<FactoryCreationExecutingContext<TAggregate, T>>>();
 
-        public event EventHandler<FactoryCreationExecutingContext<TAggregate, T>> AggregateCreation
+        public event EventHandler<FactoryCreationExecutingContext<TAggregate, T>> OnAggregateCreation
         {
             add
             {
@@ -30,7 +30,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
             }
         }
 
-        protected virtual void OnAggregateCreation(FactoryCreationExecutingContext<TAggregate, T> args)
+        protected virtual void AggregateCreation(FactoryCreationExecutingContext<TAggregate, T> args)
         {
             lock (_aggregateCreation)
             {
@@ -45,10 +45,19 @@ namespace Akrual.DDD.Utils.Domain.Factories
         {
         }
 
+        /// <summary>
+        ///     Creates the default Aggregate. It should be already filled with the UUID.
+        ///     <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
+        /// </summary>
         protected abstract TAggregate CreateDefaultInstance();
 
+        /// <summary>
+        /// Creates the Aggregate with all the invariants Checked
+        /// </summary>
+        /// <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         public virtual TAggregate Create()
         {
+            // Create default Aggregate
             var aggregate = CreateDefaultInstance();
 
             var creationContext = new FactoryCreationExecutingContext<TAggregate, T>
@@ -56,7 +65,10 @@ namespace Akrual.DDD.Utils.Domain.Factories
                 ObjectBeingCreated = aggregate
             };
 
-            OnAggregateCreation(creationContext);
+            AggregateCreation(creationContext);
+
+
+
 
             return aggregate;
         }

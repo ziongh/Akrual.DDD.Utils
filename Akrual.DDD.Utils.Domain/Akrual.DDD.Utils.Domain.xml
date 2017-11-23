@@ -14,6 +14,8 @@
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
             <summary>
             Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
+            Every constructor have to satisfy:
+                <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
             </summary>
             <param name="id">Aggregate root instance id.</param>
         </member>
@@ -68,6 +70,33 @@
                 All you have to do is to implement the abstract methods: <see cref="M:Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality"/>
             </summary>
             <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Entities.IEntity)">
+            <summary>
+                Initializes a new instance of the <see cref="!:Entity"/> class.
+                Every constructor have to satisfy:
+                <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
+                <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>
+            </summary>
+            <param name="id"></param>
+            <param name="owner"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor">
+            <summary>
+            It should never be possible to Create an Entity without and ID and an Owner.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance">
+            <summary>
+                Creates the default Aggregate. It should be already filled with the UUID.
+                <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.Create">
+            <summary>
+            Creates the Aggregate with all the invariants Checked
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2">
             <summary>

@@ -2,7 +2,7 @@
 
 namespace Akrual.DDD.Utils.Domain.Entities
 {
-    public interface IEntity<T>
+    public interface IEntity
     {
         Guid Id { get; }
     }

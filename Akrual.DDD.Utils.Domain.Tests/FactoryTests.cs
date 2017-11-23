@@ -18,22 +18,32 @@ namespace Akrual.DDD.Utils.Domain.Tests
         }
 
 
-        internal class MyAggregate : AggregateRoot<MyAggregate>
+        [Fact]
+        public void Create_Test_return_ok2()
+        {
+            var factory = new MyFactory();
+            var final = factory.Create();
+
+            Assert.True(final.IsValid);
+        }
+
+
+        public class MyAggregate : AggregateRoot<MyAggregate>
         {
             public MyAggregate(Guid id) : base(id)
             {
             }
 
-            internal string Name { get; set; }
+            public string Name { get; internal set; }
         }
 
-        internal class MyFactory : Factory<MyAggregate, MyAggregate>
+        public class MyFactory : Factory<MyAggregate, MyAggregate>
         {
             private Factory<MyAggregate, MyAggregate> _factoryImplementation;
 
             public MyFactory()
             {
-                AggregateCreation += SetNameToLala;
+                OnAggregateCreation += SetNameToLala;
             }
 
             private void SetNameToLala(object sender, FactoryCreationExecutingContext<MyAggregate, MyAggregate> context)

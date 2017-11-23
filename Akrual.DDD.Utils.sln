@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Data", "Ak
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Data.Tests", "Akrual.DDD.Utils.Data.Tests\Akrual.DDD.Utils.Data.Tests.csproj", "{561D6704-2396-49F1-B405-7B1E789C7BF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Data.Tests", "Akrual.DDD.Utils.Data.Tests\Akrual.DDD.Utils.Data.Tests.csproj", "{561D6704-2396-49F1-B405-7B1E789C7BF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F42CCC1B-99C5-41F7-8171-F1AA83AD9962}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Domain.Tests", "Akrual.DDD.Utils.Domain.Tests\Akrual.DDD.Utils.Domain.Tests.csproj", "{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Domain.Tests", "Akrual.DDD.Utils.Domain.Tests\Akrual.DDD.Utils.Domain.Tests.csproj", "{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{C4F62BF7-F285-477E-9821-94CB59C4D896}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Internal", "Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj", "{4202FF68-B307-46EF-A493-2CF26F00DFC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4202FF68-B307-46EF-A493-2CF26F00DFC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4202FF68-B307-46EF-A493-2CF26F00DFC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4202FF68-B307-46EF-A493-2CF26F00DFC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4202FF68-B307-46EF-A493-2CF26F00DFC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{1A784921-79BF-4BCD-B3B4-6DBC69A581DA} = {EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}
 		{561D6704-2396-49F1-B405-7B1E789C7BF0} = {EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}
 		{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C} = {F42CCC1B-99C5-41F7-8171-F1AA83AD9962}
+		{4202FF68-B307-46EF-A493-2CF26F00DFC5} = {C4F62BF7-F285-477E-9821-94CB59C4D896}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4AE7482-3EFC-41A6-9BE8-8B6385DDF256}

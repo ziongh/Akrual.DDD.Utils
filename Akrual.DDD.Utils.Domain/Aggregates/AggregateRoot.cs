@@ -12,20 +12,22 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     /// </summary>
     public abstract class AggregateRoot<T> : Entity<T>
     {
+        public bool IsValid { get; internal set; }
         private readonly List<DomainEvent> appliedEvents;
+
+        public void SetIsValid(bool valid)
+        {
+            IsValid = valid;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// Every constructor have to satisfy:
+        ///     <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
         /// </summary>
         /// <param name="id">Aggregate root instance id.</param>
-        protected AggregateRoot(Guid id)
+        protected AggregateRoot(Guid id) : base(id,null)
         {
-            if (id == default(Guid))
-            {
-                throw new ArgumentException("Id must be defined.", "id");
-            }
-
-            Id = id;
             appliedEvents = new List<DomainEvent>();
         }
    

@@ -30,4 +30,8 @@
     <DocumentationFile>Akrual.DDD.Utils.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
+  </ItemGroup>
+
 </Project>
