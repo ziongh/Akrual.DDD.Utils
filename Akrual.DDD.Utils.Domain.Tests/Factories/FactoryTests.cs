@@ -1,13 +1,22 @@
 ﻿using System;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
-using Akrual.DDD.Utils.Domain.Utils.UUID;
+using Akrual.DDD.Utils.Internal;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Factories
 {
-    public class FactoryTests
+    public class FactoryTests : BaseTests
     {
+        [Fact]
+        public void Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
+        {
+            var factory = new FactoryWithDefaultObjectCreation();
+            var exampleAggregate = factory.Create();
+            Assert.Equal("OneName", exampleAggregate.Name);
+            Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
+        }
+
         [Fact]
         public void Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
         {
@@ -18,13 +27,28 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         }
 
         [Fact]
-        public void Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
+        public void Create_FactoryWithOnObjectCreatingSettingNameTwice_NameShouldBeSetTwice()
         {
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryWithOnObjectCreating();
+            factory.OnAggregateCreation += factory.SetNameToYetAnotherName;
             var exampleAggregate = factory.Create();
-            Assert.Equal("OneName", exampleAggregate.Name);
+
+            Assert.Equal("YetAnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
+
+        [Fact]
+        public void Create_FactoryWithOnObjectCreatingSettingNameTwicethenDeleteOne_NameShouldBeSetOnce()
+        {
+            var factory = new FactoryWithOnObjectCreating();
+            factory.OnAggregateCreation += factory.SetNameToYetAnotherName;
+            factory.OnAggregateCreation -= factory.SetNameToYetAnotherName;
+            var exampleAggregate = factory.Create();
+
+            Assert.Equal("AnotherName", exampleAggregate.Name);
+            Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
+        }
+
     }
 
 
@@ -35,12 +59,18 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
 
         public FactoryWithOnObjectCreating()
         {
-            OnAggregateCreation += SetNameToLala;
+            OnAggregateCreation += SetNameToAnotherName;
         }
 
-        private void SetNameToLala(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
+        private void SetNameToAnotherName(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
         {
             context.ObjectBeingCreated.Name = "AnotherName";
+        }
+
+
+        public void SetNameToYetAnotherName(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
+        {
+            context.ObjectBeingCreated.Name = "YetAnotherName";
         }
     }
 }

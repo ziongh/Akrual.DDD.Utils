@@ -145,6 +145,44 @@
             </summary>
             <param name="rules">The rules to instantiate the evaluator</param>
         </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.AddRule(Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}[])">
+            <summary>
+            Adds Rule to Rules Evaluation. And return True if succeeds
+            </summary>
+            <param name="rules">The rules beeing added to evaluation</param>
+            <returns>True if added sucessfully</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.AddRule(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}})">
+            <summary>
+            Adds Rule to Rules Evaluation. And return True if succeeds
+            </summary>
+            <param name="rules">The rules beeing added to evaluation</param>
+            <returns>True if added sucessfully</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.RemoveRule(Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}[])">
+            <summary>
+                Removes Rule to Rules Evaluation. And return True if succeeds
+                <remarks><c>It will only work if the instance being passed to be removed is the same as the one initially added!</c></remarks>
+            </summary>
+            <param name="rules">The rules beeing removed to evaluation</param>
+            <returns>True if removed sucessfully</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.RemoveRule(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}})">
+            <summary>
+                Removes Rule to Rules Evaluation. And return True if succeeds
+                <remarks><c>It will only work if the instance being passed to be removed is the same as the one initially added!</c></remarks>
+            </summary>
+            <param name="rules">The rules beeing removed to evaluation</param>
+            <returns>True if removed sucessfully</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.ExecuteAllRules(`0)">
+            <summary>
+                Evaluates all Rules registered to the given entity and return the result.
+                <remarks><c>Here is added the logic of the order, min, max, etc.</c></remarks>
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.AndDomainRule`1">
             <summary>
             This Rule is used to wrap two Boolean rules using an AND expression.
@@ -232,6 +270,9 @@
             <param name="right">Right side of the Boolean Expression</param>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.XorDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors.BooleanDomainRuleEvaluator`1">
             <inheritdoc />
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors.BooleanDomainRuleEvaluator`1.#ctor(Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,System.Boolean}[])">

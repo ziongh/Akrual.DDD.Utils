@@ -1,11 +1,12 @@
 ﻿using System;
 using Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Internal;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Rules
 {
-    public class BooleanDomainRuleBuilderTests
+    public class BooleanDomainRuleBuilderTests : BaseTests
     {
         [Fact]
         public void Create_EmptyContructor_ReturnsTrueRule()

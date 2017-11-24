@@ -1,6 +1,7 @@
 ﻿// From StephenCleary GitHub
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Akrual.DDD.Utils.Domain.Utils.Collections
 {
@@ -67,10 +68,13 @@ namespace Akrual.DDD.Utils.Domain.Utils.Collections
             {
                 var weakReference = _list[i];
                 T entry;
-                if (weakReference.TryGetTarget(out entry) && entry == item)
+                if (weakReference.TryGetTarget(out entry))
                 {
-                    _list.RemoveAt(i);
-                    return true;
+                    if (item.Equals(entry))
+                    {
+                        _list.RemoveAt(i);
+                        return true;
+                    }
                 }
             }
 
