@@ -5,6 +5,6 @@ namespace Akrual.DDD.Utils.Domain.Rules
     internal interface IDomainRuleEvaluator<in TEntity, out TRuleReturn>
         where TEntity : IEntity
     {
-        TRuleReturn ExecuteAllRules(TEntity customer);
+        TRuleReturn ExecuteAllRules(TEntity entity);
     }
 }

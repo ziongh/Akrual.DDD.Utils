@@ -112,6 +112,144 @@
             <param name="id">Aggregate root instance id.</param>
             <returns>Aggregate root instance.</returns>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.BaseDomainRule`2">
+            <summary>
+            Base class for Rule Definition. It should receive one Entity as input (TEntity) and return a value as Output (TRuleReturn). This output will be used in the RuleExecutor.
+            </summary>
+            <typeparam name="TEntity">The type of the Input</typeparam>
+            <typeparam name="TRuleReturn">The type of the Output</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRule`2.EvaluateRules(`0)">
+            <summary>
+            Evaluate all Rules to a specific entity and and return output
+            </summary>
+            <param name="entity">Any entity object that will be analysed</param>
+            <returns>Evaluated value</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2">
+            <summary>
+            Represents a rule Engine Executor. It will Crunch all the Rules associated to it and return the final output.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TRuleReturn"></typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.#ctor(Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}[])">
+            <summary>
+            Instantiates the Rule Evaluator passing the rules as parameters
+            </summary>
+            <param name="rules">The rules to instantiate the evaluator</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.BaseDomainRuleEvaluator`2.#ctor(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,`1}})">
+            <summary>
+            Instantiates the Rule Evaluator passing the rules as an IEnumerable as parameter
+            </summary>
+            <param name="rules">The rules to instantiate the evaluator</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.AndDomainRule`1">
+            <summary>
+            This Rule is used to wrap two Boolean rules using an AND expression.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.AndDomainRule`1.#ctor(Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0},Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0})">
+            <summary>
+            Creates a Rule that is used to wrap two Boolean rules using an AND expression.
+            </summary>
+            <param name="left">Left side of the Boolean Expression</param>
+            <param name="right">Right side of the Boolean Expression</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.AndDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BooleanDomainRuleBuilder`1">
+            <summary>
+            A builder to create Complex DomainRules based on Boolean Expressions. It can Wrap rules in AND, OR, XOR statements.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BooleanDomainRuleBuilder`1.#ctor(Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0})">
+            <summary>
+            creates a builder to create Complex DomainRules based on Boolean Expressions. It can Wrap rules in AND, OR, XOR statements.
+            It receives an initial rule. If none is provided, it will start with a Always true rule.
+            </summary>
+            <param name="initial"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BooleanDomainRuleBuilder`1.Create">
+            <summary>
+            Start the Fluent Creation Proccess
+            </summary>
+            <returns>Fluent object to create</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BooleanDomainRuleBuilder`1.And(Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0})">
+            <summary>
+            
+            </summary>
+            <param name="initial"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule`1">
+            <summary>
+            This is a Base Class to define any rules that return a Boolean.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.OrDomainRule`1">
+            <summary>
+            This Rule is used to wrap two Boolean rules using an OR expression.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.OrDomainRule`1.#ctor(Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0},Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0})">
+            <summary>
+            Creates a Rule that is used to wrap two Boolean rules using an OR expression.
+            </summary>
+            <param name="left">Left side of the Boolean Expression</param>
+            <param name="right">Right side of the Boolean Expression</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.OrDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.TrueDomainRule`1">
+            <summary>
+            This is a Dummy Rule used to start some Complex boolean rule.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.TrueDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.XorDomainRule`1">
+            <summary>
+            This Rule is used to wrap two Boolean rules using an XOR expression.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.XorDomainRule`1.#ctor(Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0},Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.BoolenaDomainRule{`0})">
+            <summary>
+            Creates a Rule that is used to wrap two Boolean rules using an XOR expression.
+            </summary>
+            <param name="left">Left side of the Boolean Expression</param>
+            <param name="right">Right side of the Boolean Expression</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.XorDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors.BooleanDomainRuleEvaluator`1.#ctor(Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,System.Boolean}[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors.BooleanDomainRuleEvaluator`1.#ctor(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Rules.IDomainRule{`0,System.Boolean}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors.BooleanDomainRuleEvaluator`1.ExecuteAllRules(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.IDomainRule`2">
+            <summary>
+            Base interface for Rule Definition. It should receive one Entity as input (TEntity) and return a value as Output (TRuleReturn). This output will be used in the RuleExecutor.
+            </summary>
+            <typeparam name="TEntity">The type of the Input</typeparam>
+            <typeparam name="TRuleReturn">The type of the Output</typeparam>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.DictionaryByValue`2">
             <summary>
                 A dictionary with equality based on its content and not on the dictionary's reference 

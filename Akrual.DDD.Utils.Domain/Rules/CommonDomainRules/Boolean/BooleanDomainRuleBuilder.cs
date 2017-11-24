@@ -38,22 +38,22 @@ namespace Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean
         /// </summary>
         /// <param name="initial"></param>
         /// <returns></returns>
-        public BoolenaDomainRule<TEntity> And(BoolenaDomainRule<TEntity> initial)
+        public BooleanDomainRuleBuilder<TEntity> And(BoolenaDomainRule<TEntity> initial)
         {
             _result = new AndDomainRule<TEntity>(_result, initial);
-            return _result;
+            return this;
         }
 
-        public BoolenaDomainRule<TEntity> Or(BoolenaDomainRule<TEntity> initial)
+        public BooleanDomainRuleBuilder<TEntity> Or(BoolenaDomainRule<TEntity> initial)
         {
             _result = new OrDomainRule<TEntity>(_result, initial);
-            return _result;
+            return this;
         }
 
-        public BoolenaDomainRule<TEntity> Xor(BoolenaDomainRule<TEntity> initial)
+        public BooleanDomainRuleBuilder<TEntity> Xor(BoolenaDomainRule<TEntity> initial)
         {
             _result = new XorDomainRule<TEntity>(_result, initial);
-            return _result;
+            return this;
         }
     }
 }

@@ -4,18 +4,28 @@ using Akrual.DDD.Utils.Domain.Entities;
 
 namespace Akrual.DDD.Utils.Domain.Rules.CommonRuleExecutors
 {
-    public class BooleanDomainRuleEvaluator<TEntity> : IDomainRuleEvaluator<TEntity, bool>
+    /// <inheritdoc />
+    public class BooleanDomainRuleEvaluator<TEntity> : BaseDomainRuleEvaluator<TEntity, bool>
         where TEntity : IEntity
     {
-        internal List<IDomainRule<TEntity, bool>> _rules = new List<IDomainRule<TEntity, bool>>();
+        /// <inheritdoc />
+        public BooleanDomainRuleEvaluator(params IDomainRule<TEntity, bool>[] rules) : base(rules)
+        {
+        }
 
-        public virtual bool ExecuteAllRules(TEntity customer)
+        /// <inheritdoc />
+        public BooleanDomainRuleEvaluator(IEnumerable<IDomainRule<TEntity, bool>> rules) : base(rules)
+        {
+        }
+
+        /// <inheritdoc />
+        public override bool ExecuteAllRules(TEntity entity)
         {
             var result = true;
 
             foreach (var rule in _rules.OrderBy(s => s.Order))
             {
-                result &= rule.EvaluateRules(customer);
+                result &= rule.EvaluateRules(entity);
                 if (rule.ForceFinishExecutor) break;
             }
             return result;
