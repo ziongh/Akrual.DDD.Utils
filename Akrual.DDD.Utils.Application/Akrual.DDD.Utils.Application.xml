@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Akrual.DDD.Utils.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Akrual.DDD.Utils.Application.UseCaseFunctions.IUseCaseFunction`2">
+            <summary>
+                Every application class should basically receive an input data from the presentation layer and return
+                an output to the presentation layer. So it should implement this interface
+            </summary>
+            <typeparam name="TInputModel">InputModel</typeparam>
+            <typeparam name="TOutputModel">OutputModel</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Application.UseCaseFunctions.IUseCaseFunction`2.Execute(`0)">
+            <summary>
+            Every application class should basically receive an input data from the presentation layer and return
+            an output to the presentation layer.
+            </summary>
+            <param name="input">Input model from the presentation layer</param>
+            <returns>Output model to the presentation layer</returns>
+        </member>
+    </members>
+</doc>

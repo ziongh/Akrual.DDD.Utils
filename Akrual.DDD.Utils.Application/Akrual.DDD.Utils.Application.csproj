@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageTitle>Akrual.DDD.Utils.Application</PackageTitle>
+    <Title>Akrual.DDD.Utils.Application</Title>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Akrual.DDD.Utils.Application</PackageId>
+    <PackageVersion>0.0.1</PackageVersion>
+    <Authors>Rodrigo Leal</Authors>
+    <Description>Useful Classes to implement the Application layer of a system based on DDD</Description>
+    <Summary>Useful Classes to implement the Application layer of a system based on DDD like, ValueObject, Entity, Aggregate, Repository, and many more.</Summary>
+    <PackageSummary>Useful Classes to implement the Application layer of a system based on DDD like, ValueObject, Entity, Aggregate, Repository, and many more.</PackageSummary>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ziongh/Akrual.DDD.Utils/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ziongh/Akrual.DDD.Utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ziongh/Akrual.DDD.Utils</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) Akrual Solutions Ltda. All rights reserved.</Copyright>
+    <PackageTags>ddd entity valueobject aggregate</PackageTags>
+    <Company>Akrual Solutions</Company>
+    <AssemblyName>Akrual.DDD.Utils.Application</AssemblyName>
+    <RootNamespace>Akrual.DDD.Utils.Application</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Akrual.DDD.Utils.Application.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Akrual.DDD.Utils.Application.xml</DocumentationFile>
+  </PropertyGroup>
+
+
+</Project>

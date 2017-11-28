@@ -4,7 +4,7 @@ using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
 using Akrual.DDD.Utils.Internal;
 using Xunit;
 
-namespace Akrual.DDD.Utils.Domain.Tests.Rules
+namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 {
     public class BooleanDomainRuleBuilderTests : BaseTests
     {
@@ -58,6 +58,65 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             Assert.IsNotType<TrueDomainRule<ExampleAggregate>>(andRule);
             Assert.IsNotType<NameIsNotEmptyRule>(andRule);
             Assert.IsType<XorDomainRule<ExampleAggregate>>(andRule);
+        }
+
+
+        [Fact]
+        public void XOR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
+        {
+            var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Xor(new NameIsNotEmptyRule());
+            var andRule = ruleContructor.Create();
+
+            var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
+            var entity = exampleEntityFactory.Create(); // It has name
+
+            var evaluatedValue = andRule.EvaluateRules(entity);
+
+            Assert.True(evaluatedValue);
+        }
+
+        [Fact]
+        public void XOR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
+        {
+            var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Xor(new NameIsNotEmptyRule());
+            var andRule = ruleContructor.Create();
+
+            var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
+            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            var entity = exampleEntityFactory.Create(); // name is null
+
+            var evaluatedValue = andRule.EvaluateRules(entity);
+
+            Assert.False(evaluatedValue);
+        }
+
+        [Fact]
+        public void OR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
+        {
+            var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Or(new NameIsNotEmptyRule());
+            var andRule = ruleContructor.Create();
+
+            var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
+            var entity = exampleEntityFactory.Create(); // It has name
+
+            var evaluatedValue = andRule.EvaluateRules(entity);
+
+            Assert.True(evaluatedValue);
+        }
+
+        [Fact]
+        public void OR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
+        {
+            var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Or(new NameIsNotEmptyRule());
+            var andRule = ruleContructor.Create();
+
+            var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
+            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            var entity = exampleEntityFactory.Create(); // name is null
+
+            var evaluatedValue = andRule.EvaluateRules(entity);
+
+            Assert.False(evaluatedValue);
         }
 
         protected internal class NameIsNotEmptyRule : BoolenaDomainRule<ExampleAggregate>

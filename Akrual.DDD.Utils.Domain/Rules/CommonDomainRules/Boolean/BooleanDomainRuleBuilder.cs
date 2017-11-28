@@ -9,6 +9,7 @@ namespace Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean
     public class BooleanDomainRuleBuilder<TEntity>
         where TEntity : IEntity
     {
+        private bool _isDefault;
         private BoolenaDomainRule<TEntity> _result;
 
         /// <summary>
@@ -18,8 +19,11 @@ namespace Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean
         /// <param name="initial"></param>
         public BooleanDomainRuleBuilder(BoolenaDomainRule<TEntity> initial = null)
         {
-            if(initial == null)
+            if (initial == null)
+            {
+                _isDefault = true;
                 initial = new TrueDomainRule<TEntity>();
+            }
 
             _result = initial;
         }
@@ -46,12 +50,24 @@ namespace Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean
 
         public BooleanDomainRuleBuilder<TEntity> Or(BoolenaDomainRule<TEntity> initial)
         {
+            if (_isDefault && _result is TrueDomainRule<TEntity>)
+            {
+                _result = new FalseDomainRule<TEntity>();
+                _isDefault = false;
+            }
+
             _result = new OrDomainRule<TEntity>(_result, initial);
             return this;
         }
 
         public BooleanDomainRuleBuilder<TEntity> Xor(BoolenaDomainRule<TEntity> initial)
         {
+            if (_isDefault && _result is TrueDomainRule<TEntity>)
+            {
+                _result = new FalseDomainRule<TEntity>();
+                _isDefault = false;
+            }
+
             _result = new XorDomainRule<TEntity>(_result, initial);
             return this;
         }

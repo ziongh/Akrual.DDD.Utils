@@ -231,6 +231,15 @@
             </summary>
             <typeparam name="TEntity">Any Entity object</typeparam>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.FalseDomainRule`1">
+            <summary>
+            This is a Dummy Rule used to start some Complex boolean rule.
+            </summary>
+            <typeparam name="TEntity">Any Entity object</typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.FalseDomainRule`1.EvaluateRules(`0)">
+            <inheritdoc />
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean.OrDomainRule`1">
             <summary>
             This Rule is used to wrap two Boolean rules using an OR expression.
