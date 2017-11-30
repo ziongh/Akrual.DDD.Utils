@@ -16,6 +16,7 @@
             Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
             Every constructor have to satisfy:
                 <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
+                <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
             </summary>
             <param name="id">Aggregate root instance id.</param>
         </member>
@@ -64,12 +65,20 @@
             Gets the entity id.
             </summary>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Entities.BaseDomainStatus">
+            <summary>
+            An Abstract Class to inherit when creating Entity Status
+            </summary>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Entities.Entity`1">
             <summary>
-                Base class for any Entity Type (i.e. the 'Entity Object' oxymoron of DDD).
-                All you have to do is to implement the abstract methods: <see cref="M:Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer.EquatableByValue`1.GetAllAttributesToBeUsedForEquality"/>
+                Base class for any Entity Type (i.e. the 'Entity Object' of DDD).
+                <remarks><c>All properties of this child classes should have the setter as private!</c></remarks>
             </summary>
-            <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+            <typeparam name="T">Domain type to be 'turned' into a Entity Type.</typeparam>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Entities.Entity`1.IsValid">
+            <exception cref="T:Akrual.DDD.Utils.Domain.Exceptions.ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Entities.IEntity)">
             <summary>
@@ -77,6 +86,7 @@
                 Every constructor have to satisfy:
                 <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
                 <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>
+                <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
             </summary>
             <param name="id"></param>
             <param name="owner"></param>
@@ -84,6 +94,11 @@
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor">
             <summary>
             It should never be possible to Create an Entity without and ID and an Owner.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ShouldNeverCallIsValidOnTheEntityException">
+            <summary>
+            <c>You Should never try to verify validation in the entity. Because the entity should always be valid</c>
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance">
@@ -413,6 +428,14 @@
         <member name="M:Akrual.DDD.Utils.Domain.Utils.UUID.GuidGenerator.GenerateClockSequenceBytes(System.DateTimeOffset)">
             <summary>
             In order to maintain a constant value we need to get a two byte hash from the DateTime.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.ValueObjects.Enumeration">
+            <summary>
+            Defines an Enumeration with extra power (it's a class).
+            You can inherit and create new types. Can add properties, etc.
+            So you won't have to use switches.
+            <remarks><c>from: https://lostechies.com/jimmybogard/2008/08/12/enumeration-classes </c></remarks>
             </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.ValueObjects.ValueObject`1">

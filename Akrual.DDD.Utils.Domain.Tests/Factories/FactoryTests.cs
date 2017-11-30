@@ -64,13 +64,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
 
         private void SetNameToAnotherName(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
         {
-            context.ObjectBeingCreated.Name = "AnotherName";
+            context.ObjectBeingCreated.FixName("AnotherName");
         }
 
 
         public void SetNameToYetAnotherName(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
         {
-            context.ObjectBeingCreated.Name = "YetAnotherName";
+            context.ObjectBeingCreated.FixName("YetAnotherName");
         }
     }
 }

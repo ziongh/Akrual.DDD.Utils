@@ -1,5 +1,6 @@
 ﻿using Akrual.DDD.Utils.Application.Messaging;
 using Akrual.DDD.Utils.Application.UseCaseFunctions;
+using FluentValidation;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Application.Tests.UseCaseFunctions
@@ -27,9 +28,12 @@ namespace Akrual.DDD.Utils.Application.Tests.UseCaseFunctions
 
         }
 
-        protected internal class ExampleUseCaseFunction : IUseCaseFunction<ExampleInputModel, ExampleOutputModel>
+        protected internal class ExampleUseCaseFunction : BaseUseCaseFunction<ExampleInputModel, ExampleOutputModel>
         {
-            public ExampleOutputModel Execute(ExampleInputModel input)
+            protected override AbstractValidator<ExampleInputModel> PreConditionEvaluator { get; }
+            protected override AbstractValidator<ExampleOutputModel> PostConditionEvaluator { get; }
+
+            protected override ExampleOutputModel WhatToExecute(ExampleInputModel input)
             {
                 return new ExampleOutputModel();
             }

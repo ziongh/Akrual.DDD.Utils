@@ -1,20 +1,26 @@
 ﻿using System;
-using Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer;
+using Akrual.DDD.Utils.Domain.Exceptions;
 
 namespace Akrual.DDD.Utils.Domain.Entities
 {
     /// <summary>
-    ///     Base class for any Entity Type (i.e. the 'Entity Object' oxymoron of DDD).
-    ///     All you have to do is to implement the abstract methods: <see cref="EquatableByValue{T}.GetAllAttributesToBeUsedForEquality"/>
+    ///     Base class for any Entity Type (i.e. the 'Entity Object' of DDD).
+    ///     <remarks><c>All properties of this child classes should have the setter as private!</c></remarks>
     /// </summary>
-    /// <typeparam name="T">Domain type to be 'turned' into a Value Type.</typeparam>
+    /// <typeparam name="T">Domain type to be 'turned' into a Entity Type.</typeparam>
     public abstract class Entity<T> : IEntity
     {
+        /// <exception cref="ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
+        public bool IsValid => throw new ShouldNeverCallIsValidOnTheEntityException();
+
+        public BaseDomainStatus Status { get; private set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Entity"/> class.
         ///     Every constructor have to satisfy:
         ///     <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
         ///     <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>
+        ///     <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
         /// </summary>
         /// <param name="id"></param>
         /// <param name="owner"></param>
@@ -33,7 +39,6 @@ namespace Akrual.DDD.Utils.Domain.Entities
         /// </summary>
         private Entity()
         {
-            
         }
 
         public Guid Id { get; protected set; }

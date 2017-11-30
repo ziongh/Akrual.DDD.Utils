@@ -74,7 +74,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
 
             var exampleAggregate = factory.Create();
 
@@ -90,7 +90,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = "";
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName("");
 
             var exampleAggregate = factory.Create();
 
@@ -108,7 +108,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule);
             evaluator.AddRule(nameNotEmptyRule);
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = "";
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName("");
             var exampleAggregate = factory.Create();
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
@@ -124,7 +124,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule);
             evaluator.AddRule(new List<BoolenaDomainRule<ExampleAggregate>> {nameNotEmptyRule});
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = "";
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName("");
             var exampleAggregate = factory.Create();
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
@@ -143,7 +143,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             evaluator.RemoveRule(nameNotEmptyRule);
 
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = "";
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName("");
             var exampleAggregate = factory.Create();
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
@@ -162,7 +162,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             evaluator.RemoveRule(new List<IDomainRule<ExampleAggregate, bool>>{ nameNotEmptyRule });
 
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = "";
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName("");
             var exampleAggregate = factory.Create();
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
@@ -177,7 +177,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var nameNotEmptyRule = new NameIsNotEmptyRule { Order = 2, ForceFinishExecutor = false }; // This wont run
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
             var factory = new FactoryWithDefaultObjectCreation();
-            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            factory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
 
             var exampleAggregate = factory.Create();
 

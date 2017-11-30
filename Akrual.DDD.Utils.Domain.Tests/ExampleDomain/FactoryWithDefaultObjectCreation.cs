@@ -10,7 +10,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
 
         protected override ExampleAggregate CreateDefaultInstance()
         {
-            return new ExampleAggregate(GuidGenerator.GenerateTimeBasedGuid()) { Name = "OneName", Date = new DateTime(1990,5,12), Number = 100};
+            var entity = new ExampleAggregate(GuidGenerator.GenerateTimeBasedGuid(), "OneName",100, new DateTime(1990, 5, 12));
+
+            return entity;
         }
     }
 }

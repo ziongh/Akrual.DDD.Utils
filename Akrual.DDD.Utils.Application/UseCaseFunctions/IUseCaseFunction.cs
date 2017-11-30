@@ -12,6 +12,9 @@ namespace Akrual.DDD.Utils.Application.UseCaseFunctions
         where TInputModel : IInputModel
         where TOutputModel : IOutputModel
     {
+
+
+
         /// <summary>
         /// Every application class should basically receive an input data from the presentation layer and return
         /// an output to the presentation layer.

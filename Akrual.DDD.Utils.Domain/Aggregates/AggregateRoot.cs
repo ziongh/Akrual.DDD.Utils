@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Akrual.DDD.Utils.Domain.DomainEvents;
 using Akrual.DDD.Utils.Domain.Entities;
+using Akrual.DDD.Utils.Domain.Exceptions;
 
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
@@ -12,18 +13,13 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     /// </summary>
     public abstract class AggregateRoot<T> : Entity<T>
     {
-        public bool IsValid { get; internal set; }
         private readonly List<DomainEvent> appliedEvents;
-
-        public void SetIsValid(bool valid)
-        {
-            IsValid = valid;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
         /// Every constructor have to satisfy:
         ///     <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
+        ///     <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
         /// </summary>
         /// <param name="id">Aggregate root instance id.</param>
         protected AggregateRoot(Guid id) : base(id,null)

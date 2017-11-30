@@ -82,7 +82,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
             var entity = exampleEntityFactory.Create(); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
@@ -111,7 +111,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.Name = null;
+            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
             var entity = exampleEntityFactory.Create(); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
