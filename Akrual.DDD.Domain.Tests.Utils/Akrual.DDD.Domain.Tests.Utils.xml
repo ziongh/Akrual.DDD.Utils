@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Akrual.DDD.Domain.Tests.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:Akrual.DDD.Domain.Tests.Utils.BaseAggregateRootTests`2">
+            <summary>
+            Provides infrastructure for a set of tests on a given aggregate.
+            </summary>
+            <typeparam name="TAggregate"></typeparam>
+            <typeparam name="T"></typeparam>
+        </member>
+    </members>
+</doc>

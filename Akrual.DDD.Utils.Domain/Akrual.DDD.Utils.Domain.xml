@@ -26,25 +26,88 @@
             </summary>
             <returns>A collection of domain events.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvent(Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent)">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvent(Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent[])">
             <summary>
             Applies a new domain event to the aggregate root instance.
             </summary>
             <param name="domainEvent">The new domain event to apply.</param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Contracts.Contract.Ensures``1(System.Object,System.Func{System.Object,System.Boolean},System.String)">
-            <param name="entity">Entity to be evaluated</param>
-            <param name="condition">Condition to evaluate on entity</param>
-            <param name="userMessage">Message to be throw on evaluation failure</param>
-            <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
-            <exception cref="!:TException">Throw Exception if condition is not met.</exception>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvent(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent})">
+            <summary>
+            Applies a new domain event to the aggregate root instance.
+            </summary>
+            <param name="domainEvent">The new domain event to apply.</param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Contracts.Contract.Requires``1(System.Object,System.Func{System.Object,System.Boolean},System.String)">
-            <param name="entity">Entity to be evaluated</param>
-            <param name="condition">Condition to evaluate on entity</param>
-            <param name="userMessage">Message to be throw on evaluation failure</param>
-            <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
-            <exception cref="!:TException">Throw Exception if condition is not met.</exception>
+        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand">
+            <summary>
+            Base class for implementing domain events that represent changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.EntityId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.#ctor(System.Guid,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand"/> class.
+            </summary>
+            <param name="entityId">Entity instance id.</param>
+            <param name="entityVersion">Entity instance version.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand"/> class.
+            </summary>
+            <param name="entityId">Entity instance id.</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext">
+            <summary>Represents a command context for aggregate command handler handling command.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.Add``2(``0)">
+            <summary>Add a new aggregate into the current command context.
+            </summary>
+            <param name="aggregateRoot"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.Get``2(System.Object,System.Boolean)">
+            <summary>Get an aggregate from the current command context.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <param name="firstFromCache"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.SetResult(System.String)">
+            <summary>Set the command handle result.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.GetResult">
+            <summary>Get the command handle result.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.IDomainCommand">
+            <summary>
+            Domain event that represents changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.DomainCommands.IDomainCommand.EntityId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.IHandleDomainCommand`1">
+            <summary>Represents generic command handler.
+            </summary>
+            <typeparam name="TCommand"></typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.IHandleDomainCommand`1.Handle(Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext,`0)">
+            <summary>Handle the given aggregate command.
+            </summary>
+            <param name="context"></param>
+            <param name="command"></param>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent">
             <summary>
@@ -92,7 +155,7 @@
             <typeparam name="T">Domain type to be 'turned' into a Entity Type.</typeparam>
         </member>
         <member name="P:Akrual.DDD.Utils.Domain.Entities.Entity`1.IsValid">
-            <exception cref="T:Akrual.DDD.Utils.Domain.Exceptions.ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
+            <exception cref="T:Akrual.DDD.Utils.Internal.Exceptions.ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Entities.IEntity)">
             <summary>
@@ -108,21 +171,6 @@
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor">
             <summary>
             It should never be possible to Create an Entity without and ID and an Owner.
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ContractException">
-            <summary>
-            <c>Exception related to a contract not being fulfilled</c>
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ContractExceptionWithProperty">
-            <summary>
-            <c>Exception related to a contract not being fulfilled</c>
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ShouldNeverCallIsValidOnTheEntityException">
-            <summary>
-            <c>You Should never try to verify validation in the entity. Because the entity should always be valid</c>
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance">

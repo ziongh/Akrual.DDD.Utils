@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Akrual.DDD.Utils.Domain.DomainEvents;
 using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
 using Akrual.DDD.Utils.Internal.Extensions;
+using Akrual.DDD.Utils.Internal.Logging;
 
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
@@ -15,6 +18,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     /// </summary>
     public abstract class AggregateRoot<T> : Entity<T>
     {
+        internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly ConcurrentList<DomainEvent> eventStream;
 
         /// <summary>
@@ -41,11 +46,27 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// <summary>
         /// Applies a new domain event to the aggregate root instance.
         /// </summary>
-        /// <param name="domainEvent">The new domain event to apply.</param>
-        protected void ApplyEvent(DomainEvent domainEvent)
+        /// <param name="domainEvents">The new domain event to apply.</param>
+        public void ApplyEvent(params DomainEvent[] domainEvents)
         {
-            domainEvent.Ensures(s => s != null);
-            eventStream.Add(domainEvent);
+            domainEvents.EnsuresNotNullOrEmpty();
+            foreach (var domainEvent in domainEvents)
+            {
+                eventStream.Add(domainEvent);
+            }
+        }
+
+        /// <summary>
+        /// Applies a new domain event to the aggregate root instance.
+        /// </summary>
+        /// <param name="domainEvents">The new domain event to apply.</param>
+        public void ApplyEvent(IEnumerable<DomainEvent> domainEvents)
+        {
+            domainEvents.EnsuresNotNullOrEmpty();
+            foreach (var domainEvent in domainEvents)
+            {
+                eventStream.Add(domainEvent);
+            }
         }
     }
 }
