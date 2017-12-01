@@ -1,6 +1,7 @@
 ﻿using System;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Contracts;
+using Akrual.DDD.Utils.Internal.Contracts;
+using Akrual.DDD.Utils.Internal.Extensions;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
 {
@@ -19,7 +20,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
 
         public void FixName(string newName)
         {
-            Contract.EnsuresNotNull(newName);
+            CommonContract.EnsuresNotNull(newName);
             Name = newName;
         }
     }

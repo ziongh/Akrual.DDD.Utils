@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Akrual.DDD.Utils.Application.Messaging;
-using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Utils.Validation;
 using FluentValidation;
 using FluentValidation.Results;

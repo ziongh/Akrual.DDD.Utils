@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Akrual.DDD.Utils.Domain.Exceptions
+namespace Akrual.DDD.Utils.Internal.Exceptions
 {
     /// <summary>
     /// <c>You Should never try to verify validation in the entity. Because the entity should always be valid</c>

@@ -4,6 +4,9 @@
         <name>Akrual.DDD.Utils.Application</name>
     </assembly>
     <members>
+        <member name="T:Akrual.DDD.Utils.Application.UseCaseFunctions.BaseUseCaseFunction`2">
+            <inheritdoc />
+        </member>
         <member name="T:Akrual.DDD.Utils.Application.UseCaseFunctions.IUseCaseFunction`2">
             <summary>
                 Every application class should basically receive an input data from the presentation layer and return

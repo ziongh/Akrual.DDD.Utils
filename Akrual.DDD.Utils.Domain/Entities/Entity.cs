@@ -1,5 +1,5 @@
 ﻿using System;
-using Akrual.DDD.Utils.Domain.Exceptions;
+using Akrual.DDD.Utils.Internal.Exceptions;
 
 namespace Akrual.DDD.Utils.Domain.Entities
 {

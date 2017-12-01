@@ -2,6 +2,7 @@
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
 using Akrual.DDD.Utils.Internal;
+using Akrual.DDD.Utils.Internal.Tests;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Factories

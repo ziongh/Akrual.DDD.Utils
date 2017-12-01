@@ -23,9 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{52577A01-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{7FFBA0AE-FF89-481C-81DB-68D271A56E21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Application", "Akrual.DDD.Utils.Application\Akrual.DDD.Utils.Application.csproj", "{7FB1A711-A694-4138-9422-2D15DB27ED10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Application", "Akrual.DDD.Utils.Application\Akrual.DDD.Utils.Application.csproj", "{7FB1A711-A694-4138-9422-2D15DB27ED10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Application.Tests", "Akrual.DDD.Utils.Application.Tests\Akrual.DDD.Utils.Application.Tests.csproj", "{153FF21A-0BE2-435F-BE26-26B5C88F44D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Application.Tests", "Akrual.DDD.Utils.Application.Tests\Akrual.DDD.Utils.Application.Tests.csproj", "{153FF21A-0BE2-435F-BE26-26B5C88F44D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akrual.DDD.Utils.Internal.Tests", "Akrual.DDD.Utils.Internal.Tests\Akrual.DDD.Utils.Internal.Tests.csproj", "{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{153FF21A-0BE2-435F-BE26-26B5C88F44D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{153FF21A-0BE2-435F-BE26-26B5C88F44D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{153FF21A-0BE2-435F-BE26-26B5C88F44D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{52577A01-B7AD-4C1F-BA55-C7B2C072188C} = {EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}
 		{7FB1A711-A694-4138-9422-2D15DB27ED10} = {7FFBA0AE-FF89-481C-81DB-68D271A56E21}
 		{153FF21A-0BE2-435F-BE26-26B5C88F44D7} = {7FFBA0AE-FF89-481C-81DB-68D271A56E21}
+		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0} = {C4F62BF7-F285-477E-9821-94CB59C4D896}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4AE7482-3EFC-41A6-9BE8-8B6385DDF256}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Akrual.DDD.Utils.Domain.Exceptions;
+using Akrual.DDD.Utils.Internal.Exceptions;
 using FluentValidation.Results;
 
 namespace Akrual.DDD.Utils.Domain.Utils.Validation

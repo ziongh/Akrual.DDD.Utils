@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Akrual.DDD.Utils.Internal
+namespace Akrual.DDD.Utils.Internal.Extensions
 {
     public static class EnumerableExtensions
     {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Akrual.DDD.Utils.Domain.Exceptions
+namespace Akrual.DDD.Utils.Internal.Exceptions
 {
     /// <summary>
     /// <c>Exception related to a contract not being fulfilled</c>

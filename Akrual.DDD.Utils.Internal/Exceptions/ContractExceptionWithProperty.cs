@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Akrual.DDD.Utils.Domain.Exceptions
+namespace Akrual.DDD.Utils.Internal.Exceptions
 {
     /// <summary>
     /// <c>Exception related to a contract not being fulfilled</c>
@@ -12,6 +10,7 @@ namespace Akrual.DDD.Utils.Domain.Exceptions
     {
         public string PropertyName { get; set; }
         public object AttemptedValue { get; set; }
+        public object ExpectedValue { get; set; }
         public ContractExceptionWithProperty()
         {
         }

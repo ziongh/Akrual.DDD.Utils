@@ -1,11 +1,12 @@
 ﻿using Akrual.DDD.Utils.Application.Messaging;
 using Akrual.DDD.Utils.Application.UseCaseFunctions;
+using Akrual.DDD.Utils.Internal.Tests;
 using FluentValidation;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Application.Tests.UseCaseFunctions
 {
-    public class UseCaseFunctionTests
+    public class UseCaseFunctionTests : BaseTests
     {
         [Fact]
         public void Execute_WithSampleModels_ReturnSampleModel()

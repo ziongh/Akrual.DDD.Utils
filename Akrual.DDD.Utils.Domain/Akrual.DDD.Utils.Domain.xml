@@ -20,7 +20,7 @@
             </summary>
             <param name="id">Aggregate root instance id.</param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetAppliedEvents">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetEventStream">
             <summary>
             Gets all domain events that have been applied to the aggregate root instance.
             </summary>
@@ -31,6 +31,20 @@
             Applies a new domain event to the aggregate root instance.
             </summary>
             <param name="domainEvent">The new domain event to apply.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Contracts.Contract.Ensures``1(System.Object,System.Func{System.Object,System.Boolean},System.String)">
+            <param name="entity">Entity to be evaluated</param>
+            <param name="condition">Condition to evaluate on entity</param>
+            <param name="userMessage">Message to be throw on evaluation failure</param>
+            <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
+            <exception cref="!:TException">Throw Exception if condition is not met.</exception>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Contracts.Contract.Requires``1(System.Object,System.Func{System.Object,System.Boolean},System.String)">
+            <param name="entity">Entity to be evaluated</param>
+            <param name="condition">Condition to evaluate on entity</param>
+            <param name="userMessage">Message to be throw on evaluation failure</param>
+            <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
+            <exception cref="!:TException">Throw Exception if condition is not met.</exception>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent">
             <summary>
@@ -94,6 +108,16 @@
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor">
             <summary>
             It should never be possible to Create an Entity without and ID and an Owner.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ContractException">
+            <summary>
+            <c>Exception related to a contract not being fulfilled</c>
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ContractExceptionWithProperty">
+            <summary>
+            <c>Exception related to a contract not being fulfilled</c>
             </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Exceptions.ShouldNeverCallIsValidOnTheEntityException">

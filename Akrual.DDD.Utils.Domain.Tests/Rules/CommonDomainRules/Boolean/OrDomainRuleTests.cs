@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Internal.Tests;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 {
-    public class OrDomainRuleTests
+    public class OrDomainRuleTests : BaseTests
     {
         [Theory]
         [InlineData(true,true,true)]
