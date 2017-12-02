@@ -48,6 +48,12 @@
             };
         }
 
+        public static bool IsLoggerAvailable()
+        {
+            return true;
+        }
+
+
         private static void WriteMessage(
             LogLevel logLevel,
             string name,
