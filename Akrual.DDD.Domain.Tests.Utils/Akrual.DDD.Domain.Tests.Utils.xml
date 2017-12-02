@@ -4,6 +4,16 @@
         <name>Akrual.DDD.Domain.Tests.Utils</name>
     </assembly>
     <members>
+        <member name="T:Akrual.DDD.Domain.Tests.Utils.AssertExtensions">
+            <inheritdoc />
+        </member>
+        <member name="M:Akrual.DDD.Domain.Tests.Utils.AssertExtensions.AllPublicPropertyEqual(System.Object,System.Object)">
+            <summary>
+            Compare each and every puplic property of the Entity
+            </summary>
+            <param name="expected"></param>
+            <param name="actual"></param>
+        </member>
         <member name="T:Akrual.DDD.Domain.Tests.Utils.BaseAggregateRootTests`2">
             <summary>
             Provides infrastructure for a set of tests on a given aggregate.

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.DomainCommands;
-using Akrual.DDD.Utils.Domain.DomainEvents;
+using Akrual.DDD.Utils.Domain.Exceptions;
+using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
+using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Xunit;
 
 namespace Akrual.DDD.Domain.Tests.Utils
@@ -16,38 +14,40 @@ namespace Akrual.DDD.Domain.Tests.Utils
     /// </summary>
     /// <typeparam name="TAggregate"></typeparam>
     /// <typeparam name="T"></typeparam>
-    class BaseAggregateRootTests<TAggregate, T>
+    public class BaseAggregateRootTests<TAggregate, T>
         where TAggregate : AggregateRoot<T>
     {
         private TAggregate sut;
 
-        protected void Test(IEnumerable<DomainEvent> given, Func<TAggregate, object> when, Action<object> then)
+        protected void Test(TAggregate initial, IEnumerable<IDomainEvent> given, Func<TAggregate, Func<IDomainEvent[]>> when, Action<Func<IDomainEvent[]>> then)
         {
+            sut = initial;
             then(when(ApplyEvents(sut, given)));
         }
 
-        protected IEnumerable<DomainEvent> Given(params DomainEvent[] events)
+        protected IEnumerable<IDomainEvent> Given(params IDomainEvent[] events)
         {
             return events;
         }
 
-        protected Func<TAggregate, DomainEvent[]> When<TCommand>(TCommand command)
+        protected Func<TAggregate, Func<IDomainEvent[]>> When<TCommand>(TCommand command)
             where TCommand : IDomainCommand
         {
-            return agg => DispatchCommand(command).Cast<DomainEvent>().ToArray();
+            return agg => (() => DispatchCommand(command).Cast<IDomainEvent>().ToArray());
         }
 
-        protected Action<object> Then(params object[] expectedEvents)
+        protected Action<Func<IDomainEvent[]>> Then(params IDomainEvent[] expectedEvents)
         {
             return got =>
             {
-                var gotEvents = got as object[];
-                if (gotEvents != null)
+                var gotEventsFunc = got;
+                try
                 {
+                    var gotEvents = gotEventsFunc();
                     if (gotEvents.Length == expectedEvents.Length)
                         for (var i = 0; i < gotEvents.Length; i++)
                             if (gotEvents[i].GetType() == expectedEvents[i].GetType())
-                                Assert.Equal(Serialize(expectedEvents[i]), Serialize(gotEvents[i]));
+                                Assert.Equal(expectedEvents[i], gotEvents[i]);
                             else
                                 Assert.True(false, string.Format(
                                     "Incorrect event in results; expected a {0} but got a {1}",
@@ -59,15 +59,18 @@ namespace Akrual.DDD.Domain.Tests.Utils
                         Assert.True(false, string.Format("Unexpected event(s) emitted: {0}",
                             string.Join(", ", EventDiff(gotEvents, expectedEvents))));
                 }
-                else if (got is CommandHandlerNotDefiendException)
-                    Assert.True(false, (got as Exception).Message);
-                else
-                    Assert.True(false, string.Format("Expected events, but got exception {0}",
-                        got.GetType().Name));
+                catch (Exception e)
+                {
+                    if (e is CommandHandlerNotDefiendException)
+                        Assert.True(false, (e as Exception).Message);
+                    else
+                        Assert.True(false, string.Format("Expected events, but got exception {0}",
+                            e.GetType().Name));
+                }
             };
         }
 
-        private string[] EventDiff(object[] a, object[] b)
+        private string[] EventDiff(IDomainEvent[] a, IDomainEvent[] b)
         {
             var diff = a.Select(e => e.GetType().Name).ToList();
             foreach (var remove in b.Select(e => e.GetType().Name))
@@ -75,28 +78,41 @@ namespace Akrual.DDD.Domain.Tests.Utils
             return diff.ToArray();
         }
 
-        protected Action<object> ThenFailWith<TException>()
+        protected Action<Func<IDomainEvent[]>> ThenFailWith<TException>()
+            where TException : DomainException
         {
             return got =>
             {
-                if (got is TException)
-                    Assert.True(true); // Got correct exception type
-                else if (got is CommandHandlerNotDefiendException)
-                    Assert.True(false,(got as Exception).Message);
-                else if (got is Exception)
-                    Assert.True(false,string.Format(
-                        "Expected exception {0}, but got exception {1}",
-                        typeof(TException).Name, got.GetType().Name));
-                else
-                    Assert.True(false,string.Format(
+                var gotEventsFunc = got;
+                try
+                {
+                    var gotEvents = gotEventsFunc();
+                    Assert.True(false, string.Format(
                         "Expected exception {0}, but got event result",
                         typeof(TException).Name));
+                }
+                catch (Exception e)
+                {
+                    if (e is TException)
+                        Assert.True(true); // Got correct exception type
+                    else if (e is CommandHandlerNotDefiendException)
+                        Assert.True(false, (e as Exception).Message);
+                    else
+                        Assert.True(false, string.Format(
+                            "Expected exception {0}, but got exception {1}",
+                            typeof(TException).Name, e.GetType().Name));
+                }
             };
         }
 
-        private IEnumerable<DomainEvent> DispatchCommand<TCommand>(TCommand c)
+        private IEnumerable<IDomainEvent> DispatchCommand<TCommand>(TCommand c)
             where TCommand : IDomainCommand
         {
+            if (c != null)
+            {
+                
+            }
+
             var handler = sut as IHandleDomainCommand<TCommand>;
             if (handler == null)
                 throw new CommandHandlerNotDefiendException(string.Format(
@@ -105,19 +121,11 @@ namespace Akrual.DDD.Domain.Tests.Utils
             return handler.Handle(null,c);
         }
 
-        private TAggregate ApplyEvents(TAggregate agg, IEnumerable<DomainEvent> events)
+        private TAggregate ApplyEvents(TAggregate agg, IEnumerable<IDomainEvent> events)
         {
-            agg.ApplyEvent(events);
+            if(events != null && events.Any())
+                agg.ApplyEvents(events);
             return agg;
-        }
-
-        private string Serialize(object obj)
-        {
-            var ser = new XmlSerializer(obj.GetType());
-            var ms = new MemoryStream();
-            ser.Serialize(ms, obj);
-            ms.Seek(0, SeekOrigin.Begin);
-            return new StreamReader(ms).ReadToEnd();
         }
 
         private class CommandHandlerNotDefiendException : Exception

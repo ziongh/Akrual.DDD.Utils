@@ -2,25 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Akrual.DDD.Utils.Domain.DomainEvents;
 using Akrual.DDD.Utils.Domain.Entities;
+using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
 using Akrual.DDD.Utils.Internal.Extensions;
 using Akrual.DDD.Utils.Internal.Logging;
+using Akrual.DDD.Utils.Internal.UsefulClasses;
 
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
     /// <summary>
     ///     Base class for implementing aggregate root domain objects.
     ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
-    ///     <remarks><c>So add properties as internal only!</c></remarks>
+    ///     <remarks><c>So add properties as private or maximum internal only!</c></remarks>
     /// </summary>
     public abstract class AggregateRoot<T> : Entity<T>
     {
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly ConcurrentList<DomainEvent> eventStream;
+        private readonly ConcurrentList<IDomainEvent> eventStream;
+
+        /// <summary>
+        /// The number of events loaded into this aggregate.
+        /// </summary>
+        public Counter EventsLoaded { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
@@ -31,7 +37,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// <param name="id">Aggregate root instance id.</param>
         protected AggregateRoot(Guid id) : base(id,null)
         {
-            eventStream = new ConcurrentList<DomainEvent>();
+            eventStream = new ConcurrentList<IDomainEvent>();
+            EventsLoaded = new Counter();
         }
    
         /// <summary>
@@ -44,29 +51,52 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         }
 
         /// <summary>
-        /// Applies a new domain event to the aggregate root instance.
+        /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
-        /// <param name="domainEvents">The new domain event to apply.</param>
-        public void ApplyEvent(params DomainEvent[] domainEvents)
+        /// <param name="domainEvents"></param>
+        public void ApplyEvents(IEnumerable<IDomainEvent> domainEvents)
         {
             domainEvents.EnsuresNotNullOrEmpty();
-            foreach (var domainEvent in domainEvents)
+            foreach (var e in domainEvents)
             {
-                eventStream.Add(domainEvent);
+                eventStream.Add(e);
+                GetType().GetMethod("ApplyOneEvent")
+                    .MakeGenericMethod(e.GetType())
+                    .Invoke(this, new object[] {e});
             }
         }
 
         /// <summary>
-        /// Applies a new domain event to the aggregate root instance.
+        /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
-        /// <param name="domainEvents">The new domain event to apply.</param>
-        public void ApplyEvent(IEnumerable<DomainEvent> domainEvents)
+        /// <param name="domainEvents"></param>
+        public void ApplyEvents(IDomainEvent[] domainEvents)
         {
             domainEvents.EnsuresNotNullOrEmpty();
-            foreach (var domainEvent in domainEvents)
+            foreach (var e in domainEvents)
             {
-                eventStream.Add(domainEvent);
+                eventStream.Add(e);
+                GetType().GetMethod("ApplyOneEvent")
+                    .MakeGenericMethod(e.GetType())
+                    .Invoke(this, new object[] { e });
             }
+        }
+
+        /// <summary>
+        /// Applies a single event to the aggregate.
+        /// </summary>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="ev"></param>
+        public void ApplyOneEvent<TEvent>(TEvent ev)
+            where TEvent : IDomainEvent
+        {
+            var applier = this as IApplyDomainEvent<TEvent>;
+            if (applier == null)
+                throw new InvalidOperationException(string.Format(
+                    "Aggregate {0} does not know how to apply event {1}",
+                    GetType().Name, ev.GetType().Name));
+            applier.Apply(ev);
+            EventsLoaded.NextValue();
         }
     }
 }

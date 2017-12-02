@@ -8,7 +8,12 @@
             <summary>
                 Base class for implementing aggregate root domain objects.
                 <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
-                <remarks><c>So add properties as internal only!</c></remarks>
+                <remarks><c>So add properties as private or maximum internal only!</c></remarks>
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.EventsLoaded">
+            <summary>
+            The number of events loaded into this aggregate.
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
@@ -26,121 +31,24 @@
             </summary>
             <returns>A collection of domain events.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvent(Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent[])">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvents(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent})">
             <summary>
-            Applies a new domain event to the aggregate root instance.
+            Enuerates the supplied events and applies them in order to the aggregate.
             </summary>
-            <param name="domainEvent">The new domain event to apply.</param>
+            <param name="domainEvents"></param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvent(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent})">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyEvents(Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent[])">
             <summary>
-            Applies a new domain event to the aggregate root instance.
+            Enuerates the supplied events and applies them in order to the aggregate.
             </summary>
-            <param name="domainEvent">The new domain event to apply.</param>
+            <param name="domainEvents"></param>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyOneEvent``1(``0)">
             <summary>
-            Base class for implementing domain events that represent changes in a domain entity.
+            Applies a single event to the aggregate.
             </summary>
-        </member>
-        <member name="P:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.EntityId">
-            <summary>
-            Gets the entity id.
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.#ctor(System.Guid,System.Int64)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand"/> class.
-            </summary>
-            <param name="entityId">Entity instance id.</param>
-            <param name="entityVersion">Entity instance version.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand.#ctor(System.Guid)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainCommands.DomainCommand"/> class.
-            </summary>
-            <param name="entityId">Entity instance id.</param>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext">
-            <summary>Represents a command context for aggregate command handler handling command.
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.Add``2(``0)">
-            <summary>Add a new aggregate into the current command context.
-            </summary>
-            <param name="aggregateRoot"></param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.Get``2(System.Object,System.Boolean)">
-            <summary>Get an aggregate from the current command context.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="id"></param>
-            <param name="firstFromCache"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.SetResult(System.String)">
-            <summary>Set the command handle result.
-            </summary>
-            <param name="result"></param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext.GetResult">
-            <summary>Get the command handle result.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.IDomainCommand">
-            <summary>
-            Domain event that represents changes in a domain entity.
-            </summary>
-        </member>
-        <member name="P:Akrual.DDD.Utils.Domain.DomainCommands.IDomainCommand.EntityId">
-            <summary>
-            Gets the entity id.
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainCommands.IHandleDomainCommand`1">
-            <summary>Represents generic command handler.
-            </summary>
-            <typeparam name="TCommand"></typeparam>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainCommands.IHandleDomainCommand`1.Handle(Akrual.DDD.Utils.Domain.DomainCommands.ICommandContext,`0)">
-            <summary>Handle the given aggregate command.
-            </summary>
-            <param name="context"></param>
-            <param name="command"></param>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent">
-            <summary>
-            Base class for implementing domain events that represent changes in a domain entity.
-            </summary>
-        </member>
-        <member name="P:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent.EntityId">
-            <summary>
-            Gets the entity id.
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent.#ctor(System.Guid,System.Int64)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent"/> class.
-            </summary>
-            <param name="entityId">Entity instance id.</param>
-            <param name="entityVersion">Entity instance version.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent.#ctor(System.Guid)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.DomainEvents.DomainEvent"/> class.
-            </summary>
-            <param name="entityId">Entity instance id.</param>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.DomainEvents.IDomainEvent">
-            <summary>
-            Domain event that represents changes in a domain entity.
-            </summary>
-        </member>
-        <member name="P:Akrual.DDD.Utils.Domain.DomainEvents.IDomainEvent.EntityId">
-            <summary>
-            Gets the entity id.
-            </summary>
+            <typeparam name="TEvent"></typeparam>
+            <param name="ev"></param>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Entities.BaseDomainStatus">
             <summary>
@@ -173,6 +81,11 @@
             It should never be possible to Create an Entity without and ID and an Owner.
             </summary>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Exceptions.DomainException">
+            <summary>
+            Base Exception for exceptions related with Domain
+            </summary>
+        </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance">
             <summary>
                 Creates the default Aggregate. It should be already filled with the UUID.
@@ -184,6 +97,123 @@
             Creates the Aggregate with all the invariants Checked
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand">
+            <summary>
+            Base class for implementing domain events that represent changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.AggregateRootId">
+            <summary>
+            Gets the Aggregate Root id.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand"/> class.
+            </summary>
+            <param name="aggregateRootId">Aggregate Root id.</param>
+            <param name="entityVersion">Entity instance version.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand"/> class.
+            </summary>
+            <param name="aggregateRootId">Aggregate Root instance id.</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext">
+            <summary>Represents a command context for aggregate command handler handling command.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext.Add``2(``0)">
+            <summary>Add a new aggregate into the current command context.
+            </summary>
+            <param name="aggregateRoot"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext.Get``2(System.Object,System.Boolean)">
+            <summary>Get an aggregate from the current command context.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <param name="firstFromCache"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext.SetResult(System.String)">
+            <summary>Set the command handle result.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext.GetResult">
+            <summary>Get the command handle result.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand">
+            <summary>
+            Domain event that represents changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand.AggregateRootId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IHandleDomainCommand`1">
+            <summary>Represents generic command handler.
+            </summary>
+            <typeparam name="TCommand"></typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IHandleDomainCommand`1.Handle(Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext,`0)">
+            <summary>Handle the given aggregate command.
+            </summary>
+            <param name="context"></param>
+            <param name="command"></param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent">
+            <summary>
+            Base class for implementing domain events that represent changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.AggregateRootId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="aggregateRootId">Entity instance id.</param>
+            <param name="entityVersion">Entity instance version.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="aggregateRootId">Entity instance id.</param>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IApplyDomainEvent`1">
+            <summary>
+            Implemented by an aggregate once for each event type it can apply.
+            </summary>
+            <typeparam name="TEvent"></typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent">
+            <summary>
+            Domain event that represents changes in a domain entity.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent.AggregateRootId">
+            <summary>
+            Gets the entity id.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.IMessaging">
+            <summary>
+            Messages (and not objects, objects are data + behavior).
+            In some respects much like DTOs, they communicate data 
+            about an event and they themselves encapsulate no behavior
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2">
             <summary>

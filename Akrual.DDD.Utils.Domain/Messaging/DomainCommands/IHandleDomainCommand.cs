@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Akrual.DDD.Utils.Domain.DomainEvents;
+﻿using System.Collections.Generic;
+using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
-namespace Akrual.DDD.Utils.Domain.DomainCommands
+namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
 {
     /// <summary>Represents generic command handler.
     /// </summary>
@@ -14,6 +12,6 @@ namespace Akrual.DDD.Utils.Domain.DomainCommands
         /// </summary>
         /// <param name="context"></param>
         /// <param name="command"></param>
-        IEnumerable<DomainEvent> Handle(ICommandContext context, TCommand command);
+        IEnumerable<IDomainEvent> Handle(ICommandContext context, TCommand command);
     }
 }

@@ -11,6 +11,7 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Akrual.DDD.Domain.Tests.Utils\Akrual.DDD.Domain.Tests.Utils.csproj" />
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />
   </ItemGroup>
 

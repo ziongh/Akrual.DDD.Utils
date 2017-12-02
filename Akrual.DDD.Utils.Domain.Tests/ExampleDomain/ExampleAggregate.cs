@@ -1,7 +1,5 @@
 ﻿using System;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.DomainCommands;
-using Akrual.DDD.Utils.Domain.DomainEvents;
 using Akrual.DDD.Utils.Internal.Contracts;
 using Akrual.DDD.Utils.Internal.Extensions;
 
