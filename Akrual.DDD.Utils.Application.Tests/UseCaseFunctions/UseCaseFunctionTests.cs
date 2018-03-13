@@ -29,7 +29,7 @@ namespace Akrual.DDD.Utils.Application.Tests.UseCaseFunctions
 
         }
 
-        protected internal class ExampleUseCaseFunction : BaseUseCaseFunction<ExampleInputModel, ExampleOutputModel>
+        private class ExampleUseCaseFunction : BaseUseCaseFunction<ExampleInputModel, ExampleOutputModel>
         {
             protected override AbstractValidator<ExampleInputModel> PreConditionEvaluator { get; }
             protected override AbstractValidator<ExampleOutputModel> PostConditionEvaluator { get; }

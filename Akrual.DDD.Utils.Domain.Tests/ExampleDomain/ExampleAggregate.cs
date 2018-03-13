@@ -20,7 +20,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
 
         public void FixName(string newName)
         {
-            CommonContract.EnsuresNotNull(newName);
             Name = newName;
         }
     }

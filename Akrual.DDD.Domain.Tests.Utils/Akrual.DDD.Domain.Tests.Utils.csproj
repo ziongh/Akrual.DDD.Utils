@@ -1,5 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageTitle>Akrual.DDD.Domain.Tests.Utils</PackageTitle>
     <Title>Akrual.DDD.Domain.Tests.Utils</Title>
@@ -21,23 +20,19 @@
     <AssemblyName>Akrual.DDD.Domain.Tests.Utils</AssemblyName>
     <RootNamespace>Akrual.DDD.Domain.Tests.Utils</RootNamespace>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Akrual.DDD.Domain.Tests.Utils.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>Akrual.DDD.Domain.Tests.Utils.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.2.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />
     <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
   </ItemGroup>
-
 </Project>

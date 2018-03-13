@@ -17,7 +17,7 @@ namespace Akrual.DDD.Utils.Internal.Tests.Logging
         {
             var mockTarget = new MockLogTarget();
             ConfigureNLogConsole(mockTarget);
-
+            LogProvider.SetCurrentLogProvider(null);
             var logger = LogProvider.GetCurrentClassLogger();
 
             logger.Debug("Debug message");

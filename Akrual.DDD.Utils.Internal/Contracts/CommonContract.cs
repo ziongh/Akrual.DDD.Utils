@@ -12,7 +12,7 @@ namespace Akrual.DDD.Utils.Internal.Contracts
     /// </summary>
     public static class CommonContract
     {
-        public static void Ensures<T>(this T attemptedValue, Func<T, bool> condition, string message = "", ContractException ex = null)
+        public static void Ensures<T>(this T attemptedValue, Func<T, bool> condition, string message = null, ContractException ex = null)
         {
             condition.EnsuresNotNull();
             var conditionSatisfied = condition.Invoke(attemptedValue);
@@ -26,7 +26,7 @@ namespace Akrual.DDD.Utils.Internal.Contracts
             }
         }
 
-        public static void EnsuresNotNull<T>(this T attemptedValue, string message = "", ContractException ex = null)
+        public static void EnsuresNotNull<T>(this T attemptedValue, string message = null, ContractException ex = null)
         {
             var conditionSatisfied = attemptedValue != null;
             if (!conditionSatisfied)
