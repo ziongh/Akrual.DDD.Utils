@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageTitle>Akrual.DDD.Utils.Internal</PackageTitle>
+    <Title>Akrual.DDD.Utils.Internal</Title>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>Akrual.DDD.Utils.WebApi</PackageId>
+    <PackageVersion>0.0.2</PackageVersion>
+    <Authors>Rodrigo Leal</Authors>
+    <Description>Useful Classes yo use in the presentation layer Web API</Description>
+    <Summary>Useful Classes yo use in the presentation Layer Web API. Configurations, logging, authentication and more</Summary>
+    <PackageSummary>Useful Classes yo use in the presentation Layer Web API. Configurations, logging, authentication and more</PackageSummary>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ziongh/Akrual.DDD.Utils/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ziongh/Akrual.DDD.Utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ziongh/Akrual.DDD.Utils</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) Akrual Solutions Ltda. All rights reserved.</Copyright>
+    <PackageTags>ddd webapi mvc</PackageTags>
+    <Company>Akrual Solutions</Company>
+    <AssemblyName>Akrual.DDD.Utils.WebApi</AssemblyName>
+    <RootNamespace>Akrual.DDD.Utils.WebApi</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Routing, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>C:\Users\Avell 1513\.nuget\packages\microsoft.aspnetcore.routing\1.1.1\lib\netstandard1.3\Microsoft.AspNetCore.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>C:\Users\Avell 1513\.nuget\packages\microsoft.aspnetcore.routing.abstractions\1.1.1\lib\netstandard1.3\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>C:\Users\Avell 1513\.nuget\packages\microsoft.extensions.configuration.abstractions\1.1.1\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c">
+      <HintPath>C:\Users\Avell 1513\.nuget\packages\nlog\4.5.0-rc01\lib\netstandard2.0\NLog.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.0.1" />
+    <PackageReference Include="Sendgrid" Version="9.9.0" />
+    <PackageReference Include="System.Configuration.Abstractions" Version="2.0.2.37" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
+  </ItemGroup>
+</Project>

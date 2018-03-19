@@ -1,6 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageTitle>Akrual.DDD.Utils.Internal</PackageTitle>
+    <Title>Akrual.DDD.Utils.Internal</Title>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Akrual.DDD.Utils.Internal</PackageId>
+    <PackageVersion>1.0.2</PackageVersion>
+    <Authors>Rodrigo Leal</Authors>
+    <Description>Useful Classes yo use everywhere</Description>
+    <Summary>Useful Classes yo use everywhere. Helpers, Extensions and more.</Summary>
+    <PackageSummary>Useful Classes yo use everywhere. Helpers, Extensions and more.</PackageSummary>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ziongh/Akrual.DDD.Utils/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ziongh/Akrual.DDD.Utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ziongh/Akrual.DDD.Utils</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) Akrual Solutions Ltda. All rights reserved.</Copyright>
+    <PackageTags>ddd helpers extensions utils</PackageTags>
+    <Company>Akrual Solutions</Company>
+    <AssemblyName>Akrual.DDD.Utils.Internal</AssemblyName>
+    <RootNamespace>Akrual.DDD.Utils.Internal</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
