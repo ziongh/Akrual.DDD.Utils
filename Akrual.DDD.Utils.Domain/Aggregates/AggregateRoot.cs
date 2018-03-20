@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
@@ -84,18 +86,20 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
 
         /// <summary>
         /// Applies a single event to the aggregate.
+        /// <remarks>Normally thuis method should not be used. Because, the Aggregate
+        /// when implementing one IApplyDomainEvent, will be automatically callede when an event is published.</remarks>
         /// </summary>
         /// <typeparam name="TEvent"></typeparam>
         /// <param name="ev"></param>
-        public void ApplyOneEvent<TEvent>(TEvent ev)
+        public async Task ApplyOneEvent<TEvent>(TEvent ev)
             where TEvent : IDomainEvent
         {
-            var applier = this as IApplyDomainEvent<TEvent>;
+            var applier = this as IHandleDomainEvent<TEvent>;
             if (applier == null)
                 throw new InvalidOperationException(string.Format(
                     "Aggregate {0} does not know how to apply event {1}",
                     GetType().Name, ev.GetType().Name));
-            applier.Apply(ev);
+            await applier.Handle(ev, CancellationToken.None);
             EventsLoaded.NextValue();
         }
     }

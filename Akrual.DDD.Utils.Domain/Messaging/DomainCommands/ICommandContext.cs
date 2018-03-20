@@ -9,14 +9,16 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
         /// <summary>Add a new aggregate into the current command context.
         /// </summary>
         /// <param name="aggregateRoot"></param>
-        void Add<T,Tinside>(T aggregateRoot) where T : AggregateRoot<Tinside>;
+        void Add<T,TInside>(T aggregateRoot) where T : AggregateRoot<TInside>;
+
         /// <summary>Get an aggregate from the current command context.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TInside"></typeparam>
         /// <param name="id"></param>
         /// <param name="firstFromCache"></param>
         /// <returns></returns>
-        T Get<T, Tinside>(object id, bool firstFromCache = true) where T : AggregateRoot<Tinside>;
+        T Get<T, TInside>(object id, bool firstFromCache = true) where T : AggregateRoot<TInside>;
         /// <summary>Set the command handle result.
         /// </summary>
         /// <param name="result"></param>

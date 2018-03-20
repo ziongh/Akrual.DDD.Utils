@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
 {
     /// <summary>
-    /// Base class for implementing domain events that represent changes in a domain entity.
+    /// Base class for implementing domain Commands that represent the will for something to happen.
+    /// It by default expect the handler to return an IEnumerable&lt;DomainEvent&gt;
     /// </summary>
-    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand
+    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand<IEnumerable<DomainEvent>>
     {
         /// <summary>
         /// Gets the Aggregate Root id.

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
@@ -31,9 +33,20 @@ namespace Akrual.DDD.Domain.Tests.Utils
         }
 
         protected Func<TAggregate, Func<IDomainEvent[]>> When<TCommand>(TCommand command)
-            where TCommand : IDomainCommand
+            where TCommand : IDomainCommand<IEnumerable<DomainEvent>>
         {
-            return agg => (() => DispatchCommand(command).Cast<IDomainEvent>().ToArray());
+            return agg => (() =>
+            {
+                try
+                {
+                    var result = DispatchCommand(command).Result;
+                    return result.Cast<IDomainEvent>().ToArray();
+                }
+                catch (AggregateException e)
+                {
+                    throw e.InnerExceptions.FirstOrDefault();
+                }
+            });
         }
 
         protected Action<Func<IDomainEvent[]>> Then(params IDomainEvent[] expectedEvents)
@@ -93,38 +106,45 @@ namespace Akrual.DDD.Domain.Tests.Utils
                 }
                 catch (Exception e)
                 {
-                    if (e is TException)
+                    var temp = e;
+                    if (temp is TException)
                         Assert.True(true); // Got correct exception type
-                    else if (e is CommandHandlerNotDefiendException)
-                        Assert.True(false, (e as Exception).Message);
+                    else if (temp is CommandHandlerNotDefiendException)
+                        Assert.True(false, (temp as Exception).Message);
                     else
                         Assert.True(false, string.Format(
                             "Expected exception {0}, but got exception {1}",
-                            typeof(TException).Name, e.GetType().Name));
+                            typeof(TException).Name, temp.GetType().Name));
                 }
             };
         }
 
-        private IEnumerable<IDomainEvent> DispatchCommand<TCommand>(TCommand c)
-            where TCommand : IDomainCommand
+        private async Task<IEnumerable<IDomainEvent>> DispatchCommand<TCommand>(TCommand c)
+            where TCommand : IDomainCommand<IEnumerable<DomainEvent>>
         {
             if (c != null)
             {
-                
+                var handler = sut as IHandleDomainCommand<TCommand>;
+                if (handler == null)
+                    throw new CommandHandlerNotDefiendException(string.Format(
+                        "Aggregate {0} does not yet handle command {1}",
+                        sut.GetType().Name, c.GetType().Name));
+                return await handler.Handle(c,CancellationToken.None);
             }
-
-            var handler = sut as IHandleDomainCommand<TCommand>;
-            if (handler == null)
-                throw new CommandHandlerNotDefiendException(string.Format(
-                    "Aggregate {0} does not yet handle command {1}",
-                    sut.GetType().Name, c.GetType().Name));
-            return handler.Handle(null,c);
+            throw new ArgumentNullException(nameof(c));
         }
 
         private TAggregate ApplyEvents(TAggregate agg, IEnumerable<IDomainEvent> events)
         {
-            if(events != null && events.Any())
-                agg.ApplyEvents(events);
+            if (events != null)
+            {
+                var eventsList = events.ToList();
+                if (eventsList.Any())
+                {
+                    agg.ApplyEvents(eventsList);
+                }
+            }
+
             return agg;
         }
 

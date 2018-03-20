@@ -1,5 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageTitle>Akrual.DDD.Utils.Domain</PackageTitle>
     <Title>Akrual.DDD.Utils.Domain</Title>
@@ -21,21 +20,17 @@
     <AssemblyName>Akrual.DDD.Utils.Domain</AssemblyName>
     <RootNamespace>Akrual.DDD.Utils.Domain</RootNamespace>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Akrual.DDD.Utils.Domain.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>Akrual.DDD.Utils.Domain.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.2.1" />
+    <PackageReference Include="MediatR" Version="4.1.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
   </ItemGroup>
-
 </Project>

@@ -1,11 +1,12 @@
 ﻿using System;
+using MediatR;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
 {
     /// <summary>
-    /// Domain event that represents changes in a domain entity.
+    /// Domain Command that represents the will for something to happen
     /// </summary>
-    public interface IDomainCommand : IMessaging
+    public interface IDomainCommand<out TResponse> : IMessaging, IRequest<TResponse>
     {
         /// <summary>
         /// Gets the entity id.

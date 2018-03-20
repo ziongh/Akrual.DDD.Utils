@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Akrual.DDD.Domain.Tests.Utils;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Exceptions;
@@ -103,7 +105,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
     public class TabAggregate : 
         AggregateRoot<TabAggregate>, 
         IHandleDomainCommand<OpenTab>,
-        IApplyDomainEvent<TabOpened>
+        IHandleDomainEvent<TabOpened>
     {
         public int TableNumber { get; private set; }
         public string Waiter { get; private set; }
@@ -114,14 +116,19 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             Opened = false;
         }
 
-        public IEnumerable<IDomainEvent> Handle(ICommandContext context, OpenTab command)
+        public async Task<IEnumerable<IDomainEvent>> Handle(OpenTab command, CancellationToken cancellationToken)
         {
             if (Opened)
                 throw new TabOpenedTwiceException();
-            yield return new TabOpened(command.AggregateRootId){ TableNumber = command.TableNumber, Waiter = command.Waiter};
+
+            var listOfEvents = new List<IDomainEvent>
+            {
+                new TabOpened(command.AggregateRootId) {TableNumber = command.TableNumber, Waiter = command.Waiter}
+            };
+            return listOfEvents;
         }
 
-        public void Apply(TabOpened e)
+        public async Task Handle(TabOpened notification, CancellationToken cancellationToken)
         {
             Opened = true;
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Akrual.DDD.Utils.Domain.Messaging
+﻿namespace Akrual.DDD.Utils.Domain.Messaging
 {
     /// <summary>
     /// Messages (and not objects, objects are data + behavior).

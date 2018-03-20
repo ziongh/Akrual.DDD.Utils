@@ -681,14 +681,14 @@ namespace Akrual.DDD.Utils.Internal.Extensions
 			var collection2 = string2.Split(' ');
 			var wordCounterString2 = collection2.Length;
 
-			var ignoredWordsFromString1 = collection1.Intersect(ignoredWords);
+			var ignoredWordsFromString1 = collection1.Intersect(ignoredWords).ToList();
 
 			string processedstring1 = string1;
 			string processedstring2 = string2;
 
 			if (ignoredWordsFromString1.Any())
 			{
-				var ignoredWordsFromString2 = collection2.Intersect(ignoredWordsFromString1);
+				var ignoredWordsFromString2 = collection2.Intersect(ignoredWordsFromString1).ToList();
 
 				if (ignoredWordsFromString2.Count() == ignoredWordsFromString1.Count())
 				{
@@ -704,7 +704,7 @@ namespace Akrual.DDD.Utils.Internal.Extensions
 				}
 			}
 
-			float distance = DamerauLevenshteinDistance(processedstring1, processedstring2) / ((wordCounterString1 + wordCounterString2) / 2);
+			double distance = DamerauLevenshteinDistance(processedstring1, processedstring2) / ((wordCounterString1 + wordCounterString2) / 2.0);
 
 			return distance <= closing ? true : false;
 		}
