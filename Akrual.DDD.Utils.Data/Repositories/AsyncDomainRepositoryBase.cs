@@ -17,6 +17,7 @@ namespace Akrual.DDD.Utils.Data.Repositories
     /// <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
     public abstract class AsyncDomainRepositoryBase<TAggregate,T> : IAsyncDomainRepository<TAggregate,T>
         where TAggregate : AggregateRoot<T>
+        where T : new()
     {
         protected readonly DBContextOfAggregate _dbContext;
         /// <summary>

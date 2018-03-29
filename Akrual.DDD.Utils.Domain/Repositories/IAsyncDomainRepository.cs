@@ -11,7 +11,9 @@ namespace Akrual.DDD.Utils.Domain.Repositories
     /// </summary>
     /// <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
     /// <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
-    public interface IAsyncDomainRepository<TAggregate,T> where TAggregate : AggregateRoot<T>
+    public interface IAsyncDomainRepository<TAggregate,T> 
+        where TAggregate : AggregateRoot<T> 
+        where T : new()
     {
         /// <summary>
         /// Asynchronously finds an aggregate root instance from the repository using its id.

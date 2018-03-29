@@ -10,6 +10,8 @@ namespace Akrual.DDD.Utils.Domain.Entities
     /// <typeparam name="T">Domain type to be 'turned' into a Entity Type.</typeparam>
     public abstract class Entity<T> : IEntity
     {
+        public Guid Id { get; protected set; }
+
         /// <exception cref="ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
         public bool IsValid => throw new ShouldNeverCallIsValidOnTheEntityException();
 
@@ -28,7 +30,8 @@ namespace Akrual.DDD.Utils.Domain.Entities
         {
             if (id == default(Guid))
             {
-                throw new ArgumentException("Id must be defined.", "id");
+                // If the Id is empty, the entity is probably being created for the first time.
+                //throw new ArgumentException("Id must be defined.", "id");
             }
 
             Id = id;
@@ -41,7 +44,6 @@ namespace Akrual.DDD.Utils.Domain.Entities
         {
         }
 
-        public Guid Id { get; protected set; }
 
         public override bool Equals(object obj)
         {

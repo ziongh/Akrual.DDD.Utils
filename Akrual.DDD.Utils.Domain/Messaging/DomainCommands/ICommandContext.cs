@@ -2,14 +2,15 @@
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
 {
-    /// <summary>Represents a command context for aggregate command handler handling command.
+    /// <summary>
+    /// Represents a command context for aggregate command handler handling command.
     /// </summary>
     public interface ICommandContext
     {
         /// <summary>Add a new aggregate into the current command context.
         /// </summary>
         /// <param name="aggregateRoot"></param>
-        void Add<T,TInside>(T aggregateRoot) where T : AggregateRoot<TInside>;
+        void Add<T,TInside>(T aggregateRoot) where T : AggregateRoot<TInside> where TInside : new();
 
         /// <summary>Get an aggregate from the current command context.
         /// </summary>
@@ -18,7 +19,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
         /// <param name="id"></param>
         /// <param name="firstFromCache"></param>
         /// <returns></returns>
-        T Get<T, TInside>(object id, bool firstFromCache = true) where T : AggregateRoot<TInside>;
+        T Get<T, TInside>(object id, bool firstFromCache = true) where T : AggregateRoot<TInside> where TInside : new();
         /// <summary>Set the command handle result.
         /// </summary>
         /// <param name="result"></param>

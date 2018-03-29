@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
@@ -8,7 +9,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
     /// Base class for implementing domain Commands that represent the will for something to happen.
     /// It by default expect the handler to return an IEnumerable&lt;DomainEvent&gt;
     /// </summary>
-    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand<IEnumerable<DomainEvent>>
+    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand<IEnumerable<IDomainEvent>>
     {
         /// <summary>
         /// Gets the Aggregate Root id.

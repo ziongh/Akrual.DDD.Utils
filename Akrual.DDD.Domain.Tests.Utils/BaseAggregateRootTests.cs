@@ -18,6 +18,7 @@ namespace Akrual.DDD.Domain.Tests.Utils
     /// <typeparam name="T"></typeparam>
     public class BaseAggregateRootTests<TAggregate, T>
         where TAggregate : AggregateRoot<T>
+    where T : new()
     {
         private TAggregate sut;
 
@@ -33,14 +34,14 @@ namespace Akrual.DDD.Domain.Tests.Utils
         }
 
         protected Func<TAggregate, Func<IDomainEvent[]>> When<TCommand>(TCommand command)
-            where TCommand : IDomainCommand<IEnumerable<DomainEvent>>
+            where TCommand : IDomainCommand<IEnumerable<IDomainEvent>>
         {
             return agg => (() =>
             {
                 try
                 {
                     var result = DispatchCommand(command).Result;
-                    return result.Cast<IDomainEvent>().ToArray();
+                    return result.ToArray();
                 }
                 catch (AggregateException e)
                 {
@@ -120,7 +121,7 @@ namespace Akrual.DDD.Domain.Tests.Utils
         }
 
         private async Task<IEnumerable<IDomainEvent>> DispatchCommand<TCommand>(TCommand c)
-            where TCommand : IDomainCommand<IEnumerable<DomainEvent>>
+            where TCommand : IDomainCommand<IEnumerable<IDomainEvent>>
         {
             if (c != null)
             {

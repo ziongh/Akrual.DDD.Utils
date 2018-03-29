@@ -19,7 +19,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
     ///     <remarks><c>So add properties as private or maximum internal only!</c></remarks>
     /// </summary>
-    public abstract class AggregateRoot<T> : Entity<T>
+    public abstract class AggregateRoot<T> : Entity<T> where T : new()
     {
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
@@ -42,7 +42,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
             eventStream = new ConcurrentList<IDomainEvent>();
             EventsLoaded = new Counter();
         }
-   
+
+
         /// <summary>
         /// Gets all domain events that have been applied to the aggregate root instance.
         /// </summary>

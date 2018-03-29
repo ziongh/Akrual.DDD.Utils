@@ -5,10 +5,8 @@ using Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer;
 
 namespace Akrual.DDD.Utils.Domain.Messaging
 {
-    public abstract class BaseMessaging<T> : EquatableByValue<T>
+    public abstract class BaseMessaging<T> : EquatableByValue<T> where T : IMessaging
     {
-
-
         public override string ToString()
         {
             var sb = new StringBuilder();

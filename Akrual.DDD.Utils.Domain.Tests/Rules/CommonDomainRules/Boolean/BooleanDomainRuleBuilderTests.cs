@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 using Akrual.DDD.Utils.Internal;
 using Akrual.DDD.Utils.Internal.Tests;
 using Xunit;
@@ -63,13 +65,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 
 
         [Fact]
-        public void XOR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
+        public async Task XOR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
         {
             var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Xor(new NameIsNotEmptyRule());
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = exampleEntityFactory.Create(); // It has name
+            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // It has name
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -77,14 +79,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
         }
 
         [Fact]
-        public void XOR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
+        public async Task XOR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
         {
             var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Xor(new NameIsNotEmptyRule());
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
-            var entity = exampleEntityFactory.Create(); // name is null
+            exampleEntityFactory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
+            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -92,13 +94,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
         }
 
         [Fact]
-        public void OR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
+        public async Task OR_DefaultBuilderWithNameRulePassingNonEmptyName_ReturnsTrue()
         {
             var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Or(new NameIsNotEmptyRule());
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = exampleEntityFactory.Create(); // It has name
+            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // It has name
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -106,14 +108,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
         }
 
         [Fact]
-        public void OR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
+        public async Task OR_DefaultBuilderWithNameRulePassingEmptyName_ReturnsFalse()
         {
             var ruleContructor = new BooleanDomainRuleBuilder<ExampleAggregate>().Or(new NameIsNotEmptyRule());
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            exampleEntityFactory.OnAggregateCreation += (sender, context) => context.ObjectBeingCreated.FixName(null);
-            var entity = exampleEntityFactory.Create(); // name is null
+            exampleEntityFactory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
+            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 

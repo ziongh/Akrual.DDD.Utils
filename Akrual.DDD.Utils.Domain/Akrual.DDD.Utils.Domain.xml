@@ -88,13 +88,13 @@
             Base Exception for exceptions related with Domain
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance(System.Guid)">
             <summary>
                 Creates the default Aggregate. It should be already filled with the UUID.
                 <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.Create">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.Create(System.Guid)">
             <summary>
             Creates the Aggregate with all the invariants Checked
             </summary>
@@ -125,7 +125,8 @@
             <param name="aggregateRootId">Aggregate Root instance id.</param>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext">
-            <summary>Represents a command context for aggregate command handler handling command.
+            <summary>
+            Represents a command context for aggregate command handler handling command.
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandContext.Add``2(``0)">

@@ -5,9 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Domain.Tests.Utils;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain
@@ -102,6 +105,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         
     }
 
+
     public class TabAggregate : 
         AggregateRoot<TabAggregate>, 
         IHandleDomainCommand<OpenTab>,
@@ -116,16 +120,21 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             Opened = false;
         }
 
+        public TabAggregate() : base(Guid.Empty)
+        {
+        }
+
         public async Task<IEnumerable<IDomainEvent>> Handle(OpenTab command, CancellationToken cancellationToken)
         {
             if (Opened)
                 throw new TabOpenedTwiceException();
 
-            var listOfEvents = new List<IDomainEvent>
-            {
-                new TabOpened(command.AggregateRootId) {TableNumber = command.TableNumber, Waiter = command.Waiter}
-            };
-            return listOfEvents;
+            return GetEvents(command);
+        }
+
+        private IEnumerable<IDomainEvent> GetEvents(OpenTab command)
+        {
+            yield return new TabOpened(command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
         }
 
         public async Task Handle(TabOpened notification, CancellationToken cancellationToken)

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 using Akrual.DDD.Utils.Internal;
 using Akrual.DDD.Utils.Internal.Tests;
 using Xunit;
@@ -10,57 +12,64 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
     public class FactoryTests : BaseTests
     {
         [Fact]
-        public void Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
+        public async Task Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
         {
             var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = factory.Create();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            Assert.Equal("OneName", exampleAggregate.Name);
+            Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
+        }
+        
+        [Fact]
+        public async Task Create_FactoryWithDefaultFactorySettingName_NameShouldBeSet()
+        {
+            var factory = new DefaultFactory<ExampleAggregate>();
+            factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("OneName");
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
 
         [Fact]
-        public void Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
+        public async Task Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
         {
             var factory = new FactoryWithOnObjectCreating();
-            var exampleAggregate = factory.Create();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
 
         [Fact]
-        public void Create_FactoryWithOnObjectCreatingSettingNameTwice_NameShouldBeSetTwice()
+        public async Task Create_FactoryWithOnObjectCreatingSettingNameTwice_NameShouldBeSetTwice()
         {
             var factory = new FactoryWithOnObjectCreating();
-            factory.OnAggregateCreation += factory.SetNameToYetAnotherName;
-            var exampleAggregate = factory.Create();
+            factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("YetAnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
 
         [Fact]
-        public void Create_FactoryWithOnObjectCreatingSettingNameTwicethenDeleteOne_NameShouldBeSetOnce()
+        public async Task Create_FactoryWithOnObjectCreatingSettingNameTwicethenDeleteOne_NameShouldBeSetOnce()
         {
             var factory = new FactoryWithOnObjectCreating();
-            factory.OnAggregateCreation += factory.SetNameToYetAnotherName;
-            factory.OnAggregateCreation -= factory.SetNameToYetAnotherName;
-            var exampleAggregate = factory.Create();
+            factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
+            factory.OnAfterCreateDefaultInstance -= factory.SetNameToYetAnotherName;
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
 
     }
-
-
+    
 
     internal class FactoryWithOnObjectCreating : FactoryWithDefaultObjectCreation
     {
-        private Factory<ExampleAggregate, ExampleAggregate> _factoryImplementation;
-
-        public FactoryWithOnObjectCreating()
+        public FactoryWithOnObjectCreating() : base()
         {
-            OnAggregateCreation += SetNameToAnotherName;
+            OnAfterCreateDefaultInstance += this.SetNameToAnotherName;
         }
 
         private void SetNameToAnotherName(object sender, FactoryCreationExecutingContext<ExampleAggregate, ExampleAggregate> context)
