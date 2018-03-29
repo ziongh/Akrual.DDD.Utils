@@ -485,12 +485,7 @@
             <remarks>This type is not thread-safe (for hashcode updates).</remarks>
             <typeparam name="T">Type of the listed items.</typeparam>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1">
-            <summary>
-            A collection of weak references to objects.
-            </summary>
-            <typeparam name="T">The type of object to hold weak references to.</typeparam>
-        </member>
+        <!-- Badly formed XML comment ignored for member "T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1" -->
         <member name="F:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1._list">
             <summary>
             The actual collection of strongly-typed weak references.
