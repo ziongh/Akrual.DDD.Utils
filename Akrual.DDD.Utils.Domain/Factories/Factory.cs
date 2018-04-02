@@ -12,8 +12,7 @@ using Akrual.DDD.Utils.Domain.Utils.UUID;
 namespace Akrual.DDD.Utils.Domain.Factories
 {
     public abstract class Factory<TAggregate,T> 
-        where TAggregate : AggregateRoot<T>
-        where T : new()
+        where TAggregate : IAggregateRoot
     {
         private readonly List<EventHandler<FactoryCreationExecutingContext<TAggregate, T>>>
             _aggregateCreation;
@@ -36,7 +35,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
             }
         }
 
-        protected virtual void AggregateCreation(FactoryCreationExecutingContext<TAggregate, T> args)
+        public virtual void AggregateCreation(FactoryCreationExecutingContext<TAggregate, T> args)
         {
             lock (_aggregateCreation)
             {
@@ -56,7 +55,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
         ///     Creates the default Aggregate. It should be already filled with the UUID.
         ///     <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
         /// </summary>
-        protected abstract Task<TAggregate> CreateDefaultInstance(Guid guid);
+        public abstract Task<TAggregate> CreateDefaultInstance(Guid guid);
 
         /// <summary>
         /// Creates the Aggregate with all the invariants Checked
@@ -74,27 +73,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
 
             AggregateCreation(creationContext);
 
-
-
-
             return aggregate;
-        }
-    }
-
-
-    public class DefaultFactory<T>: Factory<T, T> where T : AggregateRoot<T>, new()
-    {
-        protected override async Task<T> CreateDefaultInstance(Guid guid)
-        {
-            T result =  Activator.CreateInstance<T>();
-            SetPrivatePropertyValue(result, "Id", guid);
-            return result;
-        }
-
-        public static void SetPrivatePropertyValue<T>(T obj, string propertyName, object newValue)
-        {
-            PropertyInfo property = typeof(T).GetProperty(propertyName);
-            property.GetSetMethod(true).Invoke(obj, new object[] { newValue });
         }
     }
 }

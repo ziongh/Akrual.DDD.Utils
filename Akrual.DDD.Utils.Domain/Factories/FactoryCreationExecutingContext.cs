@@ -6,8 +6,7 @@ using Akrual.DDD.Utils.Domain.Aggregates;
 namespace Akrual.DDD.Utils.Domain.Factories
 {
     public class FactoryCreationExecutingContext<TAggregate, T> 
-        where TAggregate : AggregateRoot<T>
-        where T : new()
+        where TAggregate : IAggregateRoot
     {
         public TAggregate ObjectBeingCreated { get; set; }
     }

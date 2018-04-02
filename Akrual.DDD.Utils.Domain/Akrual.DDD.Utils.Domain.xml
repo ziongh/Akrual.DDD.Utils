@@ -4,6 +4,38 @@
         <name>Akrual.DDD.Utils.Domain</name>
     </assembly>
     <members>
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.EventsLoaded">
+            <summary>
+            The number of events loaded into this aggregate.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.GetEventStream">
+            <summary>
+            Gets all domain events that have been applied to the aggregate root instance.
+            </summary>
+            <returns>A collection of domain events.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyEvents(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent})">
+            <summary>
+            Enuerates the supplied events and applies them in order to the aggregate.
+            </summary>
+            <param name="domainEvents"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyEvents(Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent[])">
+            <summary>
+            Enuerates the supplied events and applies them in order to the aggregate.
+            </summary>
+            <param name="domainEvents"></param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyOneEvent``1(``0)">
+            <summary>
+            Applies a single event to the aggregate.
+            <remarks>Normally thuis method should not be used. Because, the Aggregate
+            when implementing one IApplyDomainEvent, will be automatically callede when an event is published.</remarks>
+            </summary>
+            <typeparam name="TEvent"></typeparam>
+            <param name="ev"></param>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1">
             <summary>
                 Base class for implementing aggregate root domain objects.
@@ -88,6 +120,13 @@
             Base Exception for exceptions related with Domain
             </summary>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1">
+            <summary>
+            This class implements the IDefaultFactory Interface and the Factory Abstract class.
+            The behaviour: The Create method will call new() and then will set the Id Property to the given guid.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance(System.Guid)">
             <summary>
                 Creates the default Aggregate. It should be already filled with the UUID.
@@ -99,6 +138,23 @@
             Creates the Aggregate with all the invariants Checked
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1">
+            <summary>
+            This interface represents a default implementation of an Factory
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.Create(System.Guid)">
+            <summary>
+            Creates the Aggregate with all the invariants Checked
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher.ICommandDispatcher">
+            <summary>
+            Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand">
             <summary>
@@ -152,11 +208,6 @@
             <summary>Get the command handle result.
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.ICommandDispatcher`1">
-            <summary>
-            Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
-            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand`1">
             <summary>

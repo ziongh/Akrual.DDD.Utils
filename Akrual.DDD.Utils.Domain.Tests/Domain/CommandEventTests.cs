@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,94 +14,10 @@ using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
 using MediatR;
 using MediatR.Pipeline;
-using SimpleInjector;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain
 {
-
-
-
-    public class CommandEventTestsWithSimpleInjector : BaseAggregateRootTests<TabAggregate, TabAggregate>
-    {
-        [Fact]
-        public async Task CanOpenANewTab()
-        {
-            var container = new Container();
-
-            container.RegisterSingleton<IMediator, Mediator>();
-            
-            container.Register(typeof(IRequestHandler<,>), AppDomain.CurrentDomain.GetAssemblies());
-            container.Register(typeof(IRequestHandler<>), AppDomain.CurrentDomain.GetAssemblies());
-
-            
-            // we have to do this because by default, generic type definitions (such as the Constrained Notification Handler) won't be registered
-            var notificationHandlerTypes = container.GetTypesToRegister(typeof(INotificationHandler<>), AppDomain.CurrentDomain.GetAssemblies(), new TypesToRegisterOptions
-            {
-                IncludeGenericTypeDefinitions = true,
-                IncludeComposites = false,
-            });
-            container.RegisterCollection(typeof(INotificationHandler<>), notificationHandlerTypes);
-            
-            //Pipeline
-            container.RegisterCollection(typeof(IPipelineBehavior<,>), new []
-            {
-                typeof(RequestPreProcessorBehavior<,>),
-                typeof(RequestPostProcessorBehavior<,>),
-                typeof(GenericPipelineBehavior<,>)
-            });
-            
-            container.RegisterCollection(typeof(IRequestPreProcessor<>), new [] { typeof(GenericRequestPreProcessor<>) });
-            container.RegisterCollection(typeof(IRequestPostProcessor<,>), new[] { typeof(GenericRequestPostProcessor<,>), typeof(ConstrainedRequestPostProcessor<,>) });
-
-
-            container.RegisterSingleton(new SingleInstanceFactory(container.GetInstance));
-            container.RegisterSingleton(new MultiInstanceFactory(container.GetAllInstances));
-
-
-            container.Register(typeof(IHandleDomainEvent<>),
-                AppDomain.CurrentDomain.GetAssemblies());
-
-            container.Register(typeof(IHandleDomainCommand<>),
-                AppDomain.CurrentDomain.GetAssemblies());
-
-            var handler = container.GetInstance<IHandleDomainCommand<OpenTab>>();
-
-            var mediator = container.GetInstance<IMediator>();
-
-
-
-            
-
-            var testId = Guid.NewGuid();
-            var testTable = 42;
-            var testWaiter = "Derek";
-
-            var response = await mediator.Send(new OpenTab(testId)
-            {
-                TableNumber = testTable,
-                Waiter = testWaiter
-            });
-
-            Assert.Equal(1, response.Count());
-
-            Test(new TabAggregate(),
-                Given(),
-                When(new OpenTab(testId)
-                {
-                    TableNumber = testTable,
-                    Waiter = testWaiter
-                }),
-                Then(new TabOpened(testId)
-                {
-                    TableNumber = testTable,
-                    Waiter = testWaiter
-                }));
-        }
-
-    }
-
-
     public class CommandEventTests : BaseAggregateRootTests<TabAggregate, TabAggregate>
     {
         [Fact]
@@ -225,8 +140,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             Opened = true;
         }
     }
-
-
+    
 
     public class GenericRequestPreProcessor<TRequest> : IRequestPreProcessor<TRequest>
     {
@@ -237,6 +151,25 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
+        }
+    }
+
+
+    public class GenericRequestPreProcessor2<TRequest> : IRequestPreProcessor<TRequest> 
+        where TRequest : IDomainCommand<IEnumerable<IDomainEvent>>
+    {
+
+        public GenericRequestPreProcessor2()
+        {
+        }
+
+        public Task Process(TRequest request, CancellationToken cancellationToken)
+        {
+            var command = request as IDomainCommand<IEnumerable<IDomainEvent>>;
+            var guid = command.AggregateRootId;
+
+
             return Task.CompletedTask;
         }
     }

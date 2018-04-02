@@ -14,12 +14,48 @@ using Akrual.DDD.Utils.Internal.UsefulClasses;
 
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
+    public interface IAggregateRoot : IEntity
+    {
+        /// <summary>
+        /// The number of events loaded into this aggregate.
+        /// </summary>
+        Counter EventsLoaded { get; }
+
+        /// <summary>
+        /// Gets all domain events that have been applied to the aggregate root instance.
+        /// </summary>
+        /// <returns>A collection of domain events.</returns>
+        IEnumerable<IDomainEvent> GetEventStream();
+
+        /// <summary>
+        /// Enuerates the supplied events and applies them in order to the aggregate.
+        /// </summary>
+        /// <param name="domainEvents"></param>
+        void ApplyEvents(IEnumerable<IDomainEvent> domainEvents);
+
+        /// <summary>
+        /// Enuerates the supplied events and applies them in order to the aggregate.
+        /// </summary>
+        /// <param name="domainEvents"></param>
+        void ApplyEvents(IDomainEvent[] domainEvents);
+
+        /// <summary>
+        /// Applies a single event to the aggregate.
+        /// <remarks>Normally thuis method should not be used. Because, the Aggregate
+        /// when implementing one IApplyDomainEvent, will be automatically callede when an event is published.</remarks>
+        /// </summary>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="ev"></param>
+        Task ApplyOneEvent<TEvent>(TEvent ev)
+            where TEvent : IDomainEvent;
+    }
+
     /// <summary>
     ///     Base class for implementing aggregate root domain objects.
     ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
     ///     <remarks><c>So add properties as private or maximum internal only!</c></remarks>
     /// </summary>
-    public abstract class AggregateRoot<T> : Entity<T> where T : new()
+    public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot where T : new()
     {
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 

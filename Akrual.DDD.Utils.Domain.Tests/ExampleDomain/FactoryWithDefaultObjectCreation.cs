@@ -8,7 +8,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
 {
     internal class FactoryWithDefaultObjectCreation : Factory<ExampleAggregate, ExampleAggregate>
     {
-        protected override async Task<ExampleAggregate> CreateDefaultInstance(Guid guid)
+        public override async Task<ExampleAggregate> CreateDefaultInstance(Guid guid)
         {
             var entity = new ExampleAggregate();
             var events = await entity.Handle(new CreateExampleAggregate(guid)

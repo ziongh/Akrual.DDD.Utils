@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
+using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
 using Akrual.DDD.Utils.Internal;
 using Akrual.DDD.Utils.Internal.Tests;
@@ -20,15 +21,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
         
-        [Fact]
-        public async Task Create_FactoryWithDefaultFactorySettingName_NameShouldBeSet()
-        {
-            var factory = new DefaultFactory<ExampleAggregate>();
-            factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("OneName");
-            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
-            Assert.Equal("OneName", exampleAggregate.Name);
-            Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
-        }
 
         [Fact]
         public async Task Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
