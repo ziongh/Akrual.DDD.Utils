@@ -7,6 +7,8 @@ using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 using Xunit;
 
 namespace Akrual.DDD.Domain.Tests.Utils
@@ -16,16 +18,40 @@ namespace Akrual.DDD.Domain.Tests.Utils
     /// </summary>
     /// <typeparam name="TAggregate"></typeparam>
     /// <typeparam name="T"></typeparam>
-    public class BaseAggregateRootTests<TAggregate, T>
+    public abstract class BaseAggregateRootTests<TAggregate, T> : IDisposable
         where TAggregate : AggregateRoot<T>
-    where T : new()
+        where T : new()
     {
+        protected Container _container;
+        protected readonly Scope _scope;
+
+        /// <summary>
+        /// This method should only be implemented if the test is going to use Dependency Injection.
+        /// Otherwise, leave it blank.
+        /// </summary>
+        public abstract void RegisterAllToContainer();
+
+        protected BaseAggregateRootTests()
+        {
+            RegisterAllToContainer();
+            if (_container != null)
+            {
+                this._scope = AsyncScopedLifestyle.BeginScope(_container);
+            }
+        }
+        
+        public void Dispose()
+        {
+            _scope?.Dispose();
+            _container?.Dispose();
+        }
+
         private TAggregate sut;
 
-        protected void Test(TAggregate initial, IEnumerable<IDomainEvent> given, Func<TAggregate, Func<IDomainEvent[]>> when, Action<Func<IDomainEvent[]>> then)
+        protected async Task Test(TAggregate initial, IEnumerable<IDomainEvent> given, Func<TAggregate, Func<IDomainEvent[]>> when, Action<Func<IDomainEvent[]>> then)
         {
             sut = initial;
-            then(when(ApplyEvents(sut, given)));
+            then(when(await ApplyEvents(sut, given)));
         }
 
         protected IEnumerable<IDomainEvent> Given(params IDomainEvent[] events)
@@ -135,14 +161,14 @@ namespace Akrual.DDD.Domain.Tests.Utils
             throw new ArgumentNullException(nameof(c));
         }
 
-        private TAggregate ApplyEvents(TAggregate agg, IEnumerable<IDomainEvent> events)
+        private async Task<TAggregate> ApplyEvents(TAggregate agg, IEnumerable<IDomainEvent> events)
         {
             if (events != null)
             {
                 var eventsList = events.ToList();
                 if (eventsList.Any())
                 {
-                    agg.ApplyEvents(eventsList);
+                    await agg.ApplyEvents(eventsList);
                 }
             }
 
@@ -153,5 +179,6 @@ namespace Akrual.DDD.Domain.Tests.Utils
         {
             public CommandHandlerNotDefiendException(string msg) : base(msg) { }
         }
+
     }
 }

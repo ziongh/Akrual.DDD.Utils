@@ -8,7 +8,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
     /// <summary>
     /// Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
     /// </summary>
-    public interface ICommandDispatcher
+    public interface IDomainCommandDispatcher
     {
         Task<IEnumerable<IDomainEvent>> Dispatch<Tcommand>(Tcommand request,
             CancellationToken cancellationToken) where Tcommand : IDomainCommand<IEnumerable<IDomainEvent>>;

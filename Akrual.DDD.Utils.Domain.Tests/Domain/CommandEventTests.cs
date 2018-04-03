@@ -10,7 +10,6 @@ using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.Tests.ExampleDomain;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
 using MediatR;
 using MediatR.Pipeline;
@@ -21,13 +20,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
     public class CommandEventTests : BaseAggregateRootTests<TabAggregate, TabAggregate>
     {
         [Fact]
-        public void CanOpenANewTab()
+        public async Task CanOpenANewTab()
         {
             var testId = Guid.NewGuid();
             var testTable = 42;
             var testWaiter = "Derek";
 
-            Test(new TabAggregate(), 
+            await Test(new TabAggregate(), 
                 Given(),
                 When(new OpenTab(testId)
                 {
@@ -42,13 +41,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         }
 
         [Fact]
-        public void CannotOpenTabTwice()
+        public async Task CannotOpenTabTwice()
         {
             var testId = Guid.NewGuid();
             var testTable = 42;
             var testWaiter = "Derek";
 
-            Test(new TabAggregate(), 
+            await Test(new TabAggregate(), 
                 Given(new TabOpened(testId)
                 {
                     TableNumber = testTable,
@@ -60,6 +59,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
                     Waiter = testWaiter
                 }),
                 ThenFailWith<TabOpenedTwiceException>());
+        }
+
+        public override void RegisterAllToContainer()
+        {
         }
     }
 
@@ -138,80 +141,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public async Task Handle(TabOpened notification, CancellationToken cancellationToken)
         {
             Opened = true;
-        }
-    }
-    
-
-    public class GenericRequestPreProcessor<TRequest> : IRequestPreProcessor<TRequest>
-    {
-
-        public GenericRequestPreProcessor()
-        {
-        }
-
-        public Task Process(TRequest request, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-    }
-
-
-    public class GenericRequestPreProcessor2<TRequest> : IRequestPreProcessor<TRequest> 
-        where TRequest : IDomainCommand<IEnumerable<IDomainEvent>>
-    {
-
-        public GenericRequestPreProcessor2()
-        {
-        }
-
-        public Task Process(TRequest request, CancellationToken cancellationToken)
-        {
-            var command = request as IDomainCommand<IEnumerable<IDomainEvent>>;
-            var guid = command.AggregateRootId;
-
-
-            return Task.CompletedTask;
-        }
-    }
-
-
-    public class GenericRequestPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
-    {
-        public GenericRequestPostProcessor()
-        {
-        }
-
-        public Task Process(TRequest request, TResponse response)
-        {
-            return Task.CompletedTask;
-        }
-    }
-
-    public class ConstrainedRequestPostProcessor<TRequest, TResponse>
-        : IRequestPostProcessor<TRequest, TResponse>
-    {
-
-        public ConstrainedRequestPostProcessor()
-        {
-        }
-
-        public Task Process(TRequest request, TResponse response)
-        {
-            return Task.CompletedTask;
-        }
-    }
-
-
-    public class GenericPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    {
-        public GenericPipelineBehavior()
-        {
-        }
-
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
-        {
-            var response = await next();
-            return response;
         }
     }
 }

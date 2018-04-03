@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.Tests.Domain;
-using Akrual.DDD.Utils.Domain.Utils.UUID;
-using Akrual.DDD.Utils.Internal.Contracts;
-using Akrual.DDD.Utils.Internal.Extensions;
 
-namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
+namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
     public class CreateExampleAggregate : DomainCommand{
         

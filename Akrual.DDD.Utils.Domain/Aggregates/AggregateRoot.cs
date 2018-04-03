@@ -31,13 +31,13 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        void ApplyEvents(IEnumerable<IDomainEvent> domainEvents);
+        Task ApplyEvents(IEnumerable<IDomainEvent> domainEvents);
 
         /// <summary>
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        void ApplyEvents(IDomainEvent[] domainEvents);
+        Task ApplyEvents(params IDomainEvent[] domainEvents);
 
         /// <summary>
         /// Applies a single event to the aggregate.
@@ -58,6 +58,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot where T : new()
     {
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
+        private readonly ConcurrentList<IDomainEvent> _changes = new ConcurrentList<IDomainEvent>();
 
         private readonly ConcurrentList<IDomainEvent> eventStream;
 
@@ -93,15 +95,13 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        public void ApplyEvents(IEnumerable<IDomainEvent> domainEvents)
+        public async Task ApplyEvents(IEnumerable<IDomainEvent> domainEvents)
         {
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
                 eventStream.Add(e);
-                GetType().GetMethod("ApplyOneEvent")
-                    .MakeGenericMethod(e.GetType())
-                    .Invoke(this, new object[] {e});
+                await ApplyOneEvent((dynamic)e);
             }
         }
 
@@ -109,15 +109,13 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        public void ApplyEvents(IDomainEvent[] domainEvents)
+        public async Task ApplyEvents(params IDomainEvent[] domainEvents)
         {
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
                 eventStream.Add(e);
-                GetType().GetMethod("ApplyOneEvent")
-                    .MakeGenericMethod(e.GetType())
-                    .Invoke(this, new object[] { e });
+                await ApplyOneEvent((dynamic)e);
             }
         }
 

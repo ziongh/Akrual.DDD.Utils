@@ -21,5 +21,11 @@
             <typeparam name="TAggregate"></typeparam>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="M:Akrual.DDD.Domain.Tests.Utils.BaseAggregateRootTests`2.RegisterAllToContainer">
+            <summary>
+            This method should only be implemented if the test is going to use Dependency Injection.
+            Otherwise, leave it blank.
+            </summary>
+        </member>
     </members>
 </doc>

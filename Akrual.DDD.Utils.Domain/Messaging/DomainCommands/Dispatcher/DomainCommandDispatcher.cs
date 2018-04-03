@@ -7,10 +7,10 @@ using SimpleInjector;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
 {
-    public class CommandDispatcher : ICommandDispatcher
+    public class DomainCommandDispatcher : IDomainCommandDispatcher
     {
         private readonly Container _container;
-        public CommandDispatcher(Container container)
+        public DomainCommandDispatcher(Container container)
         {
             _container = container;
         }

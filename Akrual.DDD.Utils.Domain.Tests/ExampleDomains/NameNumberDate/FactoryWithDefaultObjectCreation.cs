@@ -2,9 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
-using Akrual.DDD.Utils.Domain.Utils.UUID;
 
-namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
+namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
     internal class FactoryWithDefaultObjectCreation : Factory<ExampleAggregate, ExampleAggregate>
     {
@@ -18,10 +17,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomain
                 Date = new DateTime(1990, 5, 12)
             }, CancellationToken.None);
             
-            foreach (var @event in events)
-            {
-                await entity.Handle((dynamic) @event, CancellationToken.None);
-            }
+            entity.ApplyEvents(events);
 
             return entity;
         }

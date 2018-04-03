@@ -9,7 +9,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.Saga
     /// </summary>
     /// <typeparam name="TInEvent">The event that the process manager will receive</typeparam>
     public interface IProcessManagerRedirect<in TInEvent> 
-        where TInEvent : DomainEvent
+        where TInEvent : IDomainEvent
     {
         /// <summary>
         /// For a given Event, it return a list of messages (Events and Commands) that shall be published/dispatched
