@@ -9,8 +9,8 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
 {
     public class Order : AggregateRoot<Order>,
-        IHandleDomainCommand<_1PlaceOrder>,
-        IHandleDomainEvent<_7OrderConfirmed>
+        IHandleDomainCommand<_1PlaceOrder>//,
+        //IHandleDomainEvent<_7OrderConfirmed>
     {
         public int SeatNumber { get; private set; }
         public Guid UserId { get; private set; }

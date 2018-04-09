@@ -9,8 +9,8 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
 {
     public class Reservation : AggregateRoot<Reservation>,
-        IHandleDomainCommand<_3MakeReservation>,
-        IHandleDomainEvent<_7OrderConfirmed>
+        IHandleDomainCommand<_3MakeReservation>//,
+        //IHandleDomainEvent<_7OrderConfirmed>
     {
         public Reservation() : base(Guid.Empty)
         {

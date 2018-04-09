@@ -127,13 +127,6 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Factories.DefaultEventHandlerFactory`1">
-            <summary>
-            This class implements the IDefaultFactory Interface and the Factory Abstract class.
-            The behaviour: The Create method will call new() and then will set the Id Property to the given guid.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance(System.Guid)">
             <summary>
                 Creates the default Aggregate. It should be already filled with the UUID.
@@ -166,18 +159,6 @@
             <typeparam name="T"></typeparam>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.Create(System.Guid)">
-            <summary>
-            Creates the Aggregate with all the invariants Checked
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Factories.IDefaultEventHandlerFactory`1">
-            <summary>
-            This interface represents a default implementation of an Factory
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultEventHandlerFactory`1.Create(System.Guid)">
             <summary>
             Creates the Aggregate with all the invariants Checked
             </summary>
