@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.UOW;
 
 namespace Akrual.DDD.Utils.Domain.Factories
@@ -12,17 +13,17 @@ namespace Akrual.DDD.Utils.Domain.Factories
     /// The behaviour: The Create method will call new() and then will set the Id Property to the given guid.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DefaultFactory<T> : Factory<T, T>, IDefaultFactory<T> where T : IAggregateRoot
+    public class DefaultFactory<T> : Factory<T, T>, IDefaultFactory<T> where T : class, IAggregateRoot
     {
         private readonly IUnitOfWork _uow;
-        private readonly Func<T> _instanceFactory;
+        private readonly IInstantiator<T> _instantiator;
         private readonly Type _type;
 
-        public DefaultFactory(IUnitOfWork uow, Func<T> instanceFactory)
+        public DefaultFactory(IUnitOfWork uow, IInstantiator<T> instantiator)
         {
             _uow = uow;
-            _instanceFactory = instanceFactory;
-            _type = (Type) ((dynamic) _instanceFactory.Invoke()).GetType();
+            _instantiator = instantiator;
+            _type = (Type) ((dynamic) _instantiator.Create()).GetType();
         }
 
         public override async Task<T> Create(Guid guid)
@@ -41,7 +42,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
 
         public override async Task<T> CreateDefaultInstance(Guid guid)
         {
-            T result = _instanceFactory.Invoke();
+            T result = _instantiator.Create();
             SetPrivatePropertyValue(result, "Id", guid);
             return result;
         }

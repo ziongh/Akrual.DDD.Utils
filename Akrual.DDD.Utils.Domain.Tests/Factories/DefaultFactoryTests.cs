@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
+using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -16,7 +17,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithDefaultFactorySettingName_NameShouldBeSet()
         {
-            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(),() => new ExampleAggregate());
+            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(),new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("OneName");
             var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
@@ -28,8 +29,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_TwoTimesWithSameGuid_ReturnsSameInstance()
         {
             var uow = new UnitOfWork();
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id = GuidGenerator.GenerateTimeBasedGuid();
 
@@ -46,8 +47,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_TwoTimesWithSameGuidThenChangeData_ReturnsFirstInstance()
         {
             var uow = new UnitOfWork();
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id = GuidGenerator.GenerateTimeBasedGuid();
 
@@ -72,8 +73,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_CreateTwoInstancesChangeOneThenRetrieveTheFirst_ReturnsCorrectName()
         {
             var uow = new UnitOfWork();
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();
             var id2 = GuidGenerator.GenerateTimeBasedGuid();
@@ -98,7 +99,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_CallTwoTimesFactoryCreate_ReturnsTwoDifferentInstances()
         {
             var uow = new UnitOfWork();
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,() => new ExampleAggregate());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();
             var id2 = GuidGenerator.GenerateTimeBasedGuid();
@@ -110,4 +111,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         }
 
     }
+
+
 }

@@ -6,8 +6,8 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
 {
-    public class Customer : AggregateRoot<Customer>//,
-        //IHandleDomainEvent<_7OrderConfirmed>
+    public class Customer : AggregateRoot<Customer>,
+        IHandleDomainEvent<_7OrderConfirmed>
     {
         public string CardNumber { get; set; }
 

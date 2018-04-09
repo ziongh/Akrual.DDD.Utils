@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using Akrual.DDD.Utils.Domain.Factories;
+using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
@@ -27,9 +28,10 @@ namespace Akrual.DDD.Utils.Domain.Tests
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
             container.Options.LifestyleSelectionBehavior = new ScopedLifestyleSelectionBehavior();
 
+            container.Register(typeof(IInstantiator<>),typeof(Instantiator<>), Lifestyle.Scoped);
 
-            container.Register(typeof(IHandleDomainEvent<>),
-                AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
+            container.RegisterCollection(typeof(IHandleDomainEvent<>),
+                AppDomain.CurrentDomain.GetAssemblies());
 
             container.Register(typeof(IHandleDomainCommand<>),
                 AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
