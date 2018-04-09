@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,9 +33,16 @@ namespace Akrual.DDD.Utils.Domain.Messaging.Coordinator
         {
             var events = await _commandDispatcher.Dispatch(request, cancellationToken);
 
+            List<DomainCommand> commands = new List<DomainCommand>();
+
             foreach (var @event in events)
             {
-                await _eventPublisher.Publish((dynamic)@event, CancellationToken.None);
+                commands.AddRange(await _eventPublisher.Publish((dynamic)@event, cancellationToken));
+            }
+
+            foreach (var command in commands)
+            {
+                await DispatchAndApplyEvents((dynamic)command, cancellationToken);
             }
         }
     }

@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
+using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
+using Akrual.DDD.Utils.Domain.Messaging.Saga;
 using Akrual.DDD.Utils.Domain.UOW;
 using SimpleInjector;
 
@@ -18,9 +20,18 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
             _container = container;
         }
 
-        public async Task Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
+        public async Task<IEnumerable<DomainCommand>> Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
         {
             var handlersFactory = _container.GetInstance<Instantiator<IHandleDomainEvent<Tevent>>>();
+            IProcessManagerRedirect<Tevent> sagaCoord = null;
+
+            try
+            {
+                sagaCoord = _container.GetInstance<IProcessManagerRedirect<Tevent>>();
+            }
+            catch (Exception e)
+            {
+            }
 
             var uow = _container.GetInstance<IUnitOfWork>();
 
@@ -29,7 +40,12 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
 
             foreach (var handler in handlersFactory.CreateAllInstances())
             {
-                factoriesOfHandler.Add(new DefaultFactory<IHandleDomainEvent<Tevent>>(uow, new StubbedInstantiator<IHandleDomainEvent<Tevent>>(() => GetEventHandler(handlersFactory, localIndex))));
+                var index = localIndex;
+                factoriesOfHandler.Add(new DefaultFactory<IHandleDomainEvent<Tevent>>(uow, new StubbedInstantiator<IHandleDomainEvent<Tevent>>(() =>
+                {
+                    var temp = index;
+                    return GetEventHandler(handlersFactory, temp);
+                })));
                 localIndex++;
             }
 
@@ -38,6 +54,21 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
                 var handler = await factoryOfHandler.Create(request.AggregateRootId);
                 await handler.ApplyEvents(request);
             }
+
+            if (sagaCoord != null)
+            {
+                var messages = sagaCoord.Redirect(request);
+                var events = messages.OfType<IDomainEvent>();
+                var commands = messages.OfType<DomainCommand>();
+                foreach (var @event in events)
+                {
+                    await Publish((dynamic) @event, cancellationToken);
+                }
+
+                return commands;
+            }
+
+            return new DomainCommand[0];
         }
 
 

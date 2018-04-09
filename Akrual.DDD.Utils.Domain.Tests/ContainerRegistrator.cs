@@ -12,6 +12,7 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
+using Akrual.DDD.Utils.Domain.Messaging.Saga;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
@@ -34,6 +35,9 @@ namespace Akrual.DDD.Utils.Domain.Tests
                 AppDomain.CurrentDomain.GetAssemblies());
 
             container.Register(typeof(IHandleDomainCommand<>),
+                AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
+
+            container.Register(typeof(IProcessManagerRedirect<>),
                 AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
 
 

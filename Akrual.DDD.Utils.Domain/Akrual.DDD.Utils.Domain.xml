@@ -164,6 +164,24 @@
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.IInstantiator`1">
+            <summary>
+            This is a dangerous Interface. Because it creates one Async Scope just to create a new instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.Instantiator`1">
+            <summary>
+            This is a dangerous Class. Because it creates one Async Scope just to create a new instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.Instantiator`1.Create">
+            <summary>
+            <remarks>Dangerous!</remarks> Because it creates one new async scope to create a new instance.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher.IDomainCommandDispatcher">
             <summary>
             Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
