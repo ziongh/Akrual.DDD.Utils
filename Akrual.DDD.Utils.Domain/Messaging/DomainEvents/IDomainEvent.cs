@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MediatR;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
@@ -6,11 +7,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
     /// <summary>
     /// Domain event that represents changes in a domain entity.
     /// </summary>
-    public interface IDomainEvent : IMessaging, INotification
+    public interface IDomainEvent : IHandledMessage<IEnumerable<IMessaging>>
     {
-        /// <summary>
-        /// Gets the entity id.
-        /// </summary>
-        Guid AggregateRootId { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
     /// Base class for implementing domain Commands that represent the will for something to happen.
     /// It by default expect the handler to return an IEnumerable&lt;DomainEvent&gt;
     /// </summary>
-    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand<IEnumerable<IDomainEvent>>
+    public abstract class DomainCommand : BaseMessaging<DomainCommand>, IDomainCommand
     {
         /// <summary>
         /// Gets the Aggregate Root id.

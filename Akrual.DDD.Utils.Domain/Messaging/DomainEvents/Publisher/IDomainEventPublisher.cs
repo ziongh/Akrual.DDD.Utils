@@ -7,7 +7,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
 {
     public interface IDomainEventPublisher
     {
-        Task<IEnumerable<DomainCommand>> Publish<Tevent>(Tevent request,
+        Task<IEnumerable<IDomainCommand>> Publish<Tevent>(Tevent request,
             CancellationToken cancellationToken) where Tevent : IDomainEvent;
     }
 }

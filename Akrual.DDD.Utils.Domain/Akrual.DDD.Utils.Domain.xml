@@ -240,14 +240,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand`1">
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand">
             <summary>
             Domain Command that represents the will for something to happen
-            </summary>
-        </member>
-        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IDomainCommand`1.AggregateRootId">
-            <summary>
-            Gets the entity id.
             </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.IHandleDomainCommand`1">
@@ -283,17 +278,6 @@
             Domain event that represents changes in a domain entity.
             </summary>
         </member>
-        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent.AggregateRootId">
-            <summary>
-            Gets the entity id.
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IEventPublisher`1">
-            <summary>
-            Interface 
-            </summary>
-            <typeparam name="TEvent"></typeparam>
-        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IHandleDomainEvent`1">
             <summary>
             Implemented by an aggregate once for each event type it can apply.
@@ -305,6 +289,16 @@
             Messages (and not objects, objects are data + behavior).
             In some respects much like DTOs, they communicate data 
             about an event and they themselves encapsulate no behavior
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.IHandledMessage`1">
+            <summary>
+            Represents Any message that will be used to represent a Command or an Event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.IHandledMessage`1.AggregateRootId">
+            <summary>
+            Gets the entity id.
             </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.Saga.IProcessManagerRedirect`1">

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
@@ -13,10 +9,8 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
 using Akrual.DDD.Utils.Domain.Messaging.Saga;
-using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
@@ -31,8 +25,8 @@ namespace Akrual.DDD.Utils.Domain.Tests
 
             container.Register(typeof(IInstantiator<>),typeof(Instantiator<>), Lifestyle.Scoped);
 
-            container.RegisterCollection(typeof(IHandleDomainEvent<>),
-                AppDomain.CurrentDomain.GetAssemblies());
+            container.Register(typeof(IHandleDomainEvent<>),
+                AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
 
             container.Register(typeof(IHandleDomainCommand<>),
                 AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);

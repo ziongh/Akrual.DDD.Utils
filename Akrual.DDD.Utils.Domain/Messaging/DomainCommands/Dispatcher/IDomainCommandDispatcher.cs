@@ -11,6 +11,6 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
     public interface IDomainCommandDispatcher
     {
         Task<IEnumerable<IDomainEvent>> Dispatch<Tcommand>(Tcommand request,
-            CancellationToken cancellationToken) where Tcommand : IDomainCommand<IEnumerable<IDomainEvent>>;
+            CancellationToken cancellationToken) where Tcommand : IDomainCommand;
     }
 }

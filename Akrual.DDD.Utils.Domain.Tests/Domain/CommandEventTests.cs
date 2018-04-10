@@ -8,6 +8,7 @@ using Akrual.DDD.Domain.Tests.Utils;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Exceptions;
+using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -125,7 +126,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         {
         }
 
-        public async Task<IEnumerable<IDomainEvent>> Handle(OpenTab command, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IMessaging>> Handle(OpenTab command, CancellationToken cancellationToken)
         {
             if (Opened)
                 throw new TabOpenedTwiceException();
@@ -138,9 +139,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             yield return new TabOpened(command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
         }
 
-        public async Task Handle(TabOpened notification, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IMessaging>> Handle(TabOpened notification, CancellationToken cancellationToken)
         {
             Opened = true;
+
+            return new List<IMessaging>();
         }
     }
 }

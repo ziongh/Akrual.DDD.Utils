@@ -1,4 +1,5 @@
-﻿using Akrual.DDD.Utils.Domain.Aggregates;
+﻿using System.Collections.Generic;
+using Akrual.DDD.Utils.Domain.Aggregates;
 using MediatR;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
@@ -7,7 +8,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
     /// Implemented by an aggregate once for each event type it can apply.
     /// </summary>
     /// <typeparam name="TEvent"></typeparam>
-    public interface IHandleDomainEvent<in TEvent> : INotificationHandler<TEvent>,IAggregateRoot where TEvent : IDomainEvent
+    public interface IHandleDomainEvent<in TEvent> : IRequestHandler<TEvent,IEnumerable<IMessaging>>,IAggregateRoot where TEvent : IDomainEvent
     {
     }
 }

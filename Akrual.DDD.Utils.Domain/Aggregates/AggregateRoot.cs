@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Entities;
+using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
@@ -31,13 +32,13 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        Task ApplyEvents(IEnumerable<IDomainEvent> domainEvents);
+        Task<IEnumerable<IMessaging>> ApplyEvents(IEnumerable<IDomainEvent> domainEvents);
 
         /// <summary>
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        Task ApplyEvents(params IDomainEvent[] domainEvents);
+        Task<IEnumerable<IMessaging>> ApplyEvents(params IDomainEvent[] domainEvents);
 
         /// <summary>
         /// Applies a single event to the aggregate.
@@ -46,7 +47,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         /// <typeparam name="TEvent"></typeparam>
         /// <param name="ev"></param>
-        Task ApplyOneEvent<TEvent>(TEvent ev)
+        Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev)
             where TEvent : IDomainEvent;
     }
 
@@ -95,28 +96,35 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        public async Task ApplyEvents(IEnumerable<IDomainEvent> domainEvents)
+        public async Task<IEnumerable<IMessaging>> ApplyEvents(IEnumerable<IDomainEvent> domainEvents)
         {
+            var listOfMessages = new List<IMessaging>();
+
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
                 eventStream.Add(e);
-                await ApplyOneEvent((dynamic)e);
+                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e));
             }
+
+            return listOfMessages;
         }
 
         /// <summary>
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
-        public async Task ApplyEvents(params IDomainEvent[] domainEvents)
+        public async Task<IEnumerable<IMessaging>> ApplyEvents(params IDomainEvent[] domainEvents)
         {
+            var listOfMessages = new List<IMessaging>();
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
                 eventStream.Add(e);
-                await ApplyOneEvent((dynamic)e);
+                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e));
             }
+
+            return listOfMessages;
         }
 
         /// <summary>
@@ -126,7 +134,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         /// <typeparam name="TEvent"></typeparam>
         /// <param name="ev"></param>
-        public async Task ApplyOneEvent<TEvent>(TEvent ev)
+        public async Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev)
             where TEvent : IDomainEvent
         {
             var applier = this as IHandleDomainEvent<TEvent>;
@@ -134,8 +142,9 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
                 throw new InvalidOperationException(string.Format(
                     "Aggregate {0} does not know how to apply event {1}",
                     GetType().Name, ev.GetType().Name));
-            await applier.Handle(ev, CancellationToken.None);
+            var messages = await applier.Handle(ev, CancellationToken.None);
             EventsLoaded.NextValue();
+            return messages;
         }
     }
 }

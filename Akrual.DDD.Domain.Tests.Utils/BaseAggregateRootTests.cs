@@ -60,7 +60,7 @@ namespace Akrual.DDD.Domain.Tests.Utils
         }
 
         protected Func<TAggregate, Func<IDomainEvent[]>> When<TCommand>(TCommand command)
-            where TCommand : IDomainCommand<IEnumerable<IDomainEvent>>
+            where TCommand : IDomainCommand
         {
             return agg => (() =>
             {
@@ -147,7 +147,7 @@ namespace Akrual.DDD.Domain.Tests.Utils
         }
 
         private async Task<IEnumerable<IDomainEvent>> DispatchCommand<TCommand>(TCommand c)
-            where TCommand : IDomainCommand<IEnumerable<IDomainEvent>>
+            where TCommand : IDomainCommand
         {
             if (c != null)
             {
@@ -156,7 +156,23 @@ namespace Akrual.DDD.Domain.Tests.Utils
                     throw new CommandHandlerNotDefiendException(string.Format(
                         "Aggregate {0} does not yet handle command {1}",
                         sut.GetType().Name, c.GetType().Name));
-                return await handler.Handle(c,CancellationToken.None);
+                var messages = await handler.Handle(c,CancellationToken.None);
+
+                // Get All Events that this Command handler has emitted
+                var events = messages.OfType<IDomainEvent>().ToList();
+
+                // Get All Commands that this Command handler has emitted
+                var commands = messages.OfType<IDomainCommand>().ToList();
+
+                // Foreach Command emitted, Handle them recursively
+                foreach (var command in commands)
+                {
+                    IEnumerable<IDomainEvent> newEvents = await DispatchCommand((dynamic) command);
+                    events.AddRange(newEvents);
+                }
+
+                // Return all Events that the Command handler and all its recursions generated.
+                return events;
             }
             throw new ArgumentNullException(nameof(c));
         }

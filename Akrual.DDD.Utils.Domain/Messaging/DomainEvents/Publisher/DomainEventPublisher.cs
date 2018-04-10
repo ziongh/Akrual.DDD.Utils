@@ -4,10 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
-using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
-using Akrual.DDD.Utils.Domain.Messaging.Saga;
-using Akrual.DDD.Utils.Domain.UOW;
 using SimpleInjector;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
@@ -20,71 +17,32 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
             _container = container;
         }
 
-        public async Task<IEnumerable<DomainCommand>> Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
+        public async Task<IEnumerable<IDomainCommand>> Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
         {
-            var handlersFactory = _container.GetInstance<Instantiator<IHandleDomainEvent<Tevent>>>();
-            IProcessManagerRedirect<Tevent> sagaCoord = null;
+            // Get Factory of Event Handler
+            var factoryOfHandler = _container.GetInstance<IDefaultFactory<IHandleDomainEvent<Tevent>>>();
 
-            try
+            // Creates the Event Handler (The Aggregate)
+            var handler = await factoryOfHandler.Create(request.AggregateRootId);
+
+            // Apply Events into the EventHandler (The Aggregate)
+            var messages = (await handler.ApplyEvents(request)).ToList();
+
+            // Get All Events that this event handler has emitted
+            var events = messages.OfType<IDomainEvent>().ToList();
+
+            // Get All Commands that this event handler has emitted
+            var commands = messages.OfType<IDomainCommand>().ToList();
+
+            // Foreach event emitted, publish them recursively
+            foreach (var @event in events)
             {
-                sagaCoord = _container.GetInstance<IProcessManagerRedirect<Tevent>>();
-            }
-            catch (Exception e)
-            {
-            }
-
-            var uow = _container.GetInstance<IUnitOfWork>();
-
-            var factoriesOfHandler = new List<DefaultFactory<IHandleDomainEvent<Tevent>>>();
-            var localIndex = 0;
-
-            foreach (var handler in handlersFactory.CreateAllInstances())
-            {
-                var index = localIndex;
-                factoriesOfHandler.Add(new DefaultFactory<IHandleDomainEvent<Tevent>>(uow, new StubbedInstantiator<IHandleDomainEvent<Tevent>>(() =>
-                {
-                    var temp = index;
-                    return GetEventHandler(handlersFactory, temp);
-                })));
-                localIndex++;
+                IEnumerable<IDomainCommand> newCommands = await Publish((dynamic) @event, cancellationToken);
+                commands.AddRange(newCommands);
             }
 
-            foreach (var factoryOfHandler in factoriesOfHandler)
-            {
-                var handler = await factoryOfHandler.Create(request.AggregateRootId);
-                await handler.ApplyEvents(request);
-            }
-
-            if (sagaCoord != null)
-            {
-                var messages = sagaCoord.Redirect(request);
-                var events = messages.OfType<IDomainEvent>();
-                var commands = messages.OfType<DomainCommand>();
-                foreach (var @event in events)
-                {
-                    await Publish((dynamic) @event, cancellationToken);
-                }
-
-                return commands;
-            }
-
-            return new DomainCommand[0];
-        }
-
-
-        public IHandleDomainEvent<Tevent> GetEventHandler<Tevent>(Instantiator<IHandleDomainEvent<Tevent>> handlerFactory, int index)
-            where Tevent : IDomainEvent
-        {
-            var allHandlers = handlerFactory.CreateAllInstances();
-            var localIndex = 0;
-
-            foreach (var handler in allHandlers)
-            {
-                if (localIndex == index) return handler;
-                localIndex++;
-            }
-
-            return null;
+            // Return all Commands that the event handler and all its recursions generated.
+            return commands;
         }
     }
 }

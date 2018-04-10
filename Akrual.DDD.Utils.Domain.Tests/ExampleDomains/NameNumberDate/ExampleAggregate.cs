@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
@@ -72,9 +73,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
             Name = newName;
         }
 
-        public async Task<IEnumerable<IDomainEvent>> Handle(CreateExampleAggregate request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IMessaging>> Handle(CreateExampleAggregate request, CancellationToken cancellationToken)
         {
             // check if command ok
+            
             // Emit event
             return GenerateEvents(request);
         }
@@ -91,14 +93,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 
 
 
-        public Task Handle(ExampleAggregateCreated notification, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IMessaging>> Handle(ExampleAggregateCreated notification, CancellationToken cancellationToken)
         {
             this.Name = notification.Name;
             this.Date = notification.Date;
             this.Number = notification.Number;
             this.Id = notification.AggregateRootId;
 
-            return Task.CompletedTask;
+            return new IMessaging[0];
         }
         
     }

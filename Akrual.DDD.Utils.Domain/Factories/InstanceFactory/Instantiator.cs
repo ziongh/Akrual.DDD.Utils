@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SimpleInjector;
+﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
 namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
@@ -25,14 +24,6 @@ namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
             using (AsyncScopedLifestyle.BeginScope(_container))
             {
                 return _container.GetInstance<T>();
-            }
-        }
-
-        public IEnumerable<T> CreateAllInstances()
-        {
-            using (AsyncScopedLifestyle.BeginScope(_container))
-            {
-                return _container.GetAllInstances<T>();
             }
         }
     }

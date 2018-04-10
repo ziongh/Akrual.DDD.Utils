@@ -4,15 +4,17 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
 {
-    public class _5MakePayment : DomainCommand
+    public class _4MakePayment : DomainCommand
     {
         public string CardNumber { get; set; }
         public double Value { get; set; }
-        public _5MakePayment(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public Guid OrderId { get; set; }
+
+        public _4MakePayment(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
         {
         }
 
-        public _5MakePayment(Guid aggregateRootId) : base(aggregateRootId)
+        public _4MakePayment(Guid aggregateRootId) : base(aggregateRootId)
         {
         }
 

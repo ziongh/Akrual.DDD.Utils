@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
-using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -35,9 +29,15 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             await coordinator.DispatchAndApplyEvents(command,CancellationToken.None);
 
             var uow = this._container.GetInstance<IUnitOfWork>();
-            var aggr = uow.LoadedAggregates.ToList();
+            var listOfListOfAggregatesByType = uow.LoadedAggregates.ToList();
 
-            Assert.Equal(4, aggr.Count);
+            Assert.Equal(4, listOfListOfAggregatesByType.Count);
+            foreach (var listOfAggregatesOfSameType in listOfListOfAggregatesByType)
+            {
+                Assert.Single(listOfAggregatesOfSameType.Value);
+            }
+
+
         }
     }
 }

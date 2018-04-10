@@ -1,4 +1,7 @@
-﻿namespace Akrual.DDD.Utils.Domain.Messaging
+﻿using System;
+using MediatR;
+
+namespace Akrual.DDD.Utils.Domain.Messaging
 {
     /// <summary>
     /// Messages (and not objects, objects are data + behavior).
@@ -8,5 +11,17 @@
     public interface IMessaging
     {
 
+    }
+
+
+    /// <summary>
+    /// Represents Any message that will be used to represent a Command or an Event.
+    /// </summary>
+    public interface IHandledMessage<out TResponse> : IMessaging, IRequest<TResponse>
+    {
+        /// <summary>
+        /// Gets the entity id.
+        /// </summary>
+        Guid AggregateRootId { get; }
     }
 }
