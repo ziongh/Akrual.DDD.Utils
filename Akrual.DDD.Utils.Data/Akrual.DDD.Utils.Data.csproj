@@ -31,12 +31,21 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.1.0.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="NLog" Version="4.5.2" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />
     <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SimpleInjector">
+      <HintPath>C:\Users\Avell 1513\.nuget\packages\simpleinjector\4.1.0\lib\netstandard1.3\SimpleInjector.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

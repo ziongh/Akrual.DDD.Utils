@@ -1,30 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Akrual.DDD.Utils.Data.EventStore;
-using Akrual.DDD.Utils.Data.Repositories;
-using Akrual.DDD.Utils.Data.Repositories.DbContexts;
-using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Messaging;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.Repositories.Specifications;
-using Akrual.DDD.Utils.Internal.Tests;
+using Akrual.DDD.Utils.Data.EventStore.Logger;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
 
-namespace Akrual.DDD.Utils.Data.Tests
+namespace Akrual.DDD.Utils.Data.EventStore
 {
-    public class ClassNameTests : BaseTests
+    public enum TcpType
     {
-        [Fact]
-        public async Task testSomething()
+        Normal,
+        Ssl
+    }
+
+    public class EventStore
+    {
+        public async Task method()
         {
             var connection = EventStoreConnection.Create(Settings(TcpType.Normal, new UserCredentials("akrual", "akrual")).Build());
             await connection.ConnectAsync();
@@ -43,9 +36,9 @@ namespace Akrual.DDD.Utils.Data.Tests
             Console.WriteLine("Read event with data: {0}, metadata: {1}",
                 Encoding.UTF8.GetString(returnedEvent.Data),
                 Encoding.UTF8.GetString(returnedEvent.Metadata));
+
         }
 
-        
 
         private static ConnectionSettingsBuilder Settings(TcpType tcpType, UserCredentials userCredentials)
         {
@@ -63,7 +56,7 @@ namespace Akrual.DDD.Utils.Data.Tests
                     new GossipSeed(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1113)),
                     new GossipSeed(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 2113)),
                     new GossipSeed(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 3113))
-                )
+                    )
                 .SetOperationTimeoutTo(TimeSpan.FromDays(1));
             if (tcpType == TcpType.Ssl)
                 settings.UseSslConnection("ES", false);
