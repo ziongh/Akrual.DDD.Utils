@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer;
 
 namespace Akrual.DDD.Utils.Domain.Messaging

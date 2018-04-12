@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Akrual.DDD.Utils.Internal.Pagging
+﻿namespace Akrual.DDD.Utils.Internal.Pagging
 {
     /// <summary>Object containing information about paging.</summary>
     public class PageInfo

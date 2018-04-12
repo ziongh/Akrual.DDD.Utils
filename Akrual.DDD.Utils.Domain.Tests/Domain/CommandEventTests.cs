@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Domain.Tests.Utils;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.Utils.UUID;
-using MediatR;
-using MediatR.Pipeline;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain

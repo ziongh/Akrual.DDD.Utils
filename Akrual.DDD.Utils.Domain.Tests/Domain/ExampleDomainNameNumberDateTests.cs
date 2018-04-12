@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Domain.Utils.UUID;

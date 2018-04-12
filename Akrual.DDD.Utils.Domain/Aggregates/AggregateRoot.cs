@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Entities;
@@ -9,7 +7,6 @@ using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
-using Akrual.DDD.Utils.Internal.Extensions;
 using Akrual.DDD.Utils.Internal.Logging;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
 

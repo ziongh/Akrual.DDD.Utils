@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Akrual.DDD.Utils.Domain.Aggregates;
-
-namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
+﻿namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
 {
     /// <summary>
     /// This is a dangerous Interface. Because it creates one Async Scope just to create a new instance.

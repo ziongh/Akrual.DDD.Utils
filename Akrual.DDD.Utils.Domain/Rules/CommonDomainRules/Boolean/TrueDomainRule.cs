@@ -1,4 +1,3 @@
-using System;
 using Akrual.DDD.Utils.Domain.Entities;
 
 namespace Akrual.DDD.Utils.Domain.Rules.CommonDomainRules.Boolean

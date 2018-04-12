@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Akrual.DDD.Utils.Internal.Logging;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using Xunit;
 using Logger = Akrual.DDD.Utils.Internal.Logging.Logger;
-using LogLevel = Akrual.DDD.Utils.Internal.Logging.LogLevel;
 
 namespace Akrual.DDD.Utils.Internal.Tests.Logging
 {

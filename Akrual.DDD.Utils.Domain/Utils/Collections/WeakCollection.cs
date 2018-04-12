@@ -1,7 +1,6 @@
 ﻿// From StephenCleary GitHub
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace Akrual.DDD.Utils.Domain.Utils.Collections
 {

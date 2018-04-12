@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Akrual.DDD.Utils.Internal.Logging.LogProviders
+﻿namespace Akrual.DDD.Utils.Internal.Logging.LogProviders
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Text;
+
     [ExcludeFromCodeCoverage]
     internal abstract class LogProviderBase : ILogProvider
     {

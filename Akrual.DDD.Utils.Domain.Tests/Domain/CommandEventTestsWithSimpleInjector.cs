@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Domain.Tests.Utils;
-using Akrual.DDD.Utils.Domain.Factories;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.UOW;
 using SimpleInjector;
-using SimpleInjector.Lifestyles;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain

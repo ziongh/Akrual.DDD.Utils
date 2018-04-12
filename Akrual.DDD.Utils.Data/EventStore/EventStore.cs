@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Akrual.DDD.Utils.Data.EventStore.Logger;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 

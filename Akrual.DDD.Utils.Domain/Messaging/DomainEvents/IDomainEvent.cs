@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MediatR;
+﻿using System.Collections.Generic;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
 {

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 using Akrual.DDD.Utils.Domain.Aggregates;
 
 namespace Akrual.DDD.Utils.Domain.UOW

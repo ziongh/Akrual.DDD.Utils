@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Data.EventStore;
-using Akrual.DDD.Utils.Data.Repositories;
-using Akrual.DDD.Utils.Data.Repositories.DbContexts;
-using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Messaging;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
-using Akrual.DDD.Utils.Domain.Repositories.Specifications;
 using Akrual.DDD.Utils.Internal.Tests;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Data.Tests

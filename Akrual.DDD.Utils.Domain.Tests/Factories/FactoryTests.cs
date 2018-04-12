@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
-using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
-using Akrual.DDD.Utils.Internal;
 using Akrual.DDD.Utils.Internal.Tests;
 using Xunit;
 

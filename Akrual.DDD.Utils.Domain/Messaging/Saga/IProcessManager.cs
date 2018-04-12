@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.Saga

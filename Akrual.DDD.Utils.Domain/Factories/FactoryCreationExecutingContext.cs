@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Akrual.DDD.Utils.Domain.Aggregates;
+﻿using Akrual.DDD.Utils.Domain.Aggregates;
 
 namespace Akrual.DDD.Utils.Domain.Factories
 {

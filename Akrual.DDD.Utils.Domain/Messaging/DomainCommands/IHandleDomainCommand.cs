@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Entities;
-using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using MediatR;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands

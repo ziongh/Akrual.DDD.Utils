@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
-using Akrual.DDD.Utils.Domain.Utils.Collections;
-using Akrual.DDD.Utils.Domain.Utils.UUID;
 
 namespace Akrual.DDD.Utils.Domain.Factories
 {
