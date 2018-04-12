@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Entities;
@@ -26,6 +27,12 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         IEnumerable<IDomainEvent> GetEventStream();
 
         /// <summary>
+        /// Gets all new domain events that have been applied to the aggregate root instance since the fetching from the database.
+        /// </summary>
+        /// <returns>A collection of domain events.</returns>
+        IEnumerable<IDomainEvent> GetChangesEventStream();
+
+        /// <summary>
         /// Enuerates the supplied events and applies them in order to the aggregate.
         /// </summary>
         /// <param name="domainEvents"></param>
@@ -44,8 +51,14 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         /// <typeparam name="TEvent"></typeparam>
         /// <param name="ev"></param>
-        Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev)
+        /// <param name="nothing">This parameter is only here to block any acces to this method from outside of the library</param>
+        Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev, Internal nothing)
             where TEvent : IDomainEvent;
+
+        /// <summary>
+        /// Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
+        /// </summary>
+        void AllEventsStored();
     }
 
     /// <summary>
@@ -57,7 +70,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     {
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly ConcurrentList<IDomainEvent> _changes = new ConcurrentList<IDomainEvent>();
+        private readonly ConcurrentList<IDomainEvent> _changes;
 
         private readonly ConcurrentList<IDomainEvent> eventStream;
 
@@ -65,6 +78,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// The number of events loaded into this aggregate.
         /// </summary>
         public Counter EventsLoaded { get; private set; }
+
+        /// <summary>
+        /// The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
+        /// </summary>
+        public Counter EventsLoadedFromDB { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
@@ -76,9 +94,30 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         protected AggregateRoot(Guid id) : base(id,null)
         {
             eventStream = new ConcurrentList<IDomainEvent>();
+            _changes = new ConcurrentList<IDomainEvent>();
             EventsLoaded = new Counter();
+            EventsLoadedFromDB = new Counter();
         }
 
+        /// <summary>
+        /// Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
+        /// </summary>
+        public virtual void AllEventsStored()
+        {
+            eventStream.Concat(_changes); 
+            _changes.Clear();
+            EventsLoadedFromDB = new Counter(EventsLoaded.GetCurrentValue());
+        }
+
+
+        /// <summary>
+        /// Gets all new domain events that have been applied to the aggregate root instance since the fetching from the database.
+        /// </summary>
+        /// <returns>A collection of domain events.</returns>
+        public virtual IEnumerable<IDomainEvent> GetChangesEventStream()
+        {
+            return _changes;
+        }
 
         /// <summary>
         /// Gets all domain events that have been applied to the aggregate root instance.
@@ -100,8 +139,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
-                eventStream.Add(e);
-                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e));
+                _changes.Add(e);
+                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e, new Internal()));
             }
 
             return listOfMessages;
@@ -117,8 +156,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
             domainEvents.EnsuresNotNullOrEmpty();
             foreach (var e in domainEvents)
             {
-                eventStream.Add(e);
-                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e));
+                _changes.Add(e);
+                listOfMessages.AddRange(await ApplyOneEvent((dynamic)e, new Internal()));
             }
 
             return listOfMessages;
@@ -131,9 +170,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         /// <typeparam name="TEvent"></typeparam>
         /// <param name="ev"></param>
-        public async Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev)
+        /// <param name="nothing">This parameter is only here to block any acces to this method from outside of the library</param>
+        public async Task<IEnumerable<IMessaging>> ApplyOneEvent<TEvent>(TEvent ev, Internal nothing)
             where TEvent : IDomainEvent
         {
+            eventStream.Add(ev);
             var applier = this as IHandleDomainEvent<TEvent>;
             if (applier == null)
                 throw new InvalidOperationException(string.Format(
@@ -143,5 +184,10 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
             EventsLoaded.NextValue();
             return messages;
         }
+    }
+
+    public class Internal
+    {
+        internal Internal() { }
     }
 }

@@ -63,12 +63,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
 
     public class TabOpened : DomainEvent
     {
+        public override string EventName { get; } = "TabOpened";
+
+
         public int TableNumber;
         public string Waiter;
-
-        public TabOpened(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
 
         public TabOpened(Guid aggregateRootId) : base(aggregateRootId)
         {
@@ -79,6 +78,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             yield return TableNumber;
             yield return Waiter;
         }
+
     }
 
     public class OpenTab : DomainCommand

@@ -33,13 +33,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 
     public class ExampleAggregateCreated : DomainEvent
     {
+        public override string EventName { get; } = "ExampleAggregateCreated";
+
+
         public string Name { get; set; }
         public int Number { get; set; }
         public DateTime Date { get; set; }
 
-        public ExampleAggregateCreated(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
 
         public ExampleAggregateCreated(Guid aggregateRootId) : base(aggregateRootId)
         {
@@ -52,6 +52,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
             yield return Number;
             yield return Date;
         }
+
     }
 
 

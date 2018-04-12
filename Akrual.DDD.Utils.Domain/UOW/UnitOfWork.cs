@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.Factories;
+using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.UOW
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
+        private readonly EventStore _eventStore;
+
         public ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>> LoadedAggregates { get; set; }
-        public UnitOfWork()
+        public UnitOfWork(EventStore eventStore)
         {
+            _eventStore = eventStore;
             LoadedAggregates = new ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>>();
         }
 
@@ -40,6 +47,32 @@ namespace Akrual.DDD.Utils.Domain.UOW
             }
 
             return null;
+        }
+
+        public void Dispose()
+        {
+            var allChanges = new List<IDomainEvent>();
+
+            // Get all Changes from all Aggregates.
+            foreach (var listOfAggregateOfSameType in LoadedAggregates)
+            {
+                foreach (var aggregate in listOfAggregateOfSameType.Value)
+                {
+                    allChanges.AddRange(aggregate.Value.GetChangesEventStream());
+                }
+            }
+
+            // Save Events to EventStore.
+            _eventStore.SaveNewEvents(allChanges).Wait();
+
+            // Notify Aggregates that all events where Stored.
+            foreach (var listOfAggregateOfSameType in LoadedAggregates)
+            {
+                foreach (var aggregate in listOfAggregateOfSameType.Value)
+                {
+                    aggregate.Value.AllEventsStored();
+                }
+            }
         }
     }
 }

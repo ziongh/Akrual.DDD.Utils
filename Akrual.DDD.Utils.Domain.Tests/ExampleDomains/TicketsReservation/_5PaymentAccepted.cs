@@ -6,12 +6,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
 {
     public class _5PaymentAccepted : DomainEvent
     {
+        public override string EventName { get; } = "_5PaymentAccepted";
+
         public string CardNumber { get; set; }
         public double Value { get; set; }
 
-        public _5PaymentAccepted(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
 
         public _5PaymentAccepted(Guid aggregateRootId) : base(aggregateRootId)
         {

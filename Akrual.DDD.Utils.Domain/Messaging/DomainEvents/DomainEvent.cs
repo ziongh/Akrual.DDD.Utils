@@ -12,13 +12,19 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
         /// </summary>
         public Guid AggregateRootId { get; private set; }
 
+        /// <summary>
+        /// Defines the Event Name that will be used in the Store.
+        /// It is important to keep this name the same. Because, otherwise, 
+        /// there will be some problems when fetching the streams.
+        /// </summary>
+        public abstract string EventName { get; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainEvent"/> class.
         /// </summary>
         /// <param name="aggregateRootId">Entity instance id.</param>
-        /// <param name="entityVersion">Entity instance version.</param>
-        protected DomainEvent(Guid aggregateRootId, long entityVersion)
+        protected DomainEvent(Guid aggregateRootId)
         {
             if (aggregateRootId.Equals(Guid.Empty))
             {
@@ -26,15 +32,6 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
             }
 
             AggregateRootId = aggregateRootId;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DomainEvent"/> class.
-        /// </summary>
-        /// <param name="aggregateRootId">Entity instance id.</param>
-        protected DomainEvent(Guid aggregateRootId)
-            : this(aggregateRootId, 0)
-        {
         }
     }
 }
