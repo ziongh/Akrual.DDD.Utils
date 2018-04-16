@@ -22,7 +22,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
             var factoryOfHandler = _container.GetInstance<IDefaultFactory<IHandleDomainEvent<Tevent>>>();
 
             // Creates the Event Handler (The Aggregate)
-            var handler = await factoryOfHandler.Create(request.AggregateRootId);
+            var handler = await factoryOfHandler.CreateAsOf(request.AggregateRootId);
 
             // Apply Events into the EventHandler (The Aggregate)
             var messages = (await handler.ApplyEvents(request)).ToList();

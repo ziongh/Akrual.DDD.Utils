@@ -6,6 +6,7 @@ using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
@@ -41,7 +42,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         public DateTime Date { get; set; }
 
 
-        public ExampleAggregateCreated(Guid aggregateRootId) : base(aggregateRootId)
+        public ExampleAggregateCreated(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
 
@@ -84,7 +85,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 
         private IEnumerable<IDomainEvent> GenerateEvents(CreateExampleAggregate request)
         {
-            yield return new ExampleAggregateCreated(request.AggregateRootId)
+            yield return new ExampleAggregateCreated(GuidGenerator.GenerateTimeBasedGuid(),request.AggregateRootId)
             {
                 Name = request.Name,
                 Date = request.Date,

@@ -12,7 +12,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
         public double Value { get; set; }
 
 
-        public _5PaymentAccepted(Guid aggregateRootId) : base(aggregateRootId)
+        public _5PaymentAccepted(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
 

@@ -70,7 +70,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // It has name
+            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid()); // It has name
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -85,7 +85,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
             exampleEntityFactory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
-            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // name is null
+            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid()); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -99,7 +99,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
             var andRule = ruleContructor.Create();
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // It has name
+            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid()); // It has name
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 
@@ -114,7 +114,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
             exampleEntityFactory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
-            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid()); // name is null
+            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid()); // name is null
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 

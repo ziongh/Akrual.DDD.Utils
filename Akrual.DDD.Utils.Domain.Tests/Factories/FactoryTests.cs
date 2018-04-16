@@ -14,7 +14,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
         {
             var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
@@ -24,7 +24,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         public async Task Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
         {
             var factory = new FactoryWithOnObjectCreating();
-            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
@@ -34,7 +34,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         {
             var factory = new FactoryWithOnObjectCreating();
             factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
-            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("YetAnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
@@ -46,7 +46,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
             var factory = new FactoryWithOnObjectCreating();
             factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
             factory.OnAfterCreateDefaultInstance -= factory.SetNameToYetAnotherName;
-            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);

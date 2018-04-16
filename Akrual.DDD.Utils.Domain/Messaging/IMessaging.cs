@@ -10,7 +10,6 @@ namespace Akrual.DDD.Utils.Domain.Messaging
     /// </summary>
     public interface IMessaging
     {
-
     }
 
 

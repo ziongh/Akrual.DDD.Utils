@@ -28,7 +28,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
 
             var andRule = new OrDomainRule<ExampleAggregate>(leftRule, rightRule);
             var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid());
+            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 

@@ -17,7 +17,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
             yield return UserId;
         }
 
-        protected _6OrderConfirmed(Guid aggregateRootId) : base(aggregateRootId)
+        protected _6OrderConfirmed(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
     }
@@ -26,7 +26,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
     {
         public override string EventName { get; } = "_6OrderConfirmed_Customer";
 
-        public _6OrderConfirmed_Customer(Guid aggregateRootId) : base(aggregateRootId)
+        public _6OrderConfirmed_Customer(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
 
@@ -35,7 +35,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
     {
         public override string EventName { get; } = "_6OrderConfirmed_Order";
 
-        public _6OrderConfirmed_Order(Guid aggregateRootId) : base(aggregateRootId)
+        public _6OrderConfirmed_Order(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
     }
@@ -43,7 +43,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
     {
         public override string EventName { get; } = "_6OrderConfirmed_Reservation";
 
-        public _6OrderConfirmed_Reservation(Guid aggregateRootId) : base(aggregateRootId)
+        public _6OrderConfirmed_Reservation(Guid eventId,Guid aggregateRootId) : base(eventId,aggregateRootId)
         {
         }
     }

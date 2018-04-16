@@ -8,6 +8,7 @@ using Akrual.DDD.Utils.Domain.Exceptions;
 using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain
@@ -18,6 +19,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public async Task CanOpenANewTab()
         {
             var testId = Guid.NewGuid();
+            var eventId = GuidGenerator.GenerateTimeBasedGuid();
             var testTable = 42;
             var testWaiter = "Derek";
 
@@ -28,7 +30,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
                     TableNumber = testTable,
                     Waiter = testWaiter
                 }),
-                Then(new TabOpened(testId)
+                Then(new TabOpened(eventId,testId)
                 {
                     TableNumber = testTable,
                     Waiter = testWaiter
@@ -38,12 +40,13 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         [Fact]
         public async Task CannotOpenTabTwice()
         {
-            var testId = Guid.NewGuid();
+            var testId = GuidGenerator.GenerateTimeBasedGuid();
+            var eventId = GuidGenerator.GenerateTimeBasedGuid();
             var testTable = 42;
             var testWaiter = "Derek";
 
             await Test(new TabAggregate(), 
-                Given(new TabOpened(testId)
+                Given(new TabOpened(eventId, testId)
                 {
                     TableNumber = testTable,
                     Waiter = testWaiter
@@ -69,7 +72,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public int TableNumber;
         public string Waiter;
 
-        public TabOpened(Guid aggregateRootId) : base(aggregateRootId)
+        public TabOpened(Guid eventId, Guid aggregateRootId) : base(eventId, aggregateRootId)
         {
         }
 
@@ -130,7 +133,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
 
         private IEnumerable<IDomainEvent> GetEvents(OpenTab command)
         {
-            yield return new TabOpened(command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
+            yield return new TabOpened(GuidGenerator.GenerateTimeBasedGuid(),command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
         }
 
         public async Task<IEnumerable<IMessaging>> Handle(TabOpened notification, CancellationToken cancellationToken)

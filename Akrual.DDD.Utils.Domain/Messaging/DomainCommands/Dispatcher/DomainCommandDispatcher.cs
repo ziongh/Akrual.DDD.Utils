@@ -24,7 +24,7 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
             var factoryOfHandler = _container.GetInstance<IDefaultFactory<IHandleDomainCommand<Tcommand>>>();
 
             // Creates the Command Handler (The Aggregate)
-            var handler = await factoryOfHandler.Create(request.AggregateRootId);
+            var handler = await factoryOfHandler.CreateAsOf(request.AggregateRootId);
 
             // Handle the Command with the Command Handler (Aggregate) and returns all messages
             var messages = await handler.Handle(request, cancellationToken);
