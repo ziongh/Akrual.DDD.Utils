@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
+using Akrual.DDD.Utils.Domain.Repositories;
 using SimpleInjector;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
@@ -18,11 +19,11 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher
 
         public async Task<IEnumerable<IDomainCommand>> Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
         {
-            // Get Factory of Event Handler
-            var factoryOfHandler = _container.GetInstance<IDefaultFactory<IHandleDomainEvent<Tevent>>>();
+            // Get FactoryBase of Event Handler
+            var repositoryOfHandler = _container.GetInstance<IRepository<IHandleDomainEvent<Tevent>>>();
 
             // Creates the Event Handler (The Aggregate)
-            var handler = await factoryOfHandler.CreateAsOf(request.AggregateRootId);
+            var handler = await repositoryOfHandler.CreateAsOf(request.AggregateRootId);
 
             // Apply Events into the EventHandler (The Aggregate)
             var messages = (await handler.ApplyEvents(request)).ToList();

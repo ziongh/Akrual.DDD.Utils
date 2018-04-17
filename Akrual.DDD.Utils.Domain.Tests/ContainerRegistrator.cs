@@ -10,6 +10,7 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
 using Akrual.DDD.Utils.Domain.Messaging.Saga;
+using Akrual.DDD.Utils.Domain.Repositories;
 using Akrual.DDD.Utils.Domain.UOW;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
 using SimpleInjector;
@@ -38,7 +39,8 @@ namespace Akrual.DDD.Utils.Domain.Tests
 
             container.Register<IEventStore, InMemoryEventStore>(Lifestyle.Singleton);
             container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
-            container.Register(typeof(IDefaultFactory<>),  typeof(DefaultFactory<>),Lifestyle.Scoped);
+            container.Register(typeof(IFactory<>),  typeof(DefaultFactory<>),Lifestyle.Scoped);
+            container.Register(typeof(IRepository<>),  typeof(Repository<>),Lifestyle.Scoped);
 
             container.Register<IDomainCommandDispatcher, DomainCommandDispatcher>(Lifestyle.Scoped);
             container.Register<IDomainEventPublisher, DomainEventPublisher>(Lifestyle.Scoped);

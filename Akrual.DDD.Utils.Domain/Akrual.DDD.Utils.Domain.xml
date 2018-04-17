@@ -4,9 +4,14 @@
         <name>Akrual.DDD.Utils.Domain</name>
     </assembly>
     <members>
-        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.EventsLoaded">
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.GetTotalEventsLoaded">
             <summary>
             The number of events loaded into this aggregate.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.GetTotalEventsLoadedFromDB">
+            <summary>
+            The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
             </summary>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.GetEventStream">
@@ -55,12 +60,12 @@
                 <remarks><c>So add properties as private or maximum internal only!</c></remarks>
             </summary>
         </member>
-        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.EventsLoaded">
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetTotalEventsLoaded">
             <summary>
             The number of events loaded into this aggregate.
             </summary>
         </member>
-        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.EventsLoadedFromDB">
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetTotalEventsLoadedFromDB">
             <summary>
             The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
             </summary>
@@ -151,12 +156,18 @@
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1">
             <summary>
-            This class implements the IDefaultFactory Interface and the Factory Abstract class.
+            This class implements the IFactory Interface and the FactoryBase Abstract class.
             The behaviour: The Create method will call new() and then will set the Id Property to the given guid.
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.FactoryBase`1.CreateDefaultInstance(System.Guid)">
+            <summary>
+                Creates the default Aggregate. It should be already filled with the UUID.
+                <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.FactoryBase`1.Create(System.Guid)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order. Then it check all later events that should be applied before the given
@@ -164,57 +175,13 @@
                 <remarks> 
                     In other words, it will give the result of a particular time point within the stream (everything we know 
                     that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order.
-                <remarks> 
-                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstanceAsOf(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates the default Aggregate. It should be already filled with the UUID.
-                <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstanceAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates the default Aggregate. It should be already filled with the UUID.
-                <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order. Then it check all later events that should be applied before the given
-                point and applies them too.
-                <remarks> 
-                    In other words, it will give the result of a particular time point within the stream (everything we know 
-                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order.
-                <remarks> 
-                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Factories.FactoryCreationExecutingContext`2">
             <summary>
-            Used to Pass information to the Factory. So we can alter the behaviour of the factory.
+            Used to Pass information to the FactoryBase. So we can alter the behaviour of the factory.
             </summary>
             <typeparam name="TAggregate"></typeparam>
             <typeparam name="T"></typeparam>
@@ -225,33 +192,11 @@
             it is created or some internal property use it
             </summary>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1">
+        <member name="T:Akrual.DDD.Utils.Domain.Factories.IFactory`1">
             <summary>
-            This interface represents a default implementation of an Factory
+            This interface represents a default implementation of an FactoryBase
             </summary>
             <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order. Then it check all later events that should be applied before the given
-                point and applies them too.
-                <remarks> 
-                    In other words, it will give the result of a particular time point within the stream (everything we know 
-                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order.
-                <remarks> 
-                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.IInstantiator`1">
             <summary>
@@ -484,6 +429,50 @@
             <param name="id">Aggregate root instance id.</param>
             <returns>Aggregate root instance.</returns>
         </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Rules.BaseDomainRule`2">
             <summary>
             Base class for Rule Definition. It should receive one Entity as input (TEntity) and return a value as Output (TRuleReturn). This output will be used in the RuleExecutor.
@@ -671,6 +660,18 @@
             </summary>
             <typeparam name="TEntity">The type of the Input</typeparam>
             <typeparam name="TRuleReturn">The type of the Output</typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.UOW.IUnitOfWork">
+            <summary>
+            Unit of Work. It will hold all the instances that will be used through out the entire
+            Use case. And will call the Event store to store the events when it is disposed.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.UOW.UnitOfWork">
+            <summary>
+            Unit of Work. It will hold all the instances that will be used through out the entire
+            Use case. And will call the Event store to store the events when it is disposed.
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.DictionaryByValue`2">
             <summary>

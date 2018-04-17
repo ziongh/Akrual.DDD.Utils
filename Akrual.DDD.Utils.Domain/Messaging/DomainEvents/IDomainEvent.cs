@@ -10,5 +10,6 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
     {
         Guid EventGuid { get; set; }
         DateTime? AppliesAt { get; set; }
+
     }
 }
