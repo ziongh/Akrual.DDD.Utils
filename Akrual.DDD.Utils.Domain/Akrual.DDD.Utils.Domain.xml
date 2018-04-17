@@ -15,6 +15,12 @@
             </summary>
             <returns>A collection of domain events.</returns>
         </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.GetChangesEventStream">
+            <summary>
+            Gets all new domain events that have been applied to the aggregate root instance since the fetching from the database.
+            </summary>
+            <returns>A collection of domain events.</returns>
+        </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyEvents(System.Collections.Generic.IEnumerable{Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent})">
             <summary>
             Enuerates the supplied events and applies them in order to the aggregate.
@@ -27,7 +33,7 @@
             </summary>
             <param name="domainEvents"></param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyOneEvent``1(``0)">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.ApplyOneEvent``1(``0,Akrual.DDD.Utils.Domain.Aggregates.Internal)">
             <summary>
             Applies a single event to the aggregate.
             <remarks>Normally thuis method should not be used. Because, the Aggregate
@@ -35,6 +41,12 @@
             </summary>
             <typeparam name="TEvent"></typeparam>
             <param name="ev"></param>
+            <param name="nothing">This parameter is only here to block any acces to this method from outside of the library</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.AllEventsStored">
+            <summary>
+            Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1">
             <summary>
@@ -48,6 +60,11 @@
             The number of events loaded into this aggregate.
             </summary>
         </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.EventsLoadedFromDB">
+            <summary>
+            The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
+            </summary>
+        </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
             <summary>
             Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
@@ -56,6 +73,17 @@
                 <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
             </summary>
             <param name="id">Aggregate root instance id.</param>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.AllEventsStored">
+            <summary>
+            Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetChangesEventStream">
+            <summary>
+            Gets all new domain events that have been applied to the aggregate root instance since the fetching from the database.
+            </summary>
+            <returns>A collection of domain events.</returns>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.GetEventStream">
             <summary>
@@ -75,7 +103,7 @@
             </summary>
             <param name="domainEvents"></param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyOneEvent``1(``0)">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.ApplyOneEvent``1(``0,Akrual.DDD.Utils.Domain.Aggregates.Internal)">
             <summary>
             Applies a single event to the aggregate.
             <remarks>Normally thuis method should not be used. Because, the Aggregate
@@ -83,6 +111,7 @@
             </summary>
             <typeparam name="TEvent"></typeparam>
             <param name="ev"></param>
+            <param name="nothing">This parameter is only here to block any acces to this method from outside of the library</param>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Entities.BaseDomainStatus">
             <summary>
@@ -127,15 +156,59 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstance(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.DefaultFactory`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstanceAsOf(System.Guid,System.Nullable{System.DateTime})">
             <summary>
                 Creates the default Aggregate. It should be already filled with the UUID.
                 <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.Create(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateDefaultInstanceAsAt(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Creates the Aggregate with all the invariants Checked
+                Creates the default Aggregate. It should be already filled with the UUID.
+                <remarks><c>Use GuidGenerator to generate UUID!</c></remarks>
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.Factory`2.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
@@ -158,9 +231,25 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.Create(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Creates the Aggregate with all the invariants Checked
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
+            </summary>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.IDefaultFactory`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+            <summary>
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
@@ -176,7 +265,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.Instantiator`1.Create">
+        <member name="M:Akrual.DDD.Utils.Domain.Factories.InstanceFactory.Instantiator`1.Create(System.Guid)">
             <summary>
             <remarks>Dangerous!</remarks> Because it creates one new async scope to create a new instance.
             </summary>
@@ -260,17 +349,18 @@
             Gets the entity id.
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Int64)">
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.EventName">
             <summary>
-            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
+            Defines the Event Name that will be used in the Store.
+            It is important to keep this name the same. Because, otherwise, 
+            there will be some problems when fetching the streams.
             </summary>
-            <param name="aggregateRootId">Entity instance id.</param>
-            <param name="entityVersion">Entity instance version.</param>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Guid)">
             <summary>
             Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
             </summary>
+            <param name="eventGuid">Event id.</param>
             <param name="aggregateRootId">Entity instance id.</param>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.IDomainEvent">
@@ -283,6 +373,72 @@
             Implemented by an aggregate once for each event type it can apply.
             </summary>
             <typeparam name="TEvent"></typeparam>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IRecordedEvent">
+            <summary>
+            Represents an Event That is recorded into the event Store. It has a new property that
+            indicates the exact time the event was inserted into the stream.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IRecordedEvent.Event">
+            <summary>
+            The recorded Event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IRecordedEvent.CreatedAt">
+            <summary>
+            The date and time in which the event was stored.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IUndoEvent">
+            <summary>
+            Represents an Event That Will Undo another Event that already happened.
+            The EventGuid property will point to the event already happened. 
+            And the Event Property will be the event data to undo the other event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IUndoEvent.Event">
+            <summary>
+            The event data to undo the other event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.IUndoEvent.EventGuid">
+            <summary>
+            Points to the event already happened.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.RecordedEvent">
+            <summary>
+            Represents an Event That is recorded into the event Store. It has a new property that
+            indicates the exact time the event was inserted into the stream.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.RecordedEvent.Event">
+            <summary>
+            The recorded Event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.RecordedEvent.CreatedAt">
+            <summary>
+            The date and time in which the event was stored.
+            </summary>
+        </member>
+        <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.UndoEvent">
+            <summary>
+            Represents an Event That Will Undo another Event that already happened.
+            The EventGuid property will point to the event already happened. 
+            And the Event Property will be the event data to undo the other event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.UndoEvent.Event">
+            <summary>
+            The event data to undo the other event.
+            </summary>
+        </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents.UndoEvent.EventGuid">
+            <summary>
+            Points to the event already happened.
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.IMessaging">
             <summary>

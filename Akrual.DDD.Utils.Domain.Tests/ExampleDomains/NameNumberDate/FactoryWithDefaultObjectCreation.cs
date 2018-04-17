@@ -9,7 +9,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
     internal class FactoryWithDefaultObjectCreation : Factory<ExampleAggregate, ExampleAggregate>
     {
-        public override async Task<ExampleAggregate> CreateDefaultInstanceAsOf(Guid guid)
+
+        protected override async Task<ExampleAggregate> CreateDefaultInstanceAsOf(Guid guid, DateTime? AsOfDate = null)
         {
             var entity = new ExampleAggregate();
             var events = await entity.Handle(new CreateExampleAggregate(guid)
@@ -22,6 +23,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
             await entity.ApplyEvents(events.Cast<IDomainEvent>());
 
             return entity;
+        }
+
+        protected override Task<ExampleAggregate> CreateDefaultInstanceAsAt(Guid guid, DateTime? AsOAtDate = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

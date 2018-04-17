@@ -27,7 +27,7 @@ namespace Akrual.DDD.Utils.Domain.Factories
             _uow = uow;
             _eventStore = eventStore;
             _instantiator = instantiator;
-            _type = (Type) ((dynamic) _instantiator.Create()).GetType();
+            _type = (Type) ((dynamic) _instantiator.Create(Guid.Empty)).GetType();
         }
 
         /// <summary>
@@ -78,41 +78,33 @@ namespace Akrual.DDD.Utils.Domain.Factories
 
         protected internal override async Task<T> CreateDefaultInstanceAsOf(Guid guid, DateTime? AsOfDate = null)
         {
-            T result = _instantiator.Create();
-            SetPrivatePropertyValue(result, "Id", guid);
-
-
+            T result = _instantiator.Create(guid);
             result = await RebuildAggregateFromEventStreamAsOf(result,AsOfDate);
-
-
             return result;
         }
 
         protected internal override async Task<T> CreateDefaultInstanceAsAt(Guid guid, DateTime? AsAtDate = null)
         {
-            T result = _instantiator.Create();
-            SetPrivatePropertyValue(result, "Id", guid);
-
-
+            T result = _instantiator.Create(guid);
             result = await RebuildAggregateFromEventStreamAsAt(result,AsAtDate);
-
-
             return result;
         }
 
         private async Task<T> RebuildAggregateFromEventStreamAsAt(T result, DateTime? AsAtDate = null)
         {
             var stream = await _eventStore.GetEventStream(result);
-            
-            foreach (var recordedEvent in await stream.Events)
+            if (stream != null)
             {
-                var @event = recordedEvent.Event;
-                if (AsAtDate == null || recordedEvent.CreatedAt <= AsAtDate)
+                foreach (var recordedEvent in await stream.Events)
                 {
-                    await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
+                    var @event = recordedEvent.Event;
+                    if (AsAtDate == null || recordedEvent.CreatedAt <= AsAtDate)
+                    {
+                        await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
+                    }
                 }
             }
-
+           
             result.AllEventsStored();
             return result;
         }
@@ -120,30 +112,24 @@ namespace Akrual.DDD.Utils.Domain.Factories
         private async Task<T> RebuildAggregateFromEventStreamAsOf(T result, DateTime? AsOfDate = null)
         {
             var stream = await _eventStore.GetEventStream(result);
-            
-            foreach (var recordedEvent in await stream.Events)
+            if (stream != null)
             {
-                var @event = recordedEvent.Event;
-                if (AsOfDate == null || recordedEvent.CreatedAt <= AsOfDate)
+                foreach (var recordedEvent in await stream.Events)
                 {
-                    await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
-                }
-                else if (@event.AppliesAt <= AsOfDate)
-                {
-                    await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
+                    var @event = recordedEvent.Event;
+                    if (AsOfDate == null || recordedEvent.CreatedAt <= AsOfDate)
+                    {
+                        await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
+                    }
+                    else if (@event.AppliesAt <= AsOfDate)
+                    {
+                        await result.ApplyOneEvent((dynamic) @event, new Aggregates.Internal());
+                    }
                 }
             }
 
             result.AllEventsStored();
             return result;
-        }
-
-
-        private static void SetPrivatePropertyValue<T>(T obj, string propertyName, object newValue)
-        {
-            var type = (Type) ((dynamic) obj).GetType();
-            PropertyInfo property = type.GetProperty(propertyName);
-            property.GetSetMethod(true).Invoke(obj, new object[] {newValue});
         }
     }
 }

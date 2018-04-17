@@ -1,4 +1,7 @@
-﻿using SimpleInjector;
+﻿using System;
+using System.Reflection;
+using Akrual.DDD.Utils.Internal.UsefulClasses;
+using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
 namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
@@ -19,11 +22,13 @@ namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
         /// <remarks>Dangerous!</remarks> Because it creates one new async scope to create a new instance.
         /// </summary>
         /// <returns></returns>
-        public T Create()
+        public T Create(Guid id)
         {
             using (AsyncScopedLifestyle.BeginScope(_container))
             {
-                return _container.GetInstance<T>();
+                T instance = _container.GetInstance<T>();
+                instance.SetPrivatePropertyValue("Id", id);
+                return instance;
             }
         }
     }

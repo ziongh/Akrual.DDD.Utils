@@ -33,7 +33,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
         public Order() : base(Guid.Empty)
         {
         }
-
         public async Task<IEnumerable<IMessaging>> Handle(_1PlaceOrder request, CancellationToken cancellationToken)
         {
             return HandlePlaceOrder(request);
@@ -84,17 +83,17 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
 
         private IEnumerable<IMessaging> HandlePaymentAccepted(_5PaymentAccepted request)
         {
-            yield return new _6OrderConfirmed_Customer(_userId)
+            yield return new _6OrderConfirmed_Customer(GuidGenerator.GenerateTimeBasedGuid(),_userId)
             {
                 UserId = _userId,
                 SeatNumber = _seatNumber
             };
-            yield return new _6OrderConfirmed_Order(this.Id)
+            yield return new _6OrderConfirmed_Order(GuidGenerator.GenerateTimeBasedGuid(),this.Id)
             {
                 UserId = _userId,
                 SeatNumber = _seatNumber
             };
-            yield return new _6OrderConfirmed_Reservation(_reservationId)
+            yield return new _6OrderConfirmed_Reservation(GuidGenerator.GenerateTimeBasedGuid(),_reservationId)
             {
                 UserId = _userId,
                 SeatNumber = _seatNumber

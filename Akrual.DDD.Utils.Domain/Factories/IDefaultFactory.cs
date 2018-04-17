@@ -10,6 +10,8 @@ namespace Akrual.DDD.Utils.Domain.Factories
     /// <typeparam name="T"></typeparam>
     public interface IDefaultFactory<T> where T : IAggregateRoot
     {
+        event EventHandler<FactoryCreationExecutingContext<T, T>> OnAfterCreateDefaultInstance;
+
         /// <summary>
         ///     Creates The aggregate, then query the event store for all it's events until a certain point. 
         ///     And applies them in order. Then it check all later events that should be applied before the given

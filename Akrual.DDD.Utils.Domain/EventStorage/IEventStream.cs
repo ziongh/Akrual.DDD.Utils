@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents;
@@ -9,5 +10,23 @@ namespace Akrual.DDD.Utils.Domain.EventStorage
     {
         string StreamName { get; set; }
         Task<IEnumerable<IRecordedEvent>> Events { get; set; }
+    }
+
+    public class EventStream : IEventStream
+    {
+        public string StreamName { get; set; }
+        public Task<IEnumerable<IRecordedEvent>> Events { get; set; }
+    }
+
+    public class EventStreamNameComponents
+    {
+        public EventStreamNameComponents(Type aggregateType, Guid aggregateGuid)
+        {
+            AggregateType = aggregateType;
+            AggregateGuid = aggregateGuid;
+        }
+
+        public Type AggregateType { get; set; }
+        public Guid AggregateGuid { get; set; }
     }
 }

@@ -46,10 +46,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
             var factory2 = _container.GetInstance<IDefaultFactory<ExampleAggregate>>();
 
             var id = GuidGenerator.GenerateTimeBasedGuid();
+            var eventid = GuidGenerator.GenerateTimeBasedGuid();
 
             var exampleAggregate1 = await factory1.CreateAsOf(id);
 
-            await exampleAggregate1.Handle(new ExampleAggregateCreated(id)
+            await exampleAggregate1.Handle(new ExampleAggregateCreated(eventid,id)
             {
                 Name = "This Entity Handled one Event",
                 Date = DateTime.Now
@@ -72,11 +73,12 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();
             var id2 = GuidGenerator.GenerateTimeBasedGuid();
+            var eventid = GuidGenerator.GenerateTimeBasedGuid();
 
             var exampleAggregate1 = await factory1.CreateAsOf(id1);
             var exampleAggregate2 = await factory1.CreateAsOf(id2);
 
-            await exampleAggregate1.Handle(new ExampleAggregateCreated(id1)
+            await exampleAggregate1.Handle(new ExampleAggregateCreated(eventid,id1)
             {
                 Name = "This Entity Handled one Event",
                 Date = DateTime.Now

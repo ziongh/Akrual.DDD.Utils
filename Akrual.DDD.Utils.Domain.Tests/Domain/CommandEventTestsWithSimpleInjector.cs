@@ -26,7 +26,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
                 Waiter = testWaiter
             },CancellationToken.None);
             
-            Assert.Equal(1, response.Count());
+            Assert.Single(response);
             Assert.Equal(testId, response.First().AggregateRootId);
             Assert.IsType<TabOpened>(response.First());
         }

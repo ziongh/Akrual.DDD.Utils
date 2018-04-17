@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
@@ -10,10 +11,10 @@ namespace Akrual.DDD.Utils.Domain.UOW
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly EventStore _eventStore;
+        private readonly IEventStore _eventStore;
 
         public ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>> LoadedAggregates { get; set; }
-        public UnitOfWork(EventStore eventStore)
+        public UnitOfWork(IEventStore eventStore)
         {
             _eventStore = eventStore;
             LoadedAggregates = new ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>>();
@@ -51,14 +52,14 @@ namespace Akrual.DDD.Utils.Domain.UOW
 
         public void Dispose()
         {
-            var allChanges = new List<IDomainEvent>();
+            var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
 
             // Get all Changes from all Aggregates.
             foreach (var listOfAggregateOfSameType in LoadedAggregates)
             {
                 foreach (var aggregate in listOfAggregateOfSameType.Value)
                 {
-                    allChanges.AddRange(aggregate.Value.GetChangesEventStream());
+                    allChanges.Add(new EventStreamNameComponents(aggregate.Value.GetType(),aggregate.Value.Id), aggregate.Value.GetChangesEventStream());
                 }
             }
 

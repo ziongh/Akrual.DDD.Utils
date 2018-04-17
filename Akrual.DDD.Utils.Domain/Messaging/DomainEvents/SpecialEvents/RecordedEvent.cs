@@ -15,6 +15,6 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents.SpecialEvents
         /// <summary>
         /// The date and time in which the event was stored.
         /// </summary>
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; set; }
     }
 }

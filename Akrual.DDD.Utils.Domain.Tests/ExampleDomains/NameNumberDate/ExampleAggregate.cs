@@ -65,7 +65,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         public ExampleAggregate() : base(Guid.Empty)
         {
         }
-
+        
         public string Name { get; private set; }
         public int Number { get; private set; }
         public DateTime Date { get; private set; }

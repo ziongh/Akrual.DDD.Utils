@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
@@ -35,7 +36,7 @@ namespace Akrual.DDD.Utils.Domain.Tests
                 AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
 
 
-
+            container.Register<IEventStore, InMemoryEventStore>(Lifestyle.Singleton);
             container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
             container.Register(typeof(IDefaultFactory<>),  typeof(DefaultFactory<>),Lifestyle.Scoped);
 

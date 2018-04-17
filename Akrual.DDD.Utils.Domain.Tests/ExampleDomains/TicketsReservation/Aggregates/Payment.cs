@@ -6,6 +6,7 @@ using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using Akrual.DDD.Utils.Domain.Utils.UUID;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
 {
@@ -23,7 +24,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
 
         private IEnumerable<IDomainEvent> HandleDomainCommand(_4MakePayment request)
         {
-            yield return new _5PaymentAccepted(request.OrderId)
+            yield return new _5PaymentAccepted(GuidGenerator.GenerateTimeBasedGuid(),request.OrderId)
             {
                 CardNumber = request.CardNumber,
                 Value = request.Value
