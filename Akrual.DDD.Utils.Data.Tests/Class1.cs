@@ -12,7 +12,7 @@ namespace Akrual.DDD.Utils.Data.Tests
 {
     public class ClassNameTests : BaseTests
     {
-        [Fact]
+        [Fact(Skip = "REquires Setting EventStore UP")]
         public async Task testSomething()
         {
             var connection = EventStoreConnection.Create(Settings(TcpType.Normal, new UserCredentials("akrual", "akrual")).Build());

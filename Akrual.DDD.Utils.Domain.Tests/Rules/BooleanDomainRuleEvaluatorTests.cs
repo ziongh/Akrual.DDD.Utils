@@ -18,8 +18,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
         {
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule);
-            var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithDefaultObjectCreation();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -32,8 +32,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var trueRule2 = new TrueDomainRule<ExampleAggregate>();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, trueRule2);
-            var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithDefaultObjectCreation();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -46,8 +46,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var trueRule2 = new TrueDomainRule<ExampleAggregate>();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(new List<IDomainRule<ExampleAggregate, bool>>{trueRule, trueRule2});
-            var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithDefaultObjectCreation();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -61,8 +61,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
-            var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithDefaultObjectCreation();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -75,10 +75,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
 
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -91,10 +91,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate>();
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("");
 
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -109,9 +109,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule);
             evaluator.AddRule(nameNotEmptyRule);
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("");
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -125,9 +125,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var nameNotEmptyRule = new NameIsNotEmptyRule();
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule);
             evaluator.AddRule(new List<BoolenaDomainRule<ExampleAggregate>> {nameNotEmptyRule});
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("");
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -144,9 +144,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             evaluator.AddRule(nameNotEmptyRule);
             evaluator.RemoveRule(nameNotEmptyRule);
 
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("");
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -163,9 +163,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             evaluator.AddRule(nameNotEmptyRule);
             evaluator.RemoveRule(new List<IDomainRule<ExampleAggregate, bool>>{ nameNotEmptyRule });
 
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("");
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 
@@ -178,10 +178,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules
             var trueRule = new TrueDomainRule<ExampleAggregate> {Order = 1, ForceFinishExecutor = true};
             var nameNotEmptyRule = new NameIsNotEmptyRule { Order = 2, ForceFinishExecutor = false }; // This wont run
             var evaluator = new BooleanDomainRuleEvaluator<ExampleAggregate>(trueRule, nameNotEmptyRule);
-            var factory = new FactoryWithDefaultObjectCreation();
+            var factory = new FactoryBaseWithDefaultObjectCreation();
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName(null);
 
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluateValue = evaluator.ExecuteAllRules(exampleAggregate);
 

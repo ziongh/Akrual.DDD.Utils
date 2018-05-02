@@ -7,10 +7,9 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
-    internal class FactoryWithDefaultObjectCreation : Factory<ExampleAggregate, ExampleAggregate>
+    internal class FactoryBaseWithDefaultObjectCreation : FactoryBase<ExampleAggregate>
     {
-
-        protected override async Task<ExampleAggregate> CreateDefaultInstanceAsOf(Guid guid, DateTime? AsOfDate = null)
+        protected override async Task<ExampleAggregate> CreateDefaultInstance(Guid guid)
         {
             var entity = new ExampleAggregate();
             var events = await entity.Handle(new CreateExampleAggregate(guid)
@@ -23,11 +22,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
             await entity.ApplyEvents(events.Cast<IDomainEvent>());
 
             return entity;
-        }
-
-        protected override Task<ExampleAggregate> CreateDefaultInstanceAsAt(Guid guid, DateTime? AsOAtDate = null)
-        {
-            throw new NotImplementedException();
         }
     }
 }

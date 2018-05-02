@@ -18,7 +18,12 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// <summary>
         /// The number of events loaded into this aggregate.
         /// </summary>
-        Counter EventsLoaded { get; }
+        int GetTotalEventsLoaded { get; }
+
+        /// <summary>
+        /// The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
+        /// </summary>
+        int GetTotalEventsLoadedFromDB { get; }
 
         /// <summary>
         /// Gets all domain events that have been applied to the aggregate root instance.
@@ -74,15 +79,21 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
 
         private readonly ConcurrentList<IDomainEvent> eventStream;
 
+        
+        private Counter EventsLoaded { get; }
+
+        
+        private Counter EventsLoadedFromDB { get; set; }
+
         /// <summary>
         /// The number of events loaded into this aggregate.
         /// </summary>
-        public Counter EventsLoaded { get; private set; }
+        public int GetTotalEventsLoaded => EventsLoaded.GetCurrentValue();
 
         /// <summary>
         /// The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
         /// </summary>
-        public Counter EventsLoadedFromDB { get; private set; }
+        public int GetTotalEventsLoadedFromDB => EventsLoadedFromDB.GetCurrentValue();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
@@ -118,6 +129,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         {
             return _changes;
         }
+
 
         /// <summary>
         /// Gets all domain events that have been applied to the aggregate root instance.

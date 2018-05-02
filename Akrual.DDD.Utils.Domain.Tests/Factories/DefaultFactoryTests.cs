@@ -16,10 +16,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithDefaultFactorySettingName_NameShouldBeSet()
         {
-            var eventStore = new InMemoryEventStore();
-            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(eventStore),new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
+            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(new InMemoryEventStore()),new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("OneName");
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
@@ -28,15 +27,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_TwoTimesWithSameGuid_ReturnsSameInstance()
         {
-            var eventStore = new InMemoryEventStore();
-            var uow = new UnitOfWork(eventStore);
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
+            var uow = new UnitOfWork(new InMemoryEventStore());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id = GuidGenerator.GenerateTimeBasedGuid();
 
-            var exampleAggregate1 = await factory1.CreateAsOf(id);
-            var exampleAggregate2 = await factory2.CreateAsOf(id);
+            var exampleAggregate1 = await factory1.Create(id);
+            var exampleAggregate2 = await factory2.Create(id);
 
 
             Assert.Same(exampleAggregate1, exampleAggregate2);
@@ -47,15 +45,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_TwoTimesWithSameGuidThenChangeData_ReturnsFirstInstance()
         {
-            var eventStore = new InMemoryEventStore();
-            var uow = new UnitOfWork(eventStore);
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
+            var uow = new UnitOfWork(new InMemoryEventStore());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id = GuidGenerator.GenerateTimeBasedGuid();
             var eventid = GuidGenerator.GenerateTimeBasedGuid();
 
-            var exampleAggregate1 = await factory1.CreateAsOf(id);
+            var exampleAggregate1 = await factory1.Create(id);
 
             await exampleAggregate1.Handle(new ExampleAggregateCreated(eventid,id)
             {
@@ -63,7 +60,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
                 Date = DateTime.Now
             }, CancellationToken.None);
 
-            var exampleAggregate2 = await factory2.CreateAsOf(id);
+            var exampleAggregate2 = await factory2.Create(id);
 
 
             Assert.Same(exampleAggregate1, exampleAggregate2);
@@ -75,17 +72,16 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_CreateTwoInstancesChangeOneThenRetrieveTheFirst_ReturnsCorrectName()
         {
-            var eventStore = new InMemoryEventStore();
-            var uow = new UnitOfWork(eventStore);
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
-            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
+            var uow = new UnitOfWork(new InMemoryEventStore());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
+            var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();
             var id2 = GuidGenerator.GenerateTimeBasedGuid();
             var eventid = GuidGenerator.GenerateTimeBasedGuid();
 
-            var exampleAggregate1 = await factory1.CreateAsOf(id1);
-            var exampleAggregate2 = await factory1.CreateAsOf(id2);
+            var exampleAggregate1 = await factory1.Create(id1);
+            var exampleAggregate2 = await factory1.Create(id2);
 
             await exampleAggregate1.Handle(new ExampleAggregateCreated(eventid,id1)
             {
@@ -93,7 +89,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
                 Date = DateTime.Now
             }, CancellationToken.None);
 
-            var exampleAggregate3 = await factory2.CreateAsOf(id1);
+            var exampleAggregate3 = await factory2.Create(id1);
 
             Assert.Same(exampleAggregate1, exampleAggregate3);
             Assert.NotSame(exampleAggregate1, exampleAggregate2);
@@ -103,15 +99,14 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_CallTwoTimesFactoryCreate_ReturnsTwoDifferentInstances()
         {
-            var eventStore = new InMemoryEventStore();
-            var uow = new UnitOfWork(eventStore);
-            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()),eventStore);
+            var uow = new UnitOfWork(new InMemoryEventStore());
+            var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate()));
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();
             var id2 = GuidGenerator.GenerateTimeBasedGuid();
 
-            var exampleAggregate1 = await factory1.CreateAsOf(id1);
-            var exampleAggregate2 = await factory1.CreateAsOf(id2);
+            var exampleAggregate1 = await factory1.Create(id1);
+            var exampleAggregate2 = await factory1.Create(id2);
             
             Assert.NotSame(exampleAggregate1, exampleAggregate2);
         }

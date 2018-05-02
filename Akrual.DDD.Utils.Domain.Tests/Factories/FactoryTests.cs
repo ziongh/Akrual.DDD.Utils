@@ -13,8 +13,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithDefaultObjectCreationSettingName_NameShouldBeSet()
         {
-            var factory = new FactoryWithDefaultObjectCreation();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithDefaultObjectCreation();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
@@ -23,8 +23,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithOnObjectCreatingSettingName_NameShouldBeSet()
         {
-            var factory = new FactoryWithOnObjectCreating();
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var factory = new FactoryBaseWithOnObjectCreating();
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
         }
@@ -32,9 +32,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithOnObjectCreatingSettingNameTwice_NameShouldBeSetTwice()
         {
-            var factory = new FactoryWithOnObjectCreating();
+            var factory = new FactoryBaseWithOnObjectCreating();
             factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("YetAnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
@@ -43,10 +43,10 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         [Fact]
         public async Task Create_FactoryWithOnObjectCreatingSettingNameTwicethenDeleteOne_NameShouldBeSetOnce()
         {
-            var factory = new FactoryWithOnObjectCreating();
+            var factory = new FactoryBaseWithOnObjectCreating();
             factory.OnAfterCreateDefaultInstance += factory.SetNameToYetAnotherName;
             factory.OnAfterCreateDefaultInstance -= factory.SetNameToYetAnotherName;
-            var exampleAggregate = await factory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             Assert.Equal("AnotherName", exampleAggregate.Name);
             Assert.NotEqual(Guid.Empty, exampleAggregate.Id);
@@ -55,9 +55,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
     }
     
 
-    internal class FactoryWithOnObjectCreating : FactoryWithDefaultObjectCreation
+    internal class FactoryBaseWithOnObjectCreating : FactoryBaseWithDefaultObjectCreation
     {
-        public FactoryWithOnObjectCreating() : base()
+        public FactoryBaseWithOnObjectCreating() : base()
         {
             OnAfterCreateDefaultInstance += this.SetNameToAnotherName;
         }

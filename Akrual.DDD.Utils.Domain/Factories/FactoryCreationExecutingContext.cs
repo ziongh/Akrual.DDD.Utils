@@ -3,7 +3,7 @@
 namespace Akrual.DDD.Utils.Domain.Factories
 {
     /// <summary>
-    /// Used to Pass information to the Factory. So we can alter the behaviour of the factory.
+    /// Used to Pass information to the FactoryBase. So we can alter the behaviour of the factory.
     /// </summary>
     /// <typeparam name="TAggregate"></typeparam>
     /// <typeparam name="T"></typeparam>

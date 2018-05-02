@@ -27,8 +27,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Rules.CommonDomainRules.Boolean
                     : new FalseDomainRule<ExampleAggregate>();
 
             var andRule = new AndDomainRule<ExampleAggregate>(leftRule, rightRule);
-            var exampleEntityFactory = new FactoryWithDefaultObjectCreation();
-            var entity = await exampleEntityFactory.CreateAsOf(GuidGenerator.GenerateTimeBasedGuid());
+            var exampleEntityFactory = new FactoryBaseWithDefaultObjectCreation();
+            var entity = await exampleEntityFactory.Create(GuidGenerator.GenerateTimeBasedGuid());
 
             var evaluatedValue = andRule.EvaluateRules(entity);
 

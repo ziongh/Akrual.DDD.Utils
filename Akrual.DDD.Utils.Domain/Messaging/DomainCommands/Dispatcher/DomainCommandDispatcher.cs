@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
+using Akrual.DDD.Utils.Domain.Repositories;
 using SimpleInjector;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
@@ -20,11 +21,11 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher
         public async Task<IEnumerable<IDomainEvent>> Dispatch<Tcommand>(Tcommand request,
             CancellationToken cancellationToken) where Tcommand : IDomainCommand
         {
-            // Get Factory of Command Handler
-            var factoryOfHandler = _container.GetInstance<IDefaultFactory<IHandleDomainCommand<Tcommand>>>();
+            // Get FactoryBase of Command Handler
+            var repositoryOfHandler = _container.GetInstance<IRepository<IHandleDomainCommand<Tcommand>>>();
 
             // Creates the Command Handler (The Aggregate)
-            var handler = await factoryOfHandler.CreateAsOf(request.AggregateRootId);
+            var handler = await repositoryOfHandler.CreateAsOf(request.AggregateRootId);
 
             // Handle the Command with the Command Handler (Aggregate) and returns all messages
             var messages = await handler.Handle(request, cancellationToken);
