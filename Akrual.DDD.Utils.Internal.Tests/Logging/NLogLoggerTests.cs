@@ -4,7 +4,7 @@ using NLog.Config;
 using NLog.Targets;
 using Xunit;
 
-namespace Akrual.DDD.Utils.Internal.Tests.Logging
+namespace Akrual.DDD.Utils.Internals.Tests.Logging
 {
     public class NLogLoggerTests
     {

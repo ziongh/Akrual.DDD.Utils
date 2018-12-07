@@ -3,7 +3,7 @@ using Akrual.DDD.Utils.Internal.Logging;
 using Xunit;
 using Logger = Akrual.DDD.Utils.Internal.Logging.Logger;
 
-namespace Akrual.DDD.Utils.Internal.Tests.Logging
+namespace Akrual.DDD.Utils.Internals.Tests.Logging
 {
     public class ConsoleProviderTest
     {

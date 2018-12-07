@@ -29,9 +29,9 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.2" />
     <PackageReference Include="MediatR" Version="4.1.0" />
-    <PackageReference Include="SimpleInjector" Version="4.2.1" />
+    <PackageReference Include="SimpleInjector" Version="4.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
+    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internals.csproj" />
   </ItemGroup>
 </Project>

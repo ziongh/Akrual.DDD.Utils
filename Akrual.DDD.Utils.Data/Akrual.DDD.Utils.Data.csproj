@@ -35,12 +35,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="NLog" Version="4.5.3" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.1" />
-    <PackageReference Include="SimpleInjector" Version="4.2.1" />
+    <PackageReference Include="SimpleInjector" Version="4.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />
-    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
+    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internals.csproj" />
   </ItemGroup>
 
 </Project>
