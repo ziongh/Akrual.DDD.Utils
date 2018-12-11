@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
@@ -17,13 +14,13 @@ using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Repositories
 {
-    public class RepositoryTests
+    public class EventSourceRepositoryTests
     {
         [Fact]
         public async Task CreateAsOf_GuidThatDoesntExists_ReturnNewAggregate()
         {
             var eventStore = new InMemoryEventStore();
-            var repository = new Repository<ExampleAggregate>(new ExampleFactory(), eventStore);
+            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventStore);
 
             var aggr = await repository.CreateAsOf(Guid.NewGuid());
 
@@ -42,7 +39,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
             allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id), new List<IDomainEvent> { new ExampleAggregateCreated(Guid.NewGuid(), aggregateId) });
             await eventstore.SaveNewEvents(allChanges);
-            var repository = new Repository<ExampleAggregate>(new ExampleFactory(), eventstore);
+            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventstore);
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsOf(aggregateId);
@@ -61,7 +58,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var aggregateId = GuidGenerator.GenerateTimeBasedGuid();
             var eventstore = await CreateLedger(aggregateId);
 
-            var repository = new Repository<Account>(new ExampleFactoryAccount(), eventstore);
+            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore);
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsOf(aggregateId, new DateTime(2010, 01, 04,23,01,01));
@@ -77,7 +74,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var aggregateId = GuidGenerator.GenerateTimeBasedGuid();
             var eventstore = await CreateLedger(aggregateId);
 
-            var repository = new Repository<Account>(new ExampleFactoryAccount(), eventstore);
+            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore);
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsAt(aggregateId, new DateTime(2010, 01, 04,23,01,01));

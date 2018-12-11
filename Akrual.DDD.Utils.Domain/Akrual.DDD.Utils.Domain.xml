@@ -415,19 +415,27 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Asynchronous domain repository for a given aggregate root type.
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
             </summary>
-            <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
-            <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2.FindByIdAsync(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Asynchronously finds an aggregate root instance from the repository using its id.
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
             </summary>
-            <param name="id">Aggregate root instance id.</param>
-            <returns>Aggregate root instance.</returns>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
             <summary>
@@ -447,28 +455,6 @@
                 <remarks> 
                     In other words, it will give the result of a particular time point within the stream (everything we know 
                     that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order. Then it check all later events that should be applied before the given
-                point and applies them too.
-                <remarks> 
-                    In other words, it will give the result of a particular time point within the stream (everything we know 
-                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order.
-                <remarks> 
-                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>

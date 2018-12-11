@@ -6,12 +6,12 @@ using Akrual.DDD.Utils.Domain.Factories;
 
 namespace Akrual.DDD.Utils.Domain.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class, IAggregateRoot
+    public class EventSourceRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {
         private readonly IFactory<T> _factory;
         private readonly IEventStore _eventStore;
 
-        public Repository(IFactory<T> factory, IEventStore eventStore)
+        public EventSourceRepository(IFactory<T> factory, IEventStore eventStore)
         {
             _factory = factory;
             _eventStore = eventStore;
@@ -63,7 +63,7 @@ namespace Akrual.DDD.Utils.Domain.Repositories
                     var @event = recordedEvent.Event;
                     if (AsAtDate == null || recordedEvent.CreatedAt <= AsAtDate)
                     {
-                        await result.ApplyOneEvent((dynamic)@event, new Aggregates.Internal());
+                        await result.ApplyOneEvent((dynamic)@event, new Domain.Aggregates.Internal());
                     }
                 }
             }
@@ -82,11 +82,11 @@ namespace Akrual.DDD.Utils.Domain.Repositories
                     var @event = recordedEvent.Event;
                     if (AsOfDate == null || recordedEvent.CreatedAt <= AsOfDate)
                     {
-                        await result.ApplyOneEvent((dynamic)@event, new Aggregates.Internal());
+                        await result.ApplyOneEvent((dynamic)@event, new Domain.Aggregates.Internal());
                     }
                     else if (@event.AppliesAt <= AsOfDate)
                     {
-                        await result.ApplyOneEvent((dynamic)@event, new Aggregates.Internal());
+                        await result.ApplyOneEvent((dynamic)@event, new Domain.Aggregates.Internal());
                     }
                 }
             }

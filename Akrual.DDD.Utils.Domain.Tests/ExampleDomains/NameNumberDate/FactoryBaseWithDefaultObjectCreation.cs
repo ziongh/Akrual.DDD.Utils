@@ -7,7 +7,7 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
-    internal class FactoryBaseWithDefaultObjectCreation : FactoryBase<ExampleAggregate>
+    public class FactoryBaseWithDefaultObjectCreation : FactoryBase<ExampleAggregate>
     {
         protected override async Task<ExampleAggregate> CreateDefaultInstance(Guid guid)
         {

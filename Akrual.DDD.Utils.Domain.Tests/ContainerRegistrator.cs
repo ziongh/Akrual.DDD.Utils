@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using Akrual.DDD.Utils.Domain.DbContexts;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
@@ -39,8 +41,10 @@ namespace Akrual.DDD.Utils.Domain.Tests
 
             container.Register<IEventStore, InMemoryEventStore>(Lifestyle.Singleton);
             container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
+
+
             container.Register(typeof(IFactory<>),  typeof(DefaultFactory<>),Lifestyle.Scoped);
-            container.Register(typeof(IRepository<>),  typeof(Repository<>),Lifestyle.Scoped);
+            container.Register(typeof(IRepository<>), typeof(EventSourceRepository<>), Lifestyle.Scoped);
 
             container.Register<IDomainCommandDispatcher, DomainCommandDispatcher>(Lifestyle.Scoped);
             container.Register<IDomainEventPublisher, DomainEventPublisher>(Lifestyle.Scoped);
