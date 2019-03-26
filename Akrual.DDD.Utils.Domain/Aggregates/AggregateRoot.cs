@@ -115,7 +115,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         public virtual void AllEventsStored()
         {
-            eventStream.Concat(_changes); 
+            foreach (var change in _changes)
+            {
+                eventStream.Add(change);
+            }
+            
             _changes.Clear();
             EventsLoadedFromDB = new Counter(EventsLoaded.GetCurrentValue());
         }
