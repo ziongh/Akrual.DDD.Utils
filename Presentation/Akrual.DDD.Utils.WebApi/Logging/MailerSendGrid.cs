@@ -92,7 +92,6 @@ namespace Akrual.DDD.Utils.WebApi.Logging
 	            var logEvent = logEvents[index];
                 try
                 {
-                    this.MergeEventProperties(logEvent.LogEvent);
                     logMessage += "<p>" + this.Layout.Render(logEvent.LogEvent) + "</p><br>";
                     logEvent.Continuation((Exception)null);
                 }

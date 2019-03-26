@@ -96,7 +96,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         public int GetTotalEventsLoadedFromDB => EventsLoadedFromDB.GetCurrentValue();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRoot&lt;T&gt;"/> class.
         /// Every constructor have to satisfy:
         ///     <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
         ///     <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>

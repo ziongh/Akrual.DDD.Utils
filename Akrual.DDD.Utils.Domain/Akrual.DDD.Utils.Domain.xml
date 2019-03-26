@@ -72,7 +72,7 @@
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
             <summary>
-            Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1"/> class.
             Every constructor have to satisfy:
                 <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
                 <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
@@ -135,7 +135,7 @@
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Entities.IEntity)">
             <summary>
-                Initializes a new instance of the <see cref="!:Entity"/> class.
+                Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Entities.Entity`1"/> class.
                 Every constructor have to satisfy:
                 <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
                 <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>
@@ -232,12 +232,12 @@
             Gets the Aggregate Root id.
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid,System.Int64)">
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid,System.Guid)">
             <summary>
             Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand"/> class.
             </summary>
             <param name="aggregateRootId">Aggregate Root id.</param>
-            <param name="entityVersion">Entity instance version.</param>
+            <param name="sagaId">Saga Id to identify WorkFlow.</param>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid)">
             <summary>
@@ -300,6 +300,14 @@
             It is important to keep this name the same. Because, otherwise, 
             there will be some problems when fetching the streams.
             </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Guid,System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="eventGuid">Event id.</param>
+            <param name="aggregateRootId">Entity instance id.</param>
+            <param name="sagaId">Saga Id to identify WorkFlow.</param>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Guid)">
             <summary>
@@ -704,7 +712,14 @@
             <remarks>This type is not thread-safe (for hashcode updates).</remarks>
             <typeparam name="T">Type of the listed items.</typeparam>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1" -->
+        <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1">
+            <summary>
+            A collection of weak references to objects.
+            <remarks>Be careful!! do not use it to hold Action, Delegate or Func!!!</remarks>
+            Because It can lose the referecne.
+            </summary>
+            <typeparam name="T">The type of object to hold weak references to.</typeparam>
+        </member>
         <member name="F:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1._list">
             <summary>
             The actual collection of strongly-typed weak references.

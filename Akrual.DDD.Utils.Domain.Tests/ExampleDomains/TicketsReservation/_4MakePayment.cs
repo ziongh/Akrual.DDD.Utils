@@ -10,10 +10,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
         public double Value { get; set; }
         public Guid OrderId { get; set; }
 
-        public _4MakePayment(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
-
         public _4MakePayment(Guid aggregateRootId) : base(aggregateRootId)
         {
         }

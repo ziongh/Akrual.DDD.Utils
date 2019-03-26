@@ -16,9 +16,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         public int Number { get; set; }
         public DateTime Date { get; set; }
 
-        public CreateExampleAggregate(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
 
         public CreateExampleAggregate(Guid aggregateRootId) : base(aggregateRootId)
         {

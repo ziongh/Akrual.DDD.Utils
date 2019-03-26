@@ -19,7 +19,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public async Task CanOpenANewTab()
         {
             var testId = Guid.NewGuid();
-            var eventId = GuidGenerator.GenerateTimeBasedGuid();
+            var eventId = Guid.NewGuid();
             var testTable = 42;
             var testWaiter = "Derek";
 
@@ -89,7 +89,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public int TableNumber;
         public string Waiter;
 
-        public OpenTab(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public OpenTab(Guid aggregateRootId, Guid sagaId) : base(aggregateRootId, sagaId)
         {
         }
 
@@ -133,7 +133,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
 
         private IEnumerable<IDomainEvent> GetEvents(OpenTab command)
         {
-            yield return new TabOpened(GuidGenerator.GenerateTimeBasedGuid(),command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
+            yield return new TabOpened(Guid.NewGuid(),command.AggregateRootId){TableNumber = command.TableNumber, Waiter = command.Waiter};
         }
 
         public async Task<IEnumerable<IMessaging>> Handle(TabOpened notification, CancellationToken cancellationToken)

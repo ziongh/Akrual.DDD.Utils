@@ -17,7 +17,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     {
         public DateTime AppliesAt { get; set; }
         public double Value { get; set; }
-        public DepositMoneyBackward(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public DepositMoneyBackward(Guid aggregateRootId, Guid sagaId) : base(aggregateRootId, sagaId)
         {
         }
 
@@ -35,7 +35,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     public class DepositMoney : DomainCommand
     {
         public double Value { get; set; }
-        public DepositMoney(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public DepositMoney(Guid aggregateRootId, Guid sagaId) : base(aggregateRootId, sagaId)
         {
         }
 

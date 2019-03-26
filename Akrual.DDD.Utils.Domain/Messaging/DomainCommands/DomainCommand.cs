@@ -1,4 +1,5 @@
 ﻿using System;
+using Akrual.DDD.Utils.Internal.UsefulClasses;
 
 namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
 {
@@ -18,8 +19,8 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
         /// Initializes a new instance of the <see cref="DomainCommand"/> class.
         /// </summary>
         /// <param name="aggregateRootId">Aggregate Root id.</param>
-        /// <param name="entityVersion">Entity instance version.</param>
-        protected DomainCommand(Guid aggregateRootId, long entityVersion)
+        /// <param name="sagaId">Saga Id to identify WorkFlow.</param>
+        protected DomainCommand(Guid aggregateRootId, Guid sagaId)
         {
             if (aggregateRootId.Equals(Guid.Empty))
             {
@@ -27,6 +28,8 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
             }
 
             AggregateRootId = aggregateRootId;
+            SagaId = sagaId;
+            TimeStamp = DateTimeProvider.Current.UtcNow;
         }
 
         /// <summary>
@@ -34,8 +37,11 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainCommands
         /// </summary>
         /// <param name="aggregateRootId">Aggregate Root instance id.</param>
         protected DomainCommand(Guid aggregateRootId)
-            : this(aggregateRootId, 0)
+            : this(aggregateRootId, Guid.NewGuid())
         {
         }
+        
+        public DateTime TimeStamp { get; protected set; }
+        public Guid SagaId { get; protected set; }
     }
 }

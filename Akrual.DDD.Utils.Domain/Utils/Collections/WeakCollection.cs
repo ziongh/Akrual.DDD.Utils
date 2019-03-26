@@ -6,7 +6,7 @@ namespace Akrual.DDD.Utils.Domain.Utils.Collections
 {
     /// <summary>
     /// A collection of weak references to objects.
-    /// <remarks>Be careful!! do not use it to hold Action<remarks>, Delegate or Func!!!</remarks>
+    /// <remarks>Be careful!! do not use it to hold Action, Delegate or Func!!!</remarks>
     /// Because It can lose the referecne.
     /// </summary>
     /// <typeparam name="T">The type of object to hold weak references to.</typeparam>

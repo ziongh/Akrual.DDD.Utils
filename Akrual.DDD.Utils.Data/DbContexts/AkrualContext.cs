@@ -65,7 +65,7 @@ namespace Akrual.DDD.Utils.Data.DbContexts
             Set<TEntity>().RemoveRange(entities);
         }
 
-        public virtual void Remove<TEntity>(TEntity entity) where TEntity : class, IAggregateRoot
+        public new virtual void Remove<TEntity>(TEntity entity) where TEntity : class, IAggregateRoot
         {
             Set<TEntity>().Remove(entity);
         }
@@ -74,12 +74,12 @@ namespace Akrual.DDD.Utils.Data.DbContexts
         /// <summary>
         ///     use with sampleEntry when you do not know exactly which Class you are looking for in the DB.
         ///     (e.g.: if you do not know how to write the function with it's required class GetById
-        ///     <Operacao>, then use with the sample;)
+        ///     &lt;Operacao&gt;, then use with the sample;)
         /// </summary>
         /// <typeparam name="TEntry"></typeparam>
         /// <param name="id"></param>
         /// <param name="mustReturnFromDB"></param>
-        /// <param name="sampleEntry"></param>
+        /// <param name="forceCaching"></param>
         /// <returns></returns>
         public virtual async Task<TEntry> GetByIdAsync<TEntry>(Guid id, bool forceCaching = false,
             bool mustReturnFromDB = false)
@@ -111,7 +111,7 @@ namespace Akrual.DDD.Utils.Data.DbContexts
             return storedEntry;
         }
 
-        public void Attach<T>(T op) where T : class, IAggregateRoot
+        public new void Attach<T>(T op) where T : class, IAggregateRoot
         {
             base.Set<T>().Attach(op);
         }

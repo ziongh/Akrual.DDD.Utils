@@ -11,10 +11,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
         public string CardNumber { get; set; }
         public double Value { get; set; }
 
-        public _1PlaceOrder(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
-
         public _1PlaceOrder(Guid aggregateRootId) : base(aggregateRootId)
         {
         }

@@ -28,9 +28,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkCoreMock.Shared" Version="1.0.0.15" />
+    <PackageReference Include="EntityFrameworkCoreMock.Shared" Version="1.0.0.20" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="SimpleInjector" Version="4.4.2" />
+    <PackageReference Include="SimpleInjector" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repository\" />
