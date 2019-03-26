@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
 
 namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
@@ -10,7 +11,9 @@ namespace Akrual.DDD.Utils.Domain.Factories.InstanceFactory
     {
         public T Create(Guid id)
         {
-            T instance = Activator.CreateInstance<T>();
+            var bus = new InMemoryBus();
+            bus.RegisterHandler<T>();
+            T instance = (T) Activator.CreateInstance(typeof(T),bus);
             instance.SetPrivatePropertyValue("Id", id);
             return instance;
         }

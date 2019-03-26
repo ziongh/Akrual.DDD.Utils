@@ -70,7 +70,7 @@
             The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Messaging.Buses.IBus)">
             <summary>
             Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1"/> class.
             Every constructor have to satisfy:
@@ -215,6 +215,16 @@
             <remarks>Dangerous!</remarks> Because it creates one new async scope to create a new instance.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.Buses.IBus.Dispatch``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.Buses.IBus.Publish``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Represents the interface of a Event Publisher. All Events will be published through a publisher
+            </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher.IDomainCommandDispatcher">
             <summary>

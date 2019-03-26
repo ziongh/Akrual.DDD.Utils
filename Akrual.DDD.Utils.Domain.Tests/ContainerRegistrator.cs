@@ -6,6 +6,7 @@ using Akrual.DDD.Utils.Domain.DbContexts;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.Coordinator;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher;
@@ -49,6 +50,7 @@ namespace Akrual.DDD.Utils.Domain.Tests
             container.Register<IDomainCommandDispatcher, DomainCommandDispatcher>(Lifestyle.Scoped);
             container.Register<IDomainEventPublisher, DomainEventPublisher>(Lifestyle.Scoped);
             container.Register<ICoordinator, Coordinator>(Lifestyle.Scoped);
+            container.Register<IBus, InProccessDIBus>(Lifestyle.Scoped);
             
             
             // The following registration is required to allow the injection of Func<T> where T

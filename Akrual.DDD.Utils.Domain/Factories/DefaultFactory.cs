@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.UOW;
 

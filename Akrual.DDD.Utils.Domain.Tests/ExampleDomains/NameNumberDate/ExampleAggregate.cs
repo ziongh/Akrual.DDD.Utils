@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -59,7 +60,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         IHandleDomainEvent<ExampleAggregateCreated>
 
     {
-        public ExampleAggregate() : base(Guid.Empty)
+        public ExampleAggregate(IBus bus) : base(Guid.Empty,bus)
         {
         }
         

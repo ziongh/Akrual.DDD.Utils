@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Repositories;
@@ -20,11 +24,11 @@ namespace Akrual.DDD.Utils.Domain.Messaging.Buses
         Task Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent;
     }
 
-    public class Bus : IBus
+    public class InProccessDIBus : IBus
     {
         private readonly Container _container;
 
-        public Bus(Container container)
+        public InProccessDIBus(Container container)
         {
             _container = container;
         }
@@ -54,5 +58,51 @@ namespace Akrual.DDD.Utils.Domain.Messaging.Buses
             await handler.ApplyEvents(request);
         }
 
+    }
+
+
+
+    public class InMemoryBus : IBus
+    {
+        private static readonly IList<Type> RegisteredHandlers = new List<Type>();
+
+
+        #region IBus
+        public async Task Dispatch<Tcommand>(Tcommand request, CancellationToken cancellationToken) where Tcommand : IDomainCommand
+        {
+            var messageType = request.GetType();
+            var openInterface = typeof(IHandleDomainCommand<>);
+            var closedInterface = openInterface.MakeGenericType(messageType);
+            var handlersToNotify = from h in RegisteredHandlers
+                where closedInterface.IsAssignableFrom(h)
+                select h;
+            foreach (var h in handlersToNotify)
+            {
+                dynamic sagaInstance = Activator.CreateInstance(h, this);     // default ctor is enough
+                sagaInstance.Handle(request);
+            }
+        }
+
+        public async Task Publish<Tevent>(Tevent request, CancellationToken cancellationToken) where Tevent : IDomainEvent
+        {
+            var messageType = request.GetType();
+            var openInterface = typeof(IHandleDomainEvent<>);
+            var closedInterface = openInterface.MakeGenericType(messageType);
+            var handlersToNotify = from h in RegisteredHandlers
+                where closedInterface.IsAssignableFrom(h)
+                select h;
+            foreach (var h in handlersToNotify)
+            {
+                dynamic sagaInstance = Activator.CreateInstance(h, this);     // default ctor is enough
+                sagaInstance.Handle(request);
+            }
+        }
+
+        public void RegisterHandler<T>()
+        {
+            RegisteredHandlers.Add(typeof(T));
+        }
+        #endregion
+      
     }
 }

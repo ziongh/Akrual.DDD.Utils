@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -30,7 +31,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
         private double _value;
         private string _cardNumber;
 
-        public Order() : base(Guid.Empty)
+        public Order(IBus bus) : base(Guid.Empty,bus)
         {
         }
         public async Task<IEnumerable<IMessaging>> Handle(_1PlaceOrder request, CancellationToken cancellationToken)

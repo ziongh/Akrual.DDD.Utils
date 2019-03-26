@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
@@ -14,7 +15,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
         IHandleDomainCommand<_2MakeReservation>,
         IHandleDomainEvent<_6OrderConfirmed_Reservation>
     {
-        public Reservation() : base(Guid.Empty)
+        public Reservation(IBus bus) : base(Guid.Empty,bus)
         {
         }
         
