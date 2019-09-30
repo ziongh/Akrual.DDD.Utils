@@ -1,4 +1,5 @@
 ﻿using Akrual.DDD.Utils.Domain.ValueObjects;
+using Akrual.DDD.Utils.Internal.UsefulClasses;
 
 namespace Akrual.DDD.Utils.Domain.Entities
 {

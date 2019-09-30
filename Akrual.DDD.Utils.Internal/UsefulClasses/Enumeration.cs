@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Akrual.DDD.Utils.Domain.ValueObjects
+namespace Akrual.DDD.Utils.Internal.UsefulClasses
 {
     /// <summary>
     /// Defines an Enumeration with extra power (it's a class).

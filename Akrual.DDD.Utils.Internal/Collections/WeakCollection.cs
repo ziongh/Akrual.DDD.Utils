@@ -1,8 +1,9 @@
 ﻿// From StephenCleary GitHub
+
 using System;
 using System.Collections.Generic;
 
-namespace Akrual.DDD.Utils.Domain.Utils.Collections
+namespace Akrual.DDD.Utils.Internal.Collections
 {
     /// <summary>
     /// A collection of weak references to objects.
