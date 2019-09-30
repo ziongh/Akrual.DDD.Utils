@@ -20,13 +20,13 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
         /// </summary>
         public abstract string EventName { get; }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainEvent"/> class.
         /// </summary>
         /// <param name="eventGuid">Event id.</param>
         /// <param name="aggregateRootId">Entity instance id.</param>
-        protected DomainEvent(Guid eventGuid, Guid aggregateRootId)
+        /// <param name="sagaId">Saga Id to identify WorkFlow.</param>
+        protected DomainEvent(Guid eventGuid, Guid aggregateRootId, Guid sagaId)
         {
             if (aggregateRootId.Equals(Guid.Empty))
             {
@@ -39,11 +39,25 @@ namespace Akrual.DDD.Utils.Domain.Messaging.DomainEvents
 
             EventGuid = eventGuid;
             AggregateRootId = aggregateRootId;
+            SagaId = sagaId;
+            TimeStamp = DateTimeProvider.Current.UtcNow;
+        }
+
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainEvent"/> class.
+        /// </summary>
+        /// <param name="eventGuid">Event id.</param>
+        /// <param name="aggregateRootId">Entity instance id.</param>
+        protected DomainEvent(Guid eventGuid, Guid aggregateRootId):this(eventGuid,aggregateRootId,Guid.NewGuid())
+        {
         }
 
         public Guid EventGuid { get; set; }
 
         public DateTime? AppliesAt { get; set; }
-        
+
+        public DateTime TimeStamp { get; protected set; }
+        public Guid SagaId { get; protected set; }
     }
 }

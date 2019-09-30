@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
@@ -71,8 +72,10 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
     ///     <remarks><c>So add properties as private or maximum internal only!</c></remarks>
     /// </summary>
-    public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot where T : new()
+    public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot
     {
+        internal readonly IBus Bus;
+
         internal static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         private readonly ConcurrentList<IDomainEvent> _changes;
@@ -96,14 +99,15 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         public int GetTotalEventsLoadedFromDB => EventsLoadedFromDB.GetCurrentValue();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// Initializes a new instance of the <see cref="AggregateRoot&lt;T&gt;"/> class.
         /// Every constructor have to satisfy:
         ///     <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
         ///     <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
         /// </summary>
         /// <param name="id">Aggregate root instance id.</param>
-        protected AggregateRoot(Guid id) : base(id,null)
+        protected AggregateRoot(Guid id, IBus bus) : base(id,null)
         {
+            Bus = bus;
             eventStream = new ConcurrentList<IDomainEvent>();
             _changes = new ConcurrentList<IDomainEvent>();
             EventsLoaded = new Counter();
@@ -115,7 +119,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         public virtual void AllEventsStored()
         {
-            eventStream.Concat(_changes); 
+            foreach (var change in _changes)
+            {
+                eventStream.Add(change);
+            }
+            
             _changes.Clear();
             EventsLoadedFromDB = new Counter(EventsLoaded.GetCurrentValue());
         }

@@ -10,7 +10,6 @@ namespace Akrual.DDD.Utils.Application.UseCaseFunctions
         where TInputModel : IInputModel
         where TOutputModel : IOutputModel
     {
-
         protected abstract AbstractValidator<TInputModel> PreConditionEvaluator { get; }
         protected abstract AbstractValidator<TOutputModel> PostConditionEvaluator { get; }
 
@@ -26,7 +25,8 @@ namespace Akrual.DDD.Utils.Application.UseCaseFunctions
 
         private void EvaluatePostConditions(TOutputModel output)
         {
-            var validationResult = PostConditionEvaluator?.Validate(output) ?? new ValidationResult();
+            if (PostConditionEvaluator == null) return;
+            var validationResult = PostConditionEvaluator.Validate(output);
             if (!validationResult.IsValid)
             {
                 throw validationResult.GetAggregateExceptionOfValidation();
@@ -35,7 +35,8 @@ namespace Akrual.DDD.Utils.Application.UseCaseFunctions
 
         private void EvaluatePreConditions(TInputModel input)
         {
-            var validationResult = PreConditionEvaluator?.Validate(input) ?? new ValidationResult();
+            if (PreConditionEvaluator == null) return;
+            var validationResult = PreConditionEvaluator.Validate(input);
             if (!validationResult.IsValid)
             {
                 throw validationResult.GetAggregateExceptionOfValidation();

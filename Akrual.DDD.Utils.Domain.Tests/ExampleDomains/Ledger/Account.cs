@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
@@ -17,7 +18,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     {
         public DateTime AppliesAt { get; set; }
         public double Value { get; set; }
-        public DepositMoneyBackward(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public DepositMoneyBackward(Guid aggregateRootId, Guid sagaId) : base(aggregateRootId, sagaId)
         {
         }
 
@@ -35,7 +36,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     public class DepositMoney : DomainCommand
     {
         public double Value { get; set; }
-        public DepositMoney(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
+        public DepositMoney(Guid aggregateRootId, Guid sagaId) : base(aggregateRootId, sagaId)
         {
         }
 
@@ -73,7 +74,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     IHandleDomainEvent<MoneyDeposited>
     {
         private double Balance;
-        public Account() : base(Guid.Empty)
+        public Account(IBus bus) : base(Guid.Empty,bus)
         {
             Balance = 0;
         }

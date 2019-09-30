@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
 using Akrual.DDD.Utils.Domain.Messaging;
+using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
@@ -13,7 +14,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
     {
         public string CardNumber { get; set; }
 
-        public Customer() : base(Guid.Empty)
+        public Customer(IBus bus) : base(Guid.Empty,bus)
         {
         }
 

@@ -18,7 +18,7 @@ namespace Akrual.DDD.Utils.Domain.Entities
         public BaseDomainStatus Status { get; private set; }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Entity"/> class.
+        ///     Initializes a new instance of the <see cref="Entity&lt;T&gt;"/> class.
         ///     Every constructor have to satisfy:
         ///     <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
         ///     <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>

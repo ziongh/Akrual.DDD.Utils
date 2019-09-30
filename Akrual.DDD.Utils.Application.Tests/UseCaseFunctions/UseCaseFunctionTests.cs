@@ -19,12 +19,12 @@ namespace Akrual.DDD.Utils.Application.Tests.UseCaseFunctions
             Assert.IsType<ExampleOutputModel>(output);
         }
 
-        protected internal class ExampleInputModel : InputModel<ExampleInputModel>
+        protected internal class ExampleInputModel : IInputModel
         {
             
         }
 
-        protected internal class ExampleOutputModel : OutputModel<ExampleOutputModel>
+        protected internal class ExampleOutputModel : IOutputModel
         {
 
         }

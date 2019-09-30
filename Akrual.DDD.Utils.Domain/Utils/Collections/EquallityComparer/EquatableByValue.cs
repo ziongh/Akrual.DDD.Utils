@@ -65,7 +65,7 @@ namespace Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer
                 // we use a static cast here since we can't use the 'as' operator for structs and other value type primitives
                 other = (T)obj;
             }
-            catch (InvalidCastException e)
+            catch (InvalidCastException)
             {
                 return false;
             }
@@ -102,6 +102,5 @@ namespace Akrual.DDD.Utils.Domain.Utils.Collections.EquallityComparer
 
             return hashCode;
         }
-
     }
 }

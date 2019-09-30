@@ -20,7 +20,6 @@ namespace Akrual.DDD.Domain.Tests.Utils
     /// <typeparam name="T"></typeparam>
     public abstract class BaseAggregateRootTests<TAggregate, T> : IDisposable
         where TAggregate : AggregateRoot<T>
-        where T : new()
     {
         protected Container _container;
         protected readonly Scope _scope;

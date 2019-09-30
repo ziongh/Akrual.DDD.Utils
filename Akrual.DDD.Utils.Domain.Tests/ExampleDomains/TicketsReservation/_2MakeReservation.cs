@@ -10,10 +10,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation
         public Guid UserId { get; set; }
         public Guid OderId { get; set; }
 
-        public _2MakeReservation(Guid aggregateRootId, long entityVersion) : base(aggregateRootId, entityVersion)
-        {
-        }
-
         public _2MakeReservation(Guid aggregateRootId) : base(aggregateRootId)
         {
         }

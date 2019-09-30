@@ -27,9 +27,9 @@
     <DocumentationFile>Akrual.DDD.Domain.Tests.Utils.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.2" />
-    <PackageReference Include="SimpleInjector" Version="4.2.2" />
-    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.1.3" />
+    <PackageReference Include="SimpleInjector" Version="4.5.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj" />

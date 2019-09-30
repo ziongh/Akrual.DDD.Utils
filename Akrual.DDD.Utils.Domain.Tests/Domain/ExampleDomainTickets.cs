@@ -36,8 +36,6 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
             {
                 Assert.Single(listOfAggregatesOfSameType.Value);
             }
-
-
         }
     }
 }

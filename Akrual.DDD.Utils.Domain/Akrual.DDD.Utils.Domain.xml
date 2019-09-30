@@ -70,9 +70,9 @@
             The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Messaging.Buses.IBus)">
             <summary>
-            Initializes a new instance of the <see cref="!:AggregateRoot"/> class.
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1"/> class.
             Every constructor have to satisfy:
                 <remarks><c>GUID. This must be unique in the whole Application.!</c></remarks>
                 <remarks><c>You should probably extend this constructor to include every property that makes this entity unique.</c></remarks>
@@ -135,7 +135,7 @@
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Entities.Entity`1.#ctor(System.Guid,Akrual.DDD.Utils.Domain.Entities.IEntity)">
             <summary>
-                Initializes a new instance of the <see cref="!:Entity"/> class.
+                Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Entities.Entity`1"/> class.
                 Every constructor have to satisfy:
                 <remarks><c>If the entity is not an Aggregate Root, then it cannot be created without passing the owner of this entity (Some entity inside the Aggregate, maybe the Aggregate root)!</c></remarks>
                 <remarks><c>GUID. This must be unique inside the Aggegate.!</c></remarks>
@@ -216,6 +216,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.Buses.IBus.Dispatch``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
+            </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.Buses.IBus.Publish``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Represents the interface of a Event Publisher. All Events will be published through a publisher
+            </summary>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.Dispatcher.IDomainCommandDispatcher">
             <summary>
             Represents the interface of a command dispatcher. All Commands will be dispatched through a dispatcher
@@ -232,12 +242,12 @@
             Gets the Aggregate Root id.
             </summary>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid,System.Int64)">
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid,System.Guid)">
             <summary>
             Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand"/> class.
             </summary>
             <param name="aggregateRootId">Aggregate Root id.</param>
-            <param name="entityVersion">Entity instance version.</param>
+            <param name="sagaId">Saga Id to identify WorkFlow.</param>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainCommands.DomainCommand.#ctor(System.Guid)">
             <summary>
@@ -300,6 +310,14 @@
             It is important to keep this name the same. Because, otherwise, 
             there will be some problems when fetching the streams.
             </summary>
+        </member>
+        <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Guid,System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent"/> class.
+            </summary>
+            <param name="eventGuid">Event id.</param>
+            <param name="aggregateRootId">Entity instance id.</param>
+            <param name="sagaId">Saga Id to identify WorkFlow.</param>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Messaging.DomainEvents.DomainEvent.#ctor(System.Guid,System.Guid)">
             <summary>
@@ -415,19 +433,27 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Asynchronous domain repository for a given aggregate root type.
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order. Then it check all later events that should be applied before the given
+                point and applies them too.
+                <remarks> 
+                    In other words, it will give the result of a particular time point within the stream (everything we know 
+                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                </remarks>
             </summary>
-            <typeparam name="TAggregate">The type of the aggregate root.</typeparam>
-            <typeparam name="T">The type of the aggregate root Inner object.</typeparam>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IAsyncDomainRepository`2.FindByIdAsync(System.Guid)">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
             <summary>
-            Asynchronously finds an aggregate root instance from the repository using its id.
+                Creates The aggregate, then query the event store for all it's events until a certain point. 
+                And applies them in order.
+                <remarks> 
+                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                </remarks>
             </summary>
-            <param name="id">Aggregate root instance id.</param>
-            <returns>Aggregate root instance.</returns>
+            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
         <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
             <summary>
@@ -447,28 +473,6 @@
                 <remarks> 
                     In other words, it will give the result of a particular time point within the stream (everything we know 
                     that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order. Then it check all later events that should be applied before the given
-                point and applies them too.
-                <remarks> 
-                    In other words, it will give the result of a particular time point within the stream (everything we know 
-                    that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
-                </remarks>
-            </summary>
-            <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.Repository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
-            <summary>
-                Creates The aggregate, then query the event store for all it's events until a certain point. 
-                And applies them in order.
-                <remarks> 
-                    In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
@@ -718,7 +722,14 @@
             <remarks>This type is not thread-safe (for hashcode updates).</remarks>
             <typeparam name="T">Type of the listed items.</typeparam>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1" -->
+        <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1">
+            <summary>
+            A collection of weak references to objects.
+            <remarks>Be careful!! do not use it to hold Action, Delegate or Func!!!</remarks>
+            Because It can lose the referecne.
+            </summary>
+            <typeparam name="T">The type of object to hold weak references to.</typeparam>
+        </member>
         <member name="F:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1._list">
             <summary>
             The actual collection of strongly-typed weak references.
