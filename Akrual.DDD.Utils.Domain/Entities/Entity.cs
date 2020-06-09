@@ -1,5 +1,6 @@
 ﻿using System;
 using Akrual.DDD.Utils.Internal.Exceptions;
+using MessagePack;
 
 namespace Akrual.DDD.Utils.Domain.Entities
 {
@@ -8,13 +9,16 @@ namespace Akrual.DDD.Utils.Domain.Entities
     ///     <remarks><c>All properties of this child classes should have the setter as private!</c></remarks>
     /// </summary>
     /// <typeparam name="T">Domain type to be 'turned' into a Entity Type.</typeparam>
+    [MessagePackObject]
     public abstract class Entity<T> : IEntity
     {
+        [Key(0)]
         public Guid Id { get; protected set; }
 
         /// <exception cref="ShouldNeverCallIsValidOnTheEntityException">Should never call It!!</exception>
         public bool IsValid => throw new ShouldNeverCallIsValidOnTheEntityException();
 
+        [Key(1)]
         public BaseDomainStatus Status { get; private set; }
 
         /// <summary>

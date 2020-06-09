@@ -22,7 +22,7 @@ namespace Akrual.DDD.Utils.Domain.EventStorage
         {
             var type = typeof(T).FullName;
             var id = obj.Id;
-            var streamName = type + "#" + id;
+            var streamName = obj.StreamBaseName + "#" + id.ToString("D");
 
             if(_database.TryGetValue(streamName, out var dictOfEvents))
             {
@@ -44,7 +44,7 @@ namespace Akrual.DDD.Utils.Domain.EventStorage
             {
                 var type = eventsFromAggregate.Key.AggregateType.FullName;
                 var id = eventsFromAggregate.Key.AggregateGuid;
-                var streamName = type + "#" + id;
+                var streamName = eventsFromAggregate.Key.StreamBaseName + "#" + id.ToString("D");
 
                 IRecordedEvent existingEntry = null;
 

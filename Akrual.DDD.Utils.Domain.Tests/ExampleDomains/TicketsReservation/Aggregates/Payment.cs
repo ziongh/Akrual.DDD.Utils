@@ -14,6 +14,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
     public class Payment : AggregateRoot<Payment>,
         IHandleDomainCommand<_4MakePayment>
     {
+        public override string StreamBaseName => "Payment";
         public Payment(IBus bus) : base(Guid.Empty,bus)
         {
         }

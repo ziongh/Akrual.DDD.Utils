@@ -16,52 +16,7 @@
             <param name="forceCaching"></param>
             <returns></returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Error(System.String,System.Object[])">
-            <summary>
-            Writes an error to the logger
-            </summary>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Error(System.Exception,System.String,System.Object[])">
-            <summary>
-            Writes an error to the logger
-            </summary>
-            <param name="ex">A thrown exception.</param>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Debug(System.String,System.Object[])">
-            <summary>
-            Writes a debug message to the logger
-            </summary>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Debug(System.Exception,System.String,System.Object[])">
-            <summary>
-            Writes a debug message to the logger
-            </summary>
-            <param name="ex">A thrown exception.</param>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Info(System.String,System.Object[])">
-            <summary>
-            Writes an information message to the logger
-            </summary>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.EventStore.Logger.NLoggerImpl.Info(System.Exception,System.String,System.Object[])">
-            <summary>
-            Writes an information message to the logger
-            </summary>
-            <param name="ex">A thrown exception.</param>
-            <param name="format">Format string for the log message.</param>
-            <param name="args">Arguments to be inserted into the format string.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Data.Repositories.SqlRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Data.Repositories.SqlRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order. Then it check all later events that should be applied before the given
@@ -73,7 +28,7 @@
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Data.Repositories.SqlRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Data.Repositories.SqlRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order.

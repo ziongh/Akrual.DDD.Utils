@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
@@ -25,12 +26,12 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
 
             var eventstore = new InMemoryEventStore();
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id), new List<IDomainEvent>{new ExampleAggregateCreated(Guid.NewGuid(),aggregateId )});
+            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id, aggr.StreamBaseName), new List<IDomainEvent>{new ExampleAggregateCreated(Guid.NewGuid(),aggregateId )});
             await eventstore.SaveNewEvents(allChanges);
 
             var eventStream = await eventstore.GetEventStream(aggr);
 
-            Assert.Equal(typeof(ExampleAggregate).FullName + "#" + aggr.Id, eventStream.StreamName);
+            Assert.Equal(aggr.StreamBaseName + "#" + aggr.Id.ToString("D"), eventStream.StreamName);
         }
 
         [Fact]
@@ -42,7 +43,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
 
             var eventstore = new InMemoryEventStore();
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id), new List<IDomainEvent>{@event});
+            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id, aggr.StreamBaseName), new List<IDomainEvent>{@event});
             await eventstore.SaveNewEvents(allChanges);
 
             var eventStream = await eventstore.GetEventStream(aggr);
@@ -60,7 +61,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
             var @event = new ExampleAggregateCreated(Guid.NewGuid(),aggregateId );
 
             var eventstore = new InMemoryEventStore();
-            using (var uow = new UnitOfWork(eventstore))
+            using (var uow = new UnitOfWork(eventstore, new MockReadModelCache()))
             {
                 uow.AddLoadedAggregate(aggr);
                 await aggr.ApplyEvents(@event);
@@ -68,7 +69,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
 
             var eventStream = await eventstore.GetEventStream(aggr);
 
-            Assert.Equal(typeof(ExampleAggregate).FullName + "#" + aggr.Id, eventStream.StreamName);
+            Assert.Equal(aggr.StreamBaseName + "#" + aggr.Id.ToString("D"), eventStream.StreamName);
         }
 
         [Fact]
@@ -83,7 +84,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
             var @eventOrder = new _6OrderConfirmed_Order(Guid.NewGuid(),aggregateId2 );
 
             var eventstore = new InMemoryEventStore();
-            using (var uow = new UnitOfWork(eventstore))
+            using (var uow = new UnitOfWork(eventstore, new MockReadModelCache()))
             {
                 uow.AddLoadedAggregate(aggr2);
                 uow.AddLoadedAggregate(aggr);
@@ -93,7 +94,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
 
             var eventStream = await eventstore.GetEventStream(aggr);
 
-            Assert.Equal(typeof(ExampleAggregate).FullName + "#" + aggr.Id, eventStream.StreamName);
+            Assert.Equal(aggr.StreamBaseName + "#" + aggr.Id.ToString("D"), eventStream.StreamName);
         }
 
         [Fact]
@@ -104,7 +105,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.EventStorage
             var @event = new ExampleAggregateCreated(Guid.NewGuid(),aggregateId );
 
             var eventstore = new InMemoryEventStore();
-            using (var uow = new UnitOfWork(eventstore))
+            using (var uow = new UnitOfWork(eventstore, new MockReadModelCache()))
             {
                 uow.AddLoadedAggregate(aggr);
                 await aggr.ApplyEvents(@event);

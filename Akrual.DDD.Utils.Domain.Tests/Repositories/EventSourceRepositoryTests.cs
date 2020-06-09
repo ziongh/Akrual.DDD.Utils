@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
@@ -20,7 +21,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
         public async Task CreateAsOf_GuidThatDoesntExists_ReturnNewAggregate()
         {
             var eventStore = new InMemoryEventStore();
-            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventStore);
+            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventStore, new MockReadModelCache());
 
             var aggr = await repository.CreateAsOf(Guid.NewGuid());
 
@@ -37,9 +38,9 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
 
             var eventstore = new InMemoryEventStore();
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id), new List<IDomainEvent> { new ExampleAggregateCreated(Guid.NewGuid(), aggregateId) });
+            allChanges.Add(new EventStreamNameComponents(typeof(ExampleAggregate), aggr.Id, aggr.StreamBaseName), new List<IDomainEvent> { new ExampleAggregateCreated(Guid.NewGuid(), aggregateId) });
             await eventstore.SaveNewEvents(allChanges);
-            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventstore);
+            var repository = new EventSourceRepository<ExampleAggregate>(new ExampleFactory(), eventstore, new MockReadModelCache());
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsOf(aggregateId);
@@ -58,7 +59,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var aggregateId = GuidGenerator.GenerateTimeBasedGuid();
             var eventstore = await CreateLedger(aggregateId);
 
-            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore);
+            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore, new MockReadModelCache());
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsOf(aggregateId, new DateTime(2010, 01, 04,23,01,01));
@@ -74,7 +75,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var aggregateId = GuidGenerator.GenerateTimeBasedGuid();
             var eventstore = await CreateLedger(aggregateId);
 
-            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore);
+            var repository = new EventSourceRepository<Account>(new ExampleFactoryAccount(), eventstore, new MockReadModelCache());
 
             // Create Aggregate with same Id
             var fetchedAggr = await repository.CreateAsAt(aggregateId, new DateTime(2010, 01, 04,23,01,01));
@@ -91,25 +92,25 @@ namespace Akrual.DDD.Utils.Domain.Tests.Repositories
             var eventstore = new InMemoryEventStore();
 
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id),
+            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id, aggr.StreamBaseName),
                 new List<IDomainEvent> {new MoneyDeposited(Guid.NewGuid(), aggregateId) {Value = 1500}});
             DateTimeProvider.Current = new FakeDateTimeProvider(new DateTime(2010, 01, 01));
             await eventstore.SaveNewEvents(allChanges);
 
             allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id),
+            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id, aggr.StreamBaseName),
                 new List<IDomainEvent> {new MoneyDeposited(Guid.NewGuid(), aggregateId) {Value = 300}});
             DateTimeProvider.Current = new FakeDateTimeProvider(new DateTime(2010, 01, 03));
             await eventstore.SaveNewEvents(allChanges);
 
             allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id),
+            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id, aggr.StreamBaseName),
                 new List<IDomainEvent> {new MoneyDeposited(Guid.NewGuid(), aggregateId) {Value = 200}});
             DateTimeProvider.Current = new FakeDateTimeProvider(new DateTime(2010, 01, 05));
             await eventstore.SaveNewEvents(allChanges);
 
             allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
-            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id),
+            allChanges.Add(new EventStreamNameComponents(typeof(Account), aggr.Id, aggr.StreamBaseName),
                 new List<IDomainEvent>
                 {
                     new MoneyDeposited(Guid.NewGuid(), aggregateId) {Value = 2000, AppliesAt = new DateTime(2010, 01, 04)}

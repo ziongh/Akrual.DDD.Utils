@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.Entities;
 using Akrual.DDD.Utils.Domain.Messaging;
 using Akrual.DDD.Utils.Domain.Messaging.Buses;
@@ -11,10 +12,11 @@ using Akrual.DDD.Utils.Internal.ConcurrentLists;
 using Akrual.DDD.Utils.Internal.Contracts;
 using Akrual.DDD.Utils.Internal.Logging;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
+using MessagePack;
 
 namespace Akrual.DDD.Utils.Domain.Aggregates
 {
-    public interface IAggregateRoot : IEntity
+    public interface IAggregateRoot : IEntity, IConcurrencyCheckable
     {
         /// <summary>
         /// The number of events loaded into this aggregate.
@@ -65,6 +67,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
         /// </summary>
         void AllEventsStored();
+
+        /// <summary>
+        /// Used to find the correct stream for this aggregate (Azure table for instance).
+        /// </summary>
+        string StreamBaseName {get;}
     }
 
     /// <summary>
@@ -72,6 +79,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
     ///     <remarks><c>No external code should access the internal objects of this Aggregate!</c></remarks>
     ///     <remarks><c>So add properties as private or maximum internal only!</c></remarks>
     /// </summary>
+    [MessagePackObject]
     public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot
     {
         internal readonly IBus Bus;
@@ -81,6 +89,8 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         private readonly ConcurrentList<IDomainEvent> _changes;
 
         private readonly ConcurrentList<IDomainEvent> eventStream;
+        [Key(2)]
+        public Guid ConcurrencyGuid { get; set; }
 
         
         private Counter EventsLoaded { get; }
@@ -97,6 +107,9 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// The number of events loaded into this aggregate by the time we finished fetchihng it from the DB.
         /// </summary>
         public int GetTotalEventsLoadedFromDB => EventsLoadedFromDB.GetCurrentValue();
+
+        public abstract string StreamBaseName {get;}
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot&lt;T&gt;"/> class.

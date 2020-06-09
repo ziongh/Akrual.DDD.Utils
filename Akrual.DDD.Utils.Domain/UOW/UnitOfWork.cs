@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Akrual.DDD.Utils.Domain.Aggregates;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
@@ -16,11 +18,13 @@ namespace Akrual.DDD.Utils.Domain.UOW
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly IEventStore _eventStore;
+        private readonly IReadModelCache _readModelCache;
 
         public ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>> LoadedAggregates { get; set; }
-        public UnitOfWork(IEventStore eventStore)
+        public UnitOfWork(IEventStore eventStore, IReadModelCache readmodelCache)
         {
             _eventStore = eventStore;
+            this._readModelCache = readmodelCache;
             LoadedAggregates = new ConcurrentDictionary<Type, ConcurrentDictionary<Guid, IAggregateRoot>>();
         }
 
@@ -63,9 +67,15 @@ namespace Akrual.DDD.Utils.Domain.UOW
             {
                 foreach (var aggregate in listOfAggregateOfSameType.Value)
                 {
-                    allChanges.Add(new EventStreamNameComponents(aggregate.Value.GetType(),aggregate.Value.Id), aggregate.Value.GetChangesEventStream());
+                    allChanges.Add(new EventStreamNameComponents(aggregate.Value.GetType(),aggregate.Value.Id, aggregate.Value.StreamBaseName), aggregate.Value.GetChangesEventStream());
+
+                    if(!_readModelCache.AddAsync(aggregate.Value.StreamBaseName + "_" +aggregate.Value.Id.ToString("D"), aggregate.Value, DateTime.UtcNow.AddDays(7)).Result)
+                    {
+                        throw new DBConcurrencyException("Tentativa de escrita no Redis falhou, pois alguém alterou antes.");
+                    }
                 }
             }
+
 
             // Save Events to EventStore.
             _eventStore.SaveNewEvents(allChanges).Wait();

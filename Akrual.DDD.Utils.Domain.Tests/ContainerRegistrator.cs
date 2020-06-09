@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.DbContexts;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
@@ -14,7 +15,9 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents.Publisher;
 using Akrual.DDD.Utils.Domain.Messaging.Saga;
 using Akrual.DDD.Utils.Domain.Repositories;
+using Akrual.DDD.Utils.Domain.Tests.Domain;
 using Akrual.DDD.Utils.Domain.UOW;
+using Akrual.DDD.Utils.Domain.Utils.TypeCache;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
@@ -51,6 +54,8 @@ namespace Akrual.DDD.Utils.Domain.Tests
             container.Register<IDomainEventPublisher, DomainEventPublisher>(Lifestyle.Scoped);
             container.Register<ICoordinator, Coordinator>(Lifestyle.Scoped);
             container.Register<IBus, InProccessDIBus>(Lifestyle.Scoped);
+            container.Register<IReadModelCache, MockReadModelCache>(Lifestyle.Scoped);
+            container.RegisterInstance<IDomainTypeFinder>(new DomainTypeFinder(typeof(TabOpened).Assembly));
             
             
             // The following registration is required to allow the injection of Func<T> where T

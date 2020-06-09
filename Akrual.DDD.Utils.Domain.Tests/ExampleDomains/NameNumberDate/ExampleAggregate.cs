@@ -60,6 +60,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         IHandleDomainEvent<ExampleAggregateCreated>
 
     {
+        public override string StreamBaseName => "Example";
         public ExampleAggregate(IBus bus) : base(Guid.Empty,bus)
         {
         }

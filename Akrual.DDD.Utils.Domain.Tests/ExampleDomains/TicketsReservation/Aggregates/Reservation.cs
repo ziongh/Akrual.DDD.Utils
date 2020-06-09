@@ -15,6 +15,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
         IHandleDomainCommand<_2MakeReservation>,
         IHandleDomainEvent<_6OrderConfirmed_Reservation>
     {
+        public override string StreamBaseName => "Reservation";
         public Reservation(IBus bus) : base(Guid.Empty,bus)
         {
         }

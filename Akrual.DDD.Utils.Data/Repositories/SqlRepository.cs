@@ -29,7 +29,7 @@ namespace Akrual.DDD.Utils.Data.Repositories
         ///     </remarks>
         /// </summary>
         /// <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        public async Task<T> CreateAsOf(Guid guid, DateTime? AsOfDate = null)
+        public async Task<T> CreateAsOf(Guid guid, DateTime? AsOfDate = null, bool useCache = true)
         {
             var entry = await _context.FindBy<T>(s => s.Id == guid).FirstOrDefaultAsync();
             entry = entry ?? await _factory.Create(guid);
@@ -44,7 +44,7 @@ namespace Akrual.DDD.Utils.Data.Repositories
         ///     </remarks>
         /// </summary>
         /// <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
-        public async Task<T> CreateAsAt(Guid guid, DateTime? AsAtDate = null)
+        public async Task<T> CreateAsAt(Guid guid, DateTime? AsAtDate = null, bool useCache = true)
         {
             return await _context.FindBy<T>(s => s.Id == guid).FirstOrDefaultAsync();
         }

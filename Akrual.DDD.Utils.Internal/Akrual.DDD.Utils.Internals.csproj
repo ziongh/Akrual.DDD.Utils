@@ -2,7 +2,8 @@
   <PropertyGroup>
     <PackageTitle>Akrual.DDD.Utils.Internals</PackageTitle>
     <Title>Akrual.DDD.Utils.Internals</Title>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>8</LangVersion>
     <PackageId>Akrual.DDD.Utils.Internals</PackageId>
     <PackageVersion>1.0.8</PackageVersion>
     <Authors>Rodrigo Leal</Authors>
@@ -28,11 +29,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkCoreMock.Shared" Version="1.0.0.20" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="SimpleInjector" Version="4.5.1" />
+    <Compile Remove="Repository\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <None Remove="Repository\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <PackageReference Include="EntityFrameworkCore3Mock.Moq" Version="1.0.0.3" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="SimpleInjector" Version="4.10.2" />
+    <PackageReference Include="MessagePack" Version="2.1.115" />
   </ItemGroup>
 </Project>

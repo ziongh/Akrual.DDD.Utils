@@ -1,7 +1,7 @@
-﻿using System;
+﻿using EntityFrameworkCore3Mock;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using EntityFrameworkCoreMock;
 
 namespace Akrual.DDD.Utils.Internal.Extensions
 {

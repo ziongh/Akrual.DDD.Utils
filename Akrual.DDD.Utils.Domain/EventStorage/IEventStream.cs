@@ -20,13 +20,15 @@ namespace Akrual.DDD.Utils.Domain.EventStorage
 
     public class EventStreamNameComponents
     {
-        public EventStreamNameComponents(Type aggregateType, Guid aggregateGuid)
+        public EventStreamNameComponents(Type aggregateType, Guid aggregateGuid, string streamBaseName)
         {
             AggregateType = aggregateType;
             AggregateGuid = aggregateGuid;
+            this.StreamBaseName = streamBaseName;
         }
 
         public Type AggregateType { get; set; }
         public Guid AggregateGuid { get; set; }
+        public string StreamBaseName { get; set; }
     }
 }

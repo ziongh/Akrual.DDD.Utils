@@ -11,7 +11,7 @@ using Akrual.DDD.Utils.Domain.DbContexts;
 using Akrual.DDD.Utils.Domain.Repositories;
 using Akrual.DDD.Utils.Internal.Extensions;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
-using EntityFrameworkCoreMock;
+using EntityFrameworkCore3Mock;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 

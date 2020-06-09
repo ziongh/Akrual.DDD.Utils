@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Akrual.DDD.Utils.Domain.Cache;
 using Akrual.DDD.Utils.Domain.EventStorage;
 using Akrual.DDD.Utils.Domain.Factories;
 using Akrual.DDD.Utils.Domain.Factories.InstanceFactory;
@@ -20,7 +21,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
             var bus = new InMemoryBus();
             bus.RegisterHandler<ExampleAggregate>();
 
-            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(new InMemoryEventStore()),new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
+            var factory = new DefaultFactory<ExampleAggregate>(new UnitOfWork(new InMemoryEventStore(), new MockReadModelCache()),new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
             factory.OnAfterCreateDefaultInstance += (sender, context) => context.ObjectBeingCreated.FixName("OneName");
             var exampleAggregate = await factory.Create(GuidGenerator.GenerateTimeBasedGuid());
             Assert.Equal("OneName", exampleAggregate.Name);
@@ -33,7 +34,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         {
             var bus = new InMemoryBus();
             bus.RegisterHandler<ExampleAggregate>();
-            var uow = new UnitOfWork(new InMemoryEventStore());
+            var uow = new UnitOfWork(new InMemoryEventStore(), new MockReadModelCache());
             var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
             var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
 
@@ -53,7 +54,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         {
             var bus = new InMemoryBus();
             bus.RegisterHandler<ExampleAggregate>();
-            var uow = new UnitOfWork(new InMemoryEventStore());
+            var uow = new UnitOfWork(new InMemoryEventStore(), new MockReadModelCache());
             var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
             var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
 
@@ -82,7 +83,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         {
             var bus = new InMemoryBus();
             bus.RegisterHandler<ExampleAggregate>();
-            var uow = new UnitOfWork(new InMemoryEventStore());
+            var uow = new UnitOfWork(new InMemoryEventStore(), new MockReadModelCache());
             var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
             var factory2 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
 
@@ -111,7 +112,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Factories
         {
             var bus = new InMemoryBus();
             bus.RegisterHandler<ExampleAggregate>();
-            var uow = new UnitOfWork(new InMemoryEventStore());
+            var uow = new UnitOfWork(new InMemoryEventStore(), new MockReadModelCache());
             var factory1 = new DefaultFactory<ExampleAggregate>(uow,new StubbedInstantiator<ExampleAggregate>(() => new ExampleAggregate(bus)));
 
             var id1 = GuidGenerator.GenerateTimeBasedGuid();

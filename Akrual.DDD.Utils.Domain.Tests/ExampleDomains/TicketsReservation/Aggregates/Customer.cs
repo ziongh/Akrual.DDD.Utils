@@ -12,6 +12,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
     public class Customer : AggregateRoot<Customer>,
         IHandleDomainEvent<_6OrderConfirmed_Customer>
     {
+        public override string StreamBaseName => "Customer";
         public string CardNumber { get; set; }
 
         public Customer(IBus bus) : base(Guid.Empty,bus)

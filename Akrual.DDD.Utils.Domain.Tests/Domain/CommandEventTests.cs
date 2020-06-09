@@ -112,7 +112,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
 
     public class TabOpenedTwiceException : DomainException
     {
-        
+        public Guid Service_Id {get;set;}
     }
 
 
@@ -124,6 +124,8 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         public int TableNumber { get; private set; }
         public string Waiter { get; private set; }
         public bool Opened { get; set; }
+
+        public override string StreamBaseName => "Tab";
 
         public TabAggregate(IBus bus) : base(Guid.Empty, bus)
         {

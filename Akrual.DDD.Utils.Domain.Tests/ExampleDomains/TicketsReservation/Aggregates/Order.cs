@@ -17,6 +17,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggreg
         IHandleDomainEvent<_5PaymentAccepted>,
         IHandleDomainEvent<_6OrderConfirmed_Order>
     {
+        public override string StreamBaseName => "Order";
         public int SeatNumber { get; private set; }
         public Guid UserId { get; private set; }
 

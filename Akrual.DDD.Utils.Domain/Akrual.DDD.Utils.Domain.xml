@@ -53,6 +53,11 @@
             Notify the Aggregate that all events where Stored. And transfer all Events from Changes to EventStream.
             </summary>
         </member>
+        <member name="P:Akrual.DDD.Utils.Domain.Aggregates.IAggregateRoot.StreamBaseName">
+            <summary>
+            Used to find the correct stream for this aggregate (Azure table for instance).
+            </summary>
+        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Aggregates.AggregateRoot`1">
             <summary>
                 Base class for implementing aggregate root domain objects.
@@ -118,6 +123,7 @@
             <param name="ev"></param>
             <param name="nothing">This parameter is only here to block any acces to this method from outside of the library</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:Akrual.DDD.Utils.Domain.Cache.Redis.ForceReconnect" -->
         <member name="T:Akrual.DDD.Utils.Domain.Entities.BaseDomainStatus">
             <summary>
             An Abstract Class to inherit when creating Entity Status
@@ -433,7 +439,7 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order. Then it check all later events that should be applied before the given
@@ -441,31 +447,34 @@
                 <remarks> 
                     In other words, it will give the result of a particular time point within the stream (everything we know 
                     that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                    If you use cache it will return the last image, ignoring as at.
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.EventSourceRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order.
                 <remarks> 
                     In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                    If you use cache it will return the last image, ignoring as at.
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsAt(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order.
                 <remarks> 
                     In other words, it will give the result at a particular time point within the stream (what did we know as at this point in time) 
+                    If you use cache it will return the last image, ignoring as at.
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
         </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime})">
+        <member name="M:Akrual.DDD.Utils.Domain.Repositories.IRepository`1.CreateAsOf(System.Guid,System.Nullable{System.DateTime},System.Boolean)">
             <summary>
                 Creates The aggregate, then query the event store for all it's events until a certain point. 
                 And applies them in order. Then it check all later events that should be applied before the given
@@ -473,6 +482,7 @@
                 <remarks> 
                     In other words, it will give the result of a particular time point within the stream (everything we know 
                     that happened until that point in time, counting with events that may have happened later, but affects some point back in time) 
+                    If you use cache it will return the last image, ignoring as at.
                 </remarks>
             </summary>
             <returns>Returns the Filled Aggregate with all the invariants Checked.</returns>
@@ -722,38 +732,6 @@
             <remarks>This type is not thread-safe (for hashcode updates).</remarks>
             <typeparam name="T">Type of the listed items.</typeparam>
         </member>
-        <member name="T:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1">
-            <summary>
-            A collection of weak references to objects.
-            <remarks>Be careful!! do not use it to hold Action, Delegate or Func!!!</remarks>
-            Because It can lose the referecne.
-            </summary>
-            <typeparam name="T">The type of object to hold weak references to.</typeparam>
-        </member>
-        <member name="F:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1._list">
-            <summary>
-            The actual collection of strongly-typed weak references.
-            </summary>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.GetLiveItems">
-            <summary>
-            Gets a list of live objects from this collection, causing a purge.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.Add(`0)">
-            <summary>
-            Adds a weak reference to an object to the collection. Does not cause a purge.
-            </summary>
-            <param name="item">The object to add a weak reference to.</param>
-        </member>
-        <member name="M:Akrual.DDD.Utils.Domain.Utils.Collections.WeakCollection`1.Remove(`0)">
-            <summary>
-            Removes a weak reference to an object from the collection. Does not cause a purge.
-            </summary>
-            <param name="item">The object to remove a weak reference to.</param>
-            <returns>True if the object was found and removed; false if the object was not found.</returns>
-        </member>
         <member name="T:Akrual.DDD.Utils.Domain.Utils.UUID.GuidGenerator">
             <summary>
             Used for generating UUID based on RFC 4122.
@@ -792,14 +770,6 @@
         <member name="M:Akrual.DDD.Utils.Domain.Utils.UUID.GuidGenerator.GenerateClockSequenceBytes(System.DateTimeOffset)">
             <summary>
             In order to maintain a constant value we need to get a two byte hash from the DateTime.
-            </summary>
-        </member>
-        <member name="T:Akrual.DDD.Utils.Domain.ValueObjects.Enumeration">
-            <summary>
-            Defines an Enumeration with extra power (it's a class).
-            You can inherit and create new types. Can add properties, etc.
-            So you won't have to use switches.
-            <remarks><c>from: https://lostechies.com/jimmybogard/2008/08/12/enumeration-classes </c></remarks>
             </summary>
         </member>
         <member name="T:Akrual.DDD.Utils.Domain.ValueObjects.ValueObject`1">

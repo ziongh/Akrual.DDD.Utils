@@ -74,6 +74,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.Ledger
     IHandleDomainEvent<MoneyDeposited>
     {
         private double Balance;
+        public override string StreamBaseName => "Account";
         public Account(IBus bus) : base(Guid.Empty,bus)
         {
             Balance = 0;
