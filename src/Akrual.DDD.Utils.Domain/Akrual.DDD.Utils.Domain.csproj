@@ -34,6 +34,6 @@
     <PackageReference Include="SimpleInjector" Version="4.10.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internals.csproj" />
+    <ProjectReference Include="..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
   </ItemGroup>
 </Project>

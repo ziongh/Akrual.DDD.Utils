@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F42CCC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Domain.Tests", "Akrual.DDD.Utils.Domain.Tests\Akrual.DDD.Utils.Domain.Tests.csproj", "{D55BDB73-5DAB-47A4-ABAC-A6818BDE128C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internals", "Internals", "{C4F62BF7-F285-477E-9821-94CB59C4D896}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{C4F62BF7-F285-477E-9821-94CB59C4D896}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Internals", "Akrual.DDD.Utils.Internals\Akrual.DDD.Utils.Internals.csproj", "{4202FF68-B307-46EF-A493-2CF26F00DFC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Internal", "Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj", "{4202FF68-B307-46EF-A493-2CF26F00DFC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{52577A01-B7AD-4C1F-BA55-C7B2C072188C}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Application.Tests", "Akrual.DDD.Utils.Application.Tests\Akrual.DDD.Utils.Application.Tests.csproj", "{153FF21A-0BE2-435F-BE26-26B5C88F44D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Internals.Tests", "Akrual.DDD.Utils.Internals.Tests\Akrual.DDD.Utils.Internals.Tests.csproj", "{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Internal.Tests", "Akrual.DDD.Utils.Internal.Tests\Akrual.DDD.Utils.Internal.Tests.csproj", "{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Domain.Tests.Utils", "Akrual.DDD.Domain.Tests.Utils\Akrual.DDD.Domain.Tests.Utils.csproj", "{F3E66C76-3D40-4D57-B893-D3718EF4C9EB}"
 EndProject

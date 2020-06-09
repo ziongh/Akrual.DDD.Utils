@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>Akrual.DDD.Utils.Internals</id>
+    <id>Akrual.DDD.Utils.Internal</id>
     <version>0.0.84</version>
     <authors>Rodrigo Leal</authors>
     <owners>Rodrigo Leal</owners>

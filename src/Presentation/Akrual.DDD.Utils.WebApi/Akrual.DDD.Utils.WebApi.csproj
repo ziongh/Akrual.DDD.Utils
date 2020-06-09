@@ -35,6 +35,6 @@
     <PackageReference Include="System.Configuration.Abstractions" Version="2.0.2.45" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internals.csproj" />
+    <ProjectReference Include="..\..\Akrual.DDD.Utils.Internal\Akrual.DDD.Utils.Internal.csproj" />
   </ItemGroup>
 </Project>
