@@ -1,4 +1,28 @@
 {
   "packages": {
+    "Akrual.DDD.Domain.Tests.Utils": {
+      "lastVersion": "0.0.84",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    },
+    "Akrual.DDD.Utils.Application": {
+      "lastVersion": "0.0.84",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    },
+    "Akrual.DDD.Utils.Data": {
+      "lastVersion": "0.0.84",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    },
+    "Akrual.DDD.Utils.Domain": {
+      "lastVersion": "0.0.83",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    },
+    "Akrual.DDD.Utils.Internal": {
+      "lastVersion": "0.0.83",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    },
+    "Akrual.DDD.Utils.WebApi": {
+      "lastVersion": "0.0.83",
+      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+    }
   }
 }
