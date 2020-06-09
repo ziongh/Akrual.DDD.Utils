@@ -5,14 +5,15 @@
 
 #load "CakeScripts/base.setup.cake"
 
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-var target = Argument("Target", "Publish_Package");
-var configuration = Argument("configuration", "Release");
+var target = Argument ("Target", "Package");
+var configuration = Argument ("configuration", "Release");
 
-Information($"Target Selected: {target}");
+Information ($"Target Selected: {target}");
 
 var buildDir = Directory ("./build") + Directory (configuration);
 var publishDir = Directory ("./publish") + Directory (configuration);
@@ -25,10 +26,9 @@ Task ("Clean")
     .IsDependentOn ("DiscoverBuildDetails")
     .IsDependentOn ("LocateFiles")
     .Does (() => {
-        foreach(var project in projectFiles)
-        {
-            var buidlDirectory = project.Value.Item1.GetDirectory().FullPath + "/bin/";
-            var objDirectory = project.Value.Item1.GetDirectory().FullPath + "/obj/";
+        foreach (var project in projectFiles) {
+            var buidlDirectory = project.Value.Item1.GetDirectory ().FullPath + "/bin/";
+            var objDirectory = project.Value.Item1.GetDirectory ().FullPath + "/obj/";
             CleanDirectory (buidlDirectory);
             CleanDirectory (objDirectory);
         }
@@ -41,102 +41,90 @@ Task ("Build")
     .IsDependentOn ("Clean")
     .Does (() => {
         var blockText = "Build";
-        StartBuildBlock(blockText);
+        StartBuildBlock (blockText);
 
-        foreach(var projectF in projectFiles)
-        {
-            foreach(var framework in projectF.Value.Item3)
-            {
-                Information($"Building ({framework}): {projectF.Key}...");
-                var settings = new DotNetCoreBuildSettings
-                {
+        foreach (var projectF in projectFiles) {
+            foreach (var framework in projectF.Value.Item3) {
+                Information ($"Building ({framework}): {projectF.Key}...");
+                var settings = new DotNetCoreBuildSettings {
                     Configuration = configuration,
                     Framework = framework,
-                    OutputDirectory = projectF.Value.Item1.GetDirectory()  + Directory("/bin") + Directory("/" + configuration) + Directory("/lib") + Directory("/" + framework)
+                    OutputDirectory = projectF.Value.Item1.GetDirectory () + Directory ("/bin") + Directory ("/" + configuration) + Directory ("/lib") + Directory ("/" + framework)
                 };
-                DotNetCoreBuild(projectF.Value.Item1.FullPath, settings);
+                DotNetCoreBuild (projectF.Value.Item1.FullPath, settings);
             }
         }
-        EndBuildBlock(blockText);
+        EndBuildBlock (blockText);
     });
-
 
 Task ("Publish")
     .IsDependentOn ("Build")
     .Does (() => {
         var blockText = "Build";
-        StartBuildBlock(blockText);
+        StartBuildBlock (blockText);
 
-        foreach(var solution in solutionFiles)
-        {
-            Information($"Building: {solution.Key}...");
+        foreach (var solution in solutionFiles) {
+            Information ($"Building: {solution.Key}...");
             DotNetCorePublish (
-                solution.Value.GetDirectory().FullPath,
-                new DotNetCorePublishSettings{
+                solution.Value.GetDirectory ().FullPath,
+                new DotNetCorePublishSettings {
                     OutputDirectory = publishDir
                 }
             );
         }
-        EndBuildBlock(blockText);
+        EndBuildBlock (blockText);
     });
-
 
 Task ("Run-Unit-Tests")
     .IsDependentOn ("Build")
     .Does (() => {
         var blockText = "Test";
-        StartBuildBlock(blockText);
+        StartBuildBlock (blockText);
 
-        foreach(var testProject in testFiles)
-        {
-            Information($"Testing: {testProject.Key}...");
-            DotNetCoreTest(testProject.Value.FullPath);
+        foreach (var testProject in testFiles) {
+            Information ($"Testing: {testProject.Key}...");
+            DotNetCoreTest (testProject.Value.FullPath);
         }
-        EndBuildBlock(blockText);
+        EndBuildBlock (blockText);
     });
 
 Task ("CheckIfCommitedChanges")
     .Does (() => {
-        if(GitHasUncommitedChanges(".") || GitHasUntrackedFiles(".")){
-            throw new CakeException("There Are Uncommited Changes. Commit before Packaging.");
+        if (GitHasUncommitedChanges (".") || GitHasUntrackedFiles (".")) {
+            throw new CakeException ("There Are Uncommited Changes. Commit before Packaging.");
         }
     });
-
-
 
 Task ("Package")
     .IsDependentOn ("CheckIfCommitedChanges")
     .IsDependentOn ("Build")
     .Does (() => {
-        EnsureDirectoryExists(packageOutputPath);
+        EnsureDirectoryExists (packageOutputPath);
 
-        var currentBranch = GitBranchCurrent(".").CanonicalName;
-        var isAlpha = currentBranch.ToLower().Contains("alpha");
+        var currentBranch = GitBranchCurrent (".").CanonicalName;
+        var isAlpha = currentBranch.ToLower ().Contains ("alpha");
 
-        foreach(var project in projectFiles)
-        {
-            Information($"Generating NuGet package package for {project.Key}");
-            var nuspecFile = string.Format(nuspecFileString, project.Key);
+        foreach (var project in projectFiles) {
+            Information ($"Generating NuGet package package for {project.Key}");
+            var nuspecFile = string.Format (nuspecFileString, project.Key);
 
-            XmlPoke(
+            XmlPoke (
                 nuspecFile,
                 "/package/metadata/version",
-                project.Value.Item2 + (isAlpha? "-alpha":"")
+                project.Value.Item2 + (isAlpha? "-alpha": "")
             );
 
-            var projectBuildDirectory = project.Value.Item1.GetDirectory() + Directory("/bin") + Directory("/" + configuration) + Directory("/lib");
-            foreach(var project2 in projectFiles.Where(s => s.Key != project.Key))
-            {
-                var files = GetFiles($"{projectBuildDirectory}/*/{project2.Key}.*");
-                DeleteFiles(files);
+            var projectBuildDirectory = project.Value.Item1.GetDirectory () + Directory ("/bin") + Directory ("/" + configuration) + Directory ("/lib");
+            foreach (var project2 in projectFiles.Where (s => s.Key != project.Key)) {
+                var files = GetFiles ($"{projectBuildDirectory}/*/{project2.Key}.*");
+                DeleteFiles (files);
             }
 
             // NuGetPack(project.Value.Item1.FullPath, GetNuGetPackSettings(project.Value.Item1.GetDirectory().FullPath));	
-            NuGetPack(nuspecFile, GetNuGetPackSettings(project.Value.Item1.GetDirectory().FullPath));	
+            NuGetPack (nuspecFile, GetNuGetPackSettings (project.Value.Item1.GetDirectory ().FullPath));
         }
-        CommitChangesAndUpdateVersionFile();
+        CommitChangesAndUpdateVersionFile ();
     });
-
 
 Task ("Publish_Package")
     .IsDependentOn ("Package")
@@ -144,22 +132,20 @@ Task ("Publish_Package")
         // NuGet API key
         var apiKey = "oy2gqxynwjcp6ehaq3zqunb4simr3qvedn3whlj6tj6pka";
         var blockText = "NugetPush";
-        StartBlock(blockText);
+        StartBlock (blockText);
 
-        if(!CheckIfPackagesCanBePushed())
-        {
+        if (!CheckIfPackagesCanBePushed ()) {
             return;
         }
 
-        PushPackagesToNuget(apiKey);
-        
-        EndBlock(blockText);
+        PushPackagesToNuget (apiKey);
+
+        EndBlock (blockText);
 
     });
-
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
-RunTarget(target);
+RunTarget (target);
