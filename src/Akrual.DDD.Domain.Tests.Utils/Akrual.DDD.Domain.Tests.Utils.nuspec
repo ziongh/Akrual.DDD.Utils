@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Akrual.DDD.Domain.Tests.Utils</id>
-    <version>0.0.84</version>
+    <version>0.0.86</version>
     <authors>Rodrigo Leal</authors>
     <owners>Rodrigo Leal</owners>
     <title>Akrual DDD Test Utils</title>

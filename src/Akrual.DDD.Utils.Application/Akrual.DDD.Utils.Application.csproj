@@ -6,7 +6,7 @@
     <LangVersion>8</LangVersion>
     <Title>Akrual.DDD.Utils.Application</Title>
     <PackageId>Akrual.DDD.Utils.Application</PackageId>
-    <Version>0.0.84</Version>
+    <Version>0.0.85</Version>
     <Authors>Rodrigo Leal</Authors>
     <Description>Useful Classes to implement the Application layer of a system based on DDD</Description>
     <Summary>Useful Classes to implement the Application layer of a system based on DDD like, ValueObject, Entity, Aggregate, Repository, and many more.</Summary>
