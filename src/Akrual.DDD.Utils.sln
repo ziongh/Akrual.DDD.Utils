@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.6.2
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 15.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Domain", "Akrual.DDD.Utils.Domain\Akrual.DDD.Utils.Domain.csproj", "{1E999216-1E30-4407-BC94-4F9A6D19F4E6}"
 EndProject
@@ -31,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.Internal.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Domain.Tests.Utils", "Akrual.DDD.Domain.Tests.Utils\Akrual.DDD.Domain.Tests.Utils.csproj", "{F3E66C76-3D40-4D57-B893-D3718EF4C9EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{1EFD255C-1703-4A46-8A79-664A93197205}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.WebApi", "Presentation\Akrual.DDD.Utils.WebApi\Akrual.DDD.Utils.WebApi.csproj", "{996EECC2-E5FE-48EE-90D6-EDE387463DC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akrual.DDD.Utils.WebApi", "Akrual.DDD.Utils.WebApi\Akrual.DDD.Utils.WebApi.csproj", "{996EECC2-E5FE-48EE-90D6-EDE387463DC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bus", "Bus", "{B19490CC-24BC-4281-BBC8-24DF4553C22D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{048E4568-465C-4AE0-BF88-9CC045E33A75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,7 +98,7 @@ Global
 		{153FF21A-0BE2-435F-BE26-26B5C88F44D7} = {7FFBA0AE-FF89-481C-81DB-68D271A56E21}
 		{63CE6A55-27BE-4ECD-839F-62DA1EB65DD0} = {C4F62BF7-F285-477E-9821-94CB59C4D896}
 		{F3E66C76-3D40-4D57-B893-D3718EF4C9EB} = {F42CCC1B-99C5-41F7-8171-F1AA83AD9962}
-		{996EECC2-E5FE-48EE-90D6-EDE387463DC6} = {1EFD255C-1703-4A46-8A79-664A93197205}
+		{996EECC2-E5FE-48EE-90D6-EDE387463DC6} = {048E4568-465C-4AE0-BF88-9CC045E33A75}
 		{B19490CC-24BC-4281-BBC8-24DF4553C22D} = {EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
