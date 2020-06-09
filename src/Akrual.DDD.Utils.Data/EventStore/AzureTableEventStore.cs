@@ -13,6 +13,7 @@ using Akrual.DDD.Utils.Internal.Extensions;
 using Akrual.DDD.Utils.Internal.Serializer;
 using Akrual.DDD.Utils.Internal.UsefulClasses;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Options;
 using Streamstone;
 
 namespace Akrual.DDD.Utils.Data.EventStore
@@ -29,9 +30,9 @@ namespace Akrual.DDD.Utils.Data.EventStore
 
     public class AzureTableEventStore : IEventStore
     {
-        private static readonly string ClientName = Environment.GetEnvironmentVariable("client", EnvironmentVariableTarget.Process).ToString();
+        private string ClientName = Environment.GetEnvironmentVariable("client", EnvironmentVariableTarget.Process).ToString();
 
-        private static readonly string StorageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString", EnvironmentVariableTarget.Process).ToString();
+        private string StorageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString", EnvironmentVariableTarget.Process).ToString();
 
         private readonly CloudStorageAccount _storageAccount;
         private readonly IDomainTypeFinder typeFinder;
@@ -53,7 +54,8 @@ namespace Akrual.DDD.Utils.Data.EventStore
             Console.WriteLine("Create a Table for the demo");
 
             // Create a table client for interacting with the table service 
-            var compoundName = streamName + $"_{ClientName}";
+            var compoundName = streamName + $"{ClientName}";
+            compoundName = compoundName.RemoverAcentos().ToLower();
             CloudTable table = tableClient.GetTableReference(compoundName);
             if (await table.CreateIfNotExistsAsync())
             {
@@ -69,9 +71,15 @@ namespace Akrual.DDD.Utils.Data.EventStore
 
         public async Task<Stream> GetStreamFromTable(CloudTable table, string streamKey)
         {
-            var stream = await Stream.ProvisionAsync(new Partition(table, streamKey){ });
+            var stream = await Stream.TryOpenAsync(new Partition(table, streamKey){ });
 
-            return stream;
+            var finalStream = stream?.Stream;
+            if (!stream.Found)
+            {
+                finalStream = await Stream.ProvisionAsync(new Partition(table, streamKey){ });
+            }
+
+            return finalStream;
         }
 
         public async IAsyncEnumerable<StreamSlice<AzureTableEventEntry>> ReadAllEvents(Stream stream)
@@ -112,13 +120,14 @@ namespace Akrual.DDD.Utils.Data.EventStore
                 allEvents.AddRange(eventSlice.Events);
             }
 
-            var streamName = typeof(T).FullName + "#" + obj.Id;
+            var streamName = obj.StreamBaseName + "#" + obj.Id.ToString("D");
 
             var streamFinal = new EventStream
             {
                 StreamName = streamName,
                 Events = Task.FromResult(allEvents.Cast<IRecordedEvent>().AsEnumerable())
             };
+                
 
             return streamFinal;
         }
@@ -144,7 +153,7 @@ namespace Akrual.DDD.Utils.Data.EventStore
                 
                 foreach (var @event in eventsFromAggregate.Value)
                 {
-                    newEvents.Add(CreateEvent(@event));
+                    newEvents.Add(CreateEvent((dynamic)@event));
                 }
                 await Stream.WriteAsync(stream, newEvents.ToArray());
             }

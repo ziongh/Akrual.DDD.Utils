@@ -8,17 +8,22 @@ using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
+using MessagePack;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.TicketsReservation.Aggregates
 {
+    [MessagePackObject]
     public class Order : AggregateRoot<Order>,
         IHandleDomainCommand<_1PlaceOrder>,
         IHandleDomainEvent<_3SeatsReserved>,
         IHandleDomainEvent<_5PaymentAccepted>,
         IHandleDomainEvent<_6OrderConfirmed_Order>
     {
+        [Key(5)]
         public override string StreamBaseName => "Order";
+        [Key(6)]
         public int SeatNumber { get; private set; }
+        [Key(7)]
         public Guid UserId { get; private set; }
 
 

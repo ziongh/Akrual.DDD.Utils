@@ -1,6 +1,8 @@
 ﻿using MessagePack;
+using MessagePack.Resolvers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Akrual.DDD.Utils.Internal.Serializer
@@ -27,6 +29,11 @@ namespace Akrual.DDD.Utils.Internal.Serializer
             var result = MessagePackSerializer.Serialize(item, lz4Options);
 
             return result;
+        }
+
+        public static void AddTypesThatHaveUnions(List<Tuple<Type, IEnumerable<Assembly>>> lists)
+        {
+            DynamicUnionResolver.Instance.SearchAssemblyForUnionsOnTypes(lists);
         }
     }
 }

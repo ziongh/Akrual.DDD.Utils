@@ -37,6 +37,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bus", "Bus", "{B19490CC-24B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{048E4568-465C-4AE0-BF88-9CC045E33A75}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessagePAckAltered", "MessagePAckAltered", "{BBC651C9-87B7-452A-8BE9-345CA0D6EAC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagePack", "MessagePackAltered\MessagePack.csproj", "{119C6A3E-431C-4731-87A0-8606EAA3A511}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +87,10 @@ Global
 		{996EECC2-E5FE-48EE-90D6-EDE387463DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996EECC2-E5FE-48EE-90D6-EDE387463DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{996EECC2-E5FE-48EE-90D6-EDE387463DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119C6A3E-431C-4731-87A0-8606EAA3A511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119C6A3E-431C-4731-87A0-8606EAA3A511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119C6A3E-431C-4731-87A0-8606EAA3A511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119C6A3E-431C-4731-87A0-8606EAA3A511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +108,7 @@ Global
 		{F3E66C76-3D40-4D57-B893-D3718EF4C9EB} = {F42CCC1B-99C5-41F7-8171-F1AA83AD9962}
 		{996EECC2-E5FE-48EE-90D6-EDE387463DC6} = {048E4568-465C-4AE0-BF88-9CC045E33A75}
 		{B19490CC-24BC-4281-BBC8-24DF4553C22D} = {EBCE3B2A-50E6-4EE7-87A0-440EE28B692E}
+		{119C6A3E-431C-4731-87A0-8606EAA3A511} = {BBC651C9-87B7-452A-8BE9-345CA0D6EAC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B4AE7482-3EFC-41A6-9BE8-8B6385DDF256}

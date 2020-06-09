@@ -93,9 +93,11 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         public Guid ConcurrencyGuid { get; set; }
 
         
+        [Key(3)]
         private Counter EventsLoaded { get; }
 
         
+        [Key(4)]
         private Counter EventsLoadedFromDB { get; set; }
 
         /// <summary>
@@ -108,6 +110,7 @@ namespace Akrual.DDD.Utils.Domain.Aggregates
         /// </summary>
         public int GetTotalEventsLoadedFromDB => EventsLoadedFromDB.GetCurrentValue();
 
+        [Key(5)]
         public abstract string StreamBaseName {get;}
 
 

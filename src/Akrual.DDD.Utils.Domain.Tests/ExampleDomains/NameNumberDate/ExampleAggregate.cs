@@ -8,13 +8,18 @@ using Akrual.DDD.Utils.Domain.Messaging.Buses;
 using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
+using MessagePack;
 
 namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 {
+    [MessagePackObject]
     public class CreateExampleAggregate : DomainCommand{
         
+        [Key(6)]
         public string Name { get; set; }
+        [Key(7)]
         public int Number { get; set; }
+        [Key(8)]
         public DateTime Date { get; set; }
 
 
@@ -30,13 +35,18 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         }
     }
 
+    [MessagePackObject]
     public class ExampleAggregateCreated : DomainEvent
     {
+        [Key(5)]
         public override string EventName { get; } = "ExampleAggregateCreated";
 
 
+        [Key(9)]
         public string Name { get; set; }
+        [Key(10)]
         public int Number { get; set; }
+        [Key(11)]
         public DateTime Date { get; set; }
 
 
@@ -54,7 +64,7 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
 
     }
 
-
+    [MessagePackObject]
     public class ExampleAggregate : AggregateRoot<ExampleAggregate>,
         IHandleDomainCommand<CreateExampleAggregate>,
         IHandleDomainEvent<ExampleAggregateCreated>
@@ -64,9 +74,11 @@ namespace Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate
         public ExampleAggregate(IBus bus) : base(Guid.Empty,bus)
         {
         }
-        
+        [Key(6)]
         public string Name { get; private set; }
+        [Key(7)]
         public int Number { get; private set; }
+        [Key(8)]
         public DateTime Date { get; private set; }
 
         public void FixName(string newName)

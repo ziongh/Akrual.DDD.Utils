@@ -11,6 +11,7 @@ using Akrual.DDD.Utils.Domain.Messaging.DomainCommands;
 using Akrual.DDD.Utils.Domain.Messaging.DomainEvents;
 using Akrual.DDD.Utils.Domain.Tests.ExampleDomains.NameNumberDate;
 using Akrual.DDD.Utils.Domain.Utils.UUID;
+using MessagePack;
 using Xunit;
 
 namespace Akrual.DDD.Utils.Domain.Tests.Domain
@@ -70,12 +71,16 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
         }
     }
 
+    [MessagePackObject]
     public class TabOpened : DomainEvent
     {
+        [Key(5)]
         public override string EventName { get; } = "TabOpened";
 
 
+        [Key(8)]
         public int TableNumber;
+        [Key(9)]
         public string Waiter;
 
         public TabOpened(Guid eventId, Guid aggregateRootId) : base(eventId, aggregateRootId)
@@ -116,15 +121,20 @@ namespace Akrual.DDD.Utils.Domain.Tests.Domain
     }
 
 
+    [MessagePackObject]
     public class TabAggregate : 
         AggregateRoot<TabAggregate>, 
         IHandleDomainCommand<OpenTab>,
         IHandleDomainEvent<TabOpened>
     {
+        [Key(6)]
         public int TableNumber { get; private set; }
+        [Key(7)]
         public string Waiter { get; private set; }
+        [Key(8)]
         public bool Opened { get; set; }
 
+        [Key(5)]
         public override string StreamBaseName => "Tab";
 
         public TabAggregate(IBus bus) : base(Guid.Empty, bus)

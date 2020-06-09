@@ -37,6 +37,8 @@
     <PackageReference Include="EntityFrameworkCore3Mock.Moq" Version="1.0.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="SimpleInjector" Version="4.10.2" />
-    <PackageReference Include="MessagePack" Version="2.1.115" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessagePackAltered\MessagePack.csproj" />
   </ItemGroup>
 </Project>
