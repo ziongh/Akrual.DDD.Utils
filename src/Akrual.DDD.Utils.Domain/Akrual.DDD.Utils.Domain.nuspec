@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Akrual.DDD.Utils.Domain</id>
+    <version>0.0.84</version>
+    <authors>Rodrigo Leal</authors>
+    <owners>Rodrigo Leal</owners>
+    <title>Akrual DDD Domain Utils</title>
+    <description>Essencial tools to implement DDD Domain.</description>
+    <summary>Essencial tools to implement DDD Domain.</summary>
+    <licenseUrl>http://akrualDDD.com/license.html</licenseUrl>
+    <projectUrl>http://akrualDDD.com</projectUrl>
+    <iconUrl>http://akrualDDD.com/icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright (c) 2018</copyright>
+    <releaseNotes>ReleaseNotesHere</releaseNotes>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Akrual.DDD.Utils.Internal" version="0.0.84" />
+      <dependency id="MediatR" version="8.0.1" />
+      <dependency id="StackExchange.Redis" version="2.1.30" />
+      <dependency id="FluentValidation.AspNetCore" version="8.6.2" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Akrual.DDD.Utils.Application</id>
+    <version>0.0.84</version>
+    <authors>Rodrigo Leal</authors>
+    <owners>Rodrigo Leal</owners>
+    <title>Akrual DDD Application</title>
+    <description>Essencial tools to implement DDD Application.</description>
+    <summary>Essencial tools to implement DDD Application.</summary>
+    <licenseUrl>http://akrualDDD.com/license.html</licenseUrl>
+    <projectUrl>http://akrualDDD.com</projectUrl>
+    <iconUrl>http://akrualDDD.com/icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright (c) 2018</copyright>
+    <releaseNotes>ReleaseNotesHere</releaseNotes>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Akrual.DDD.Utils.Domain" version="0.0.84" />
+    </dependencies>
+  </metadata>
+</package>

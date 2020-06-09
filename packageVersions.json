@@ -1,8 +1,8 @@
 {
   "packages": {
     "Akrual.DDD.Domain.Tests.Utils": {
-      "lastVersion": "0.0.84",
-      "commitHash": "1b7b21a1cf4e67474176e1d66c318f3a2348751c"
+      "lastVersion": "0.0.85",
+      "commitHash": "ee3f9a81aa7b6f67407103c1cd8105dd046a46b4"
     },
     "Akrual.DDD.Utils.Application": {
       "lastVersion": "0.0.84",

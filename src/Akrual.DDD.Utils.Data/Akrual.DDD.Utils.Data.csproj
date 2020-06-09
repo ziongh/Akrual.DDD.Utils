@@ -9,7 +9,7 @@
     <PackageTitle>Akrual.DDD.Utils.Data</PackageTitle>
     <Title>Akrual.DDD.Utils.Data</Title>
     <PackageId>Akrual.DDD.Utils.Data</PackageId>
-    <PackageVersion>0.0.1</PackageVersion>
+    <Version>0.0.84</Version>
     <Authors>Rodrigo Leal</Authors>
     <Description>Useful Classes to implement the data layer of a system based on DDD</Description>
     <Summary>Useful Classes to implement the data layer of a system based on DDD like, ValueObject, Entity, Aggregate, Repository, and many more.</Summary>

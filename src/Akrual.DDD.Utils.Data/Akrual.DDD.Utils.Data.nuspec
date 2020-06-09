@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Akrual.DDD.Utils.Data</id>
+    <version>0.0.84</version>
+    <authors>Rodrigo Leal</authors>
+    <owners>Rodrigo Leal</owners>
+    <title>Akrual DDD Data</title>
+    <description>Essencial tools to implement DDD Data.</description>
+    <summary>Essencial tools to implement DDD Data.</summary>
+    <licenseUrl>http://akrualDDD.com/license.html</licenseUrl>
+    <projectUrl>http://akrualDDD.com</projectUrl>
+    <iconUrl>http://akrualDDD.com/icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright (c) 2018</copyright>
+    <releaseNotes>ReleaseNotesHere</releaseNotes>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Akrual.DDD.Utils.Domain" version="0.0.84" />
+      <dependency id="Streamstone" version="2.3.0" />
+      <dependency id="NLog.Extensions.Logging" version="1.6.4" />
+      <dependency id="NLog" version="4.7.2" />
+      <dependency id="morelinq" version="3.3.2" />
+      <dependency id="Microsoft.Azure.Cosmos.Table" version="1.0.7" />
+      <dependency id="Microsoft.EntityFrameworkCore" version="3.1.4" />
+    </dependencies>
+  </metadata>
+</package>
