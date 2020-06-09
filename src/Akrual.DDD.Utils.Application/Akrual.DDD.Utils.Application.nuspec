@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Akrual.DDD.Utils.Application</id>
-    <version>0.0.86</version>
+    <version>0.0.87</version>
     <authors>Rodrigo Leal</authors>
     <owners>Rodrigo Leal</owners>
     <title>Akrual DDD Application</title>
@@ -16,7 +16,7 @@
     <releaseNotes>ReleaseNotesHere</releaseNotes>
     <tags></tags>
     <dependencies>
-      <dependency id="Akrual.DDD.Utils.Domain" version="0.0.85" />
+      <dependency id="Akrual.DDD.Utils.Domain" version="0.0.86" />
     </dependencies>
   </metadata>
 </package>

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Akrual.DDD.Utils.Domain</id>
-    <version>0.0.85</version>
+    <version>0.0.86</version>
     <authors>Rodrigo Leal</authors>
     <owners>Rodrigo Leal</owners>
     <title>Akrual DDD Domain Utils</title>
@@ -16,7 +16,7 @@
     <releaseNotes>ReleaseNotesHere</releaseNotes>
     <tags></tags>
     <dependencies>
-      <dependency id="Akrual.DDD.Utils.Internal" version="0.0.85" />
+      <dependency id="Akrual.DDD.Utils.Internal" version="0.0.86" />
       <dependency id="MediatR" version="8.0.1" />
       <dependency id="StackExchange.Redis" version="2.1.30" />
       <dependency id="FluentValidation.AspNetCore" version="8.6.2" />

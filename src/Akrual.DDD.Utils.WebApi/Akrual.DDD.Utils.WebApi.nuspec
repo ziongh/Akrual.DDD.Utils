@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Akrual.DDD.Utils.WebApi</id>
-    <version>0.0.84</version>
+    <version>0.0.86</version>
     <authors>Rodrigo Leal</authors>
     <owners>Rodrigo Leal</owners>
     <title>Akrual DDD WebApi</title>
@@ -16,7 +16,7 @@
     <releaseNotes>ReleaseNotesHere</releaseNotes>
     <tags></tags>
     <dependencies>
-      <dependency id="Akrual.DDD.Utils.Internal" version="0.0.84" />
+      <dependency id="Akrual.DDD.Utils.Internal" version="0.0.86" />
       <dependency id="Microsoft.AspNetCore.Routing" version="2.2.2" />
       <dependency id="Microsoft.AspNetCore.Routing.Abstractions" version="2.2.0" />
       <dependency id="Microsoft.Extensions.Configuration" version="3.1.4" />
