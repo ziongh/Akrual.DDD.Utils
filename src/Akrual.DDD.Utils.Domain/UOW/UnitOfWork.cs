@@ -62,6 +62,7 @@ namespace Akrual.DDD.Utils.Domain.UOW
         {
             var allChanges = new Dictionary<EventStreamNameComponents, IEnumerable<IDomainEvent>>();
 
+
             // Get all Changes from all Aggregates.
             foreach (var listOfAggregateOfSameType in LoadedAggregates)
             {
@@ -76,9 +77,10 @@ namespace Akrual.DDD.Utils.Domain.UOW
                 }
             }
 
-
+            
             // Save Events to EventStore.
             _eventStore.SaveNewEvents(allChanges).Wait();
+
 
             // Notify Aggregates that all events where Stored.
             foreach (var listOfAggregateOfSameType in LoadedAggregates)
